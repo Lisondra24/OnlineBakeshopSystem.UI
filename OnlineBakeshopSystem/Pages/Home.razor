@@ -1,9 +1,9 @@
 ﻿@page "/"
 
-<MudAppBar Color="Color.Primary" Fixed="false">
+<MudAppBar Color="Color.Info" Fixed="false">
     <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
     <MudSpacer />
-    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
+    <MudIconButton Icon="@Icons.Material.Filled.Cake" Color="Color.Inherit" />
 </MudAppBar>
     
 <MudGrid>
@@ -61,10 +61,9 @@
 
             <MudSpacer />
 
-            <MudButton Variant="Variant.Outlined">Default</MudButton>
-<MudButton Variant="Variant.Outlined" Color="Color.Primary">Primary</MudButton>
-<MudButton Variant="Variant.Outlined" Color="Color.Secondary">Secondary</MudButton>
-<MudButton Variant="Variant.Outlined" Disabled="true">Disabled</MudButton>
+            <MudButton Variant="Variant.Outlined">Accept</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary">Update</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Delete</MudButton>
         </MudToolBar>
 
 
@@ -81,14 +80,14 @@
     private bool striped = false;
     private bool bordered = false;
 
-    string[] headings = { "ID", "Name", "Email", "Gender", "IP Address" };
+    string[] headings = { "ID", "Name", "Email", "Orders", "Location" };
 
     string[] rows = {
-        @"1 Clara clara.jones+team@example.com Female 192.0.2.11",
-        @"2 Felix felix_martin88@example.net Male 198.51.100.22",
-        @"3 Isla isla-fernandez@example.org Female 203.0.113.33",
-        @"4 Jonah jonah.brown_dev@example.com Male 192.0.2.44",
-        @"5 Mia mia.chen-marketing@example.net Female 198.51.100.55",
-        @"6 Hugo hugo.taylor123@example.org Male 203.0.113.66",
+        @"1 Clara clara.jones+team@example.com Cookie Danao",
+        @"2 Felix felix_martin88@example.net Cake Lapu-Lapu",
+        @"3 Isla isla-fernandez@example.org Bread Cebu",
+        @"4 Jonah jonah.brown_dev@example.com Cake Mandaue",
+        @"5 Mia mia.chen-marketing@example.net Cupcake Cordova",
+        @"6 Hugo hugo.taylor123@example.org Cookie Bogo",
     };
 }

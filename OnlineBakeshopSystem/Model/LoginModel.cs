@@ -1,6 +1,4 @@
-﻿
-
-namespace OnlineBakeshopSystem.Model
+﻿namespace OnlineBakeshopSystem.Model
 {
     public class LoginModel
     {
