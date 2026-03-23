@@ -1,14 +1,12 @@
 ﻿@page "/"
 @page "/login"
+@using OnlineBakeshopSystem.Model
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject ILocalStorageService LocalStorage
 
 <MudGrid Style="height: 100vh; margin: 0;">
 
-    <!-- =============================================
-         LEFT PANEL — Chocolate Side
-         ============================================= -->
     <MudItem xs="12" md="6"
              Style="background: linear-gradient(135deg, #3E1C00, #6B3A1F, #B86830);
                     display: flex;

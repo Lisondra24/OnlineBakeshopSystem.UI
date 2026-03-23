@@ -14,11 +14,7 @@ public class Program
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         builder.Services.AddMudServices();
-
-
         builder.Services.AddBlazoredLocalStorage();
-
-
         builder.Services.AddScoped(sp => new HttpClient
         {
             BaseAddress = new Uri("http://10.26.228.192:5112")
