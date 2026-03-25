@@ -6,7 +6,7 @@
 
 <MudLayout>
 
-    <!-- TOP APP BAR -->
+
     <MudAppBar Style="background: #3E1C00;" Fixed="true" Elevation="3">
         <MudText Typo="Typo.h6" Style="color: #E8C547; font-weight: bold;">
             🎂 Sweet Cengsations
@@ -20,7 +20,6 @@
                        OnClick="HandleLogout" />
     </MudAppBar>
 
-    <!-- LEFT SIDE — Navigation Drawer -->
     <MudDrawer Open="true"
                ClipMode="DrawerClipMode.Always"
                Style="background: #2A1200;">
@@ -69,7 +68,7 @@
         </MudNavMenu>
     </MudDrawer>
 
-    <!-- MAIN CONTENT -->
+    
     <MudMainContent Style="background: #FDF6EC; padding: 24px;">
 
         @if (isLoading)
@@ -96,7 +95,7 @@
             <!-- SUMMARY CARDS -->
             <MudGrid>
 
-                <!-- TOTAL PRODUCTS — CLICKABLE -->
+
                 <MudItem xs="12" sm="6" md="3">
                     <MudPaper Elevation="3"
                               Style="padding: 20px; border-radius: 16px;
@@ -114,7 +113,7 @@
                     </MudPaper>
                 </MudItem>
 
-                <!-- TOTAL ORDERS — CLICKABLE -->
+
                 <MudItem xs="12" sm="6" md="3">
                     <MudPaper Elevation="3"
                               Style="padding: 20px; border-radius: 16px;
@@ -132,7 +131,6 @@
                     </MudPaper>
                 </MudItem>
 
-                <!-- PENDING ORDERS — CLICKABLE -->
                 <MudItem xs="12" sm="6" md="3">
                     <MudPaper Elevation="3"
                               Style="padding: 20px; border-radius: 16px;
@@ -150,8 +148,8 @@
                     </MudPaper>
                 </MudItem>
 
-                <!-- TOTAL USERS — CLICKABLE -->
-                <MudItem xs="12" sm="6" md="3">
+               
+                <MudItem xs="12" sm="6" md="3">— CLICK
                     <MudPaper Elevation="3"
                               Style="padding: 20px; border-radius: 16px;
                                      background: #FFF8F0;
@@ -172,7 +170,6 @@
 
             </MudGrid>
 
-            <!-- ADMIN INFO CARD -->
             <MudText Typo="Typo.h6"
                      Style="color: #3E1C00; font-weight: bold;
                             margin-top: 32px; margin-bottom: 12px;">

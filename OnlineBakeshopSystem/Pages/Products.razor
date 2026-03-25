@@ -234,7 +234,7 @@
                                   Lines="3"
                                   Style="margin-bottom: 16px;" />
 
-                    <!-- PRICE -->
+                   @* PRice *@
                     <MudTextField @bind-Value="selectedProduct.Price"
                                   Label="Price"
                                   Variant="Variant.Outlined"
@@ -242,9 +242,6 @@
                                   InputType="InputType.Number"
                                   Style="margin-bottom: 16px;" />
 
-                    <!-- =============================================
-                         IMAGE FILE CHOOSER (replaces Image URL field)
-                         ============================================= -->
                     <div style="margin-bottom: 16px;">
                         <MudText Typo="Typo.body2"
                                  Style="color: #B86830; margin-bottom: 6px;
@@ -282,7 +279,7 @@
                         }
                     </div>
 
-                    <!-- AVAILABLE TOGGLE — EDIT MODE ONLY -->
+                  
                     @if (isEditMode)
                     {
                         <MudSwitch @bind-Value="selectedProduct.IsAvailable"
@@ -421,16 +418,13 @@
         dialogError = string.Empty;
     }
 
-    // =============================================
-    // IMAGE FILE CHOOSER — CONVERTS TO BASE64
-    // =============================================
     async Task OnImageSelected(InputFileChangeEventArgs e)
     {
         var file = e.File;
 
         if (file == null) return;
 
-        // Block files larger than 2MB
+       
         if (file.Size > 2 * 1024 * 1024)
         {
             dialogError = "Image must be less than 2MB.";
@@ -443,7 +437,7 @@
         string base64 = Convert.ToBase64String(buffer);
         string mimeType = file.ContentType;
 
-        // Stored as base64 data URL — works directly as <img src="...">
+       
         selectedProduct.ImageUrl = $"data:{mimeType};base64,{base64}";
     }
 

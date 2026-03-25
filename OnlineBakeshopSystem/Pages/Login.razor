@@ -12,7 +12,7 @@
             display: flex;
             overflow: hidden;">
 
-    <!-- LEFT SIDE — Branding -->
+
     <div style="width: 50%;
                 background: linear-gradient(135deg, #3E1C00, #6B3A1F, #B86830);
                 display: flex;
@@ -36,7 +36,7 @@
 
     </div>
 
-    <!-- RIGHT SIDE — Login Form -->
+    
     <div style="width: 50%;
                 background: #FDF6EC;
                 display: flex;
@@ -52,7 +52,7 @@
                          background: #FFF8F0;
                          border-radius: 20px;">
 
-            <!-- HEADER -->
+         
             <div style="text-align: center; margin-bottom: 32px;">
                 <MudText Typo="Typo.h5"
                          Style="color: #3E1C00; font-weight: bold;">
@@ -64,7 +64,6 @@
                 </MudText>
             </div>
 
-            <!-- EMAIL -->
             <MudTextField @bind-Value="loginModel.Email"
                           Label="Email Address"
                           Variant="Variant.Outlined"
@@ -74,7 +73,7 @@
                           FullWidth="true"
                           Style="margin-bottom: 16px;" />
 
-            <!-- PASSWORD -->
+        
             <MudTextField @bind-Value="loginModel.Password"
                           Label="Password"
                           Variant="Variant.Outlined"
@@ -85,7 +84,7 @@
                           FullWidth="true"
                           Style="margin-bottom: 24px;" />
 
-            <!-- SIGN IN BUTTON -->
+          
             <MudButton Variant="Variant.Filled"
                        FullWidth="true"
                        Disabled="@isLoading"
@@ -110,7 +109,7 @@
                 }
             </MudButton>
 
-            <!-- ERROR MESSAGE -->
+         
             @if (!string.IsNullOrEmpty(errorMessage))
             {
                 <MudAlert Severity="Severity.Error"
