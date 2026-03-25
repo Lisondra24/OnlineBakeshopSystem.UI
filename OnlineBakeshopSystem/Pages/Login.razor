@@ -5,80 +5,76 @@
 @inject NavigationManager Navigation
 @inject ILocalStorageService LocalStorage
 
-<MudGrid Style="height: 100vh; margin: 0;">
+<div style="position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;">
 
-    <MudItem xs="12" md="6"
-             Style="background: linear-gradient(135deg, #3E1C00, #6B3A1F, #B86830);
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 40px;">
+    <!-- LEFT SIDE — Branding -->
+    <div style="width: 50%;
+                background: linear-gradient(135deg, #3E1C00, #6B3A1F, #B86830);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+                box-sizing: border-box;">
 
         <MudText Typo="Typo.h3"
                  Style="color: #E8C547; font-weight: bold; text-align: center;">
             🎂 Sweet Cengsations
         </MudText>
 
-        <MudText Typo="Typo.subtitle1"
-                 Style="color: #F5D6C8; margin-top: 10px;">
-            Artisan Baked Goods
-        </MudText>
+        
 
-        <MudText Typo="Typo.body2"
-                 Style="color: #E8B4A0; margin-top: 30px; text-align: center;">
+        <MudText Typo="Typo.body1"
+                 Style="color: #E8B4A0; text-align: center; font-style: italic;">
             "Baked with love, served with joy"
         </MudText>
 
-    </MudItem>
+    </div>
 
- 
-    <MudItem xs="12" md="6"
-             Style="background: #FDF6EC;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 40px;">
+    <!-- RIGHT SIDE — Login Form -->
+    <div style="width: 50%;
+                background: #FDF6EC;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+                box-sizing: border-box;">
 
-        <MudPaper Elevation="3"
+        <MudPaper Elevation="4"
                   Style="width: 100%;
                          max-width: 400px;
                          padding: 40px;
                          background: #FFF8F0;
-                         border-radius: 16px;">
+                         border-radius: 20px;">
 
+            <!-- HEADER -->
+            <div style="text-align: center; margin-bottom: 32px;">
+                <MudText Typo="Typo.h5"
+                         Style="color: #3E1C00; font-weight: bold;">
+                    Welcome Back, Admin!
+                </MudText>
+                <MudText Typo="Typo.body2"
+                         Style="color: #B86830; margin-top: 4px;">
+                    Sign in to your admin account
+                </MudText>
+            </div>
 
-            <MudText Typo="Typo.h5"
-                     Style="color: #3E1C00; font-weight: bold; margin-bottom: 8px;">
-                Welcome Back 👋
-            </MudText>
-
-            <MudText Typo="Typo.body2"
-                     Style="color: #B86830; margin-bottom: 24px;">
-                Sign in to your admin account
-            </MudText>
-
-
-            @if (!string.IsNullOrEmpty(errorMessage))
-            {
-                <MudAlert Severity="Severity.Error"
-                          Style="margin-bottom: 16px; border-radius: 8px;">
-                    @errorMessage
-                </MudAlert>
-            }
-
-      
+            <!-- EMAIL -->
             <MudTextField @bind-Value="loginModel.Email"
                           Label="Email Address"
                           Variant="Variant.Outlined"
                           InputType="InputType.Email"
                           Adornment="Adornment.Start"
                           AdornmentIcon="@Icons.Material.Filled.Email"
-                          AdornmentColor="Color.Default"
-                          Style="margin-bottom: 16px;"
-                          FullWidth="true" />
+                          FullWidth="true"
+                          Style="margin-bottom: 16px;" />
 
-           
+            <!-- PASSWORD -->
             <MudTextField @bind-Value="loginModel.Password"
                           Label="Password"
                           Variant="Variant.Outlined"
@@ -86,10 +82,10 @@
                           Adornment="Adornment.End"
                           AdornmentIcon="@passwordIcon"
                           OnAdornmentClick="TogglePasswordVisibility"
-                          Style="margin-bottom: 24px;"
-                          FullWidth="true" />
+                          FullWidth="true"
+                          Style="margin-bottom: 24px;" />
 
-
+            <!-- SIGN IN BUTTON -->
             <MudButton Variant="Variant.Filled"
                        FullWidth="true"
                        Disabled="@isLoading"
@@ -97,9 +93,10 @@
                        Style="background: #3E1C00;
                               color: white;
                               border-radius: 12px;
-                              padding: 12px;
+                              padding: 14px;
                               font-weight: bold;
-                              margin-bottom: 16px;">
+                              font-size: 16px;
+                              margin-bottom: 12px;">
                 @if (isLoading)
                 {
                     <MudProgressCircular Size="Size.Small"
@@ -113,22 +110,24 @@
                 }
             </MudButton>
 
-            <MudText Typo="Typo.caption"
-                     Align="Align.Center"
-                     Style="color: #B86830; display: block;">
-                Sweet Cengsations v1.0.0 ✦
-            </MudText>
+            <!-- ERROR MESSAGE -->
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <MudAlert Severity="Severity.Error"
+                          Style="border-radius: 8px; margin-top: 8px;">
+                    @errorMessage
+                </MudAlert>
+            }
 
         </MudPaper>
 
-    </MudItem>
+    </div>
 
-</MudGrid>
+</div>
 
 @code {
 
- 
-    LoginModel loginModel = new LoginModel();
+    AdminLoginModel loginModel = new AdminLoginModel();
     string errorMessage = string.Empty;
     bool isLoading = false;
 
@@ -164,28 +163,40 @@
 
         try
         {
-   
-            var response = await Http.PostAsJsonAsync(
-                "Login/UserLogin", loginModel
-            );
+            var response = await Http.PostAsJsonAsync("Admin/AdminLogin", loginModel);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                errorMessage = "Invalid Email or Password";
+                return;
+            }
 
             var result = await response.Content
                 .ReadFromJsonAsync<ServiceResponse<object>>();
 
-            if (result.Status == 200)
+            if (result != null && result.Status == 200)
             {
-
                 await LocalStorage.SetItemAsync("token", result.Token);
 
+                var data = (System.Text.Json.JsonElement)result.Data;
+
+                await LocalStorage.SetItemAsync("adminId",
+                    data.GetProperty("adminId").GetInt32());
+
+                await LocalStorage.SetItemAsync("adminName",
+                    data.GetProperty("fullName").GetString());
+
+                await LocalStorage.SetItemAsync("adminEmail",
+                    data.GetProperty("email").GetString());
 
                 Navigation.NavigateTo("/home");
             }
             else
             {
-                errorMessage = result.Message ?? "Invalid Email or Password";
+                errorMessage = result?.Message ?? "Login failed.";
             }
         }
-        catch (Exception ex)
+        catch
         {
             errorMessage = "Cannot connect to server. Please try again.";
         }

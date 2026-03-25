@@ -1,93 +1,309 @@
-﻿@page "/"
+﻿@page "/home"
+@using OnlineBakeshopSystem.Model
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
 
-<MudAppBar Color="Color.Info" Fixed="false">
-    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Material.Filled.Cake" Color="Color.Inherit" />
-</MudAppBar>
-    
-<MudGrid>
+<MudLayout>
 
-    <MudItem xs="2">
-        <MudPaper Width="250px" Class="d-inline-flex py-3" Elevation="0">
-            <MudNavMenu Class="mud-width-full">
-                <MudText Typo="Typo.h6" Class="px-4">Sweet Cengsation</MudText>
-                <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Online Bakeshop System</MudText>
-                <MudDivider Class="my-2" />
-                <MudNavLink Href="/dashboard" Icon="@Icons.Material.Filled.Dashboard"> Home </MudNavLink>
-                <MudNavGroup Title="Product Category" Icon="@Icons.Material.Filled.Menu" Expanded="true">
-                    <MudNavGroup Title="Cakes" Icon="@Icons.Material.Filled.Cake" Expanded="true">
-                        <MudNavGroup Title="Cookies" Icon="@Icons.Material.Filled.Cookie" Expanded="true">
-                            <MudNavGroup Title="Cupcakes" Icon="@Icons.Material.Filled.Cake" Expanded="true">
-                                <MudNavLink Href="Breads" Icon="@Icons.Material.Filled.BakeryDining">Breads</MudNavLink>
-                            </MudNavGroup>
-                        </MudNavGroup>
-                    </MudNavGroup>
-                </MudNavGroup>
-                <MudNavLink Href="/billing" Icon="@Icons.Material.Filled.Menu">All Orders</MudNavLink>
-                <MudNavLink Href="/Users" Icon="@Icons.Material.Filled.People">All Users</MudNavLink>
-            </MudNavMenu>
-        </MudPaper>
-    </MudItem>
+    <!-- TOP APP BAR -->
+    <MudAppBar Style="background: #3E1C00;" Fixed="true" Elevation="3">
+        <MudText Typo="Typo.h6" Style="color: #E8C547; font-weight: bold;">
+            🎂 Sweet Cengsations
+        </MudText>
+        <MudSpacer />
+        <MudText Typo="Typo.body2" Style="color: #F5D6C8; margin-right: 16px;">
+            Welcome, @adminName!
+        </MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.Logout"
+                       Style="color: #E8C547;"
+                       OnClick="HandleLogout" />
+    </MudAppBar>
 
-    <!-- RIGHT SIDE — Table -->
-    <MudItem xs="10">
-        <MudSimpleTable Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Style="overflow-x: auto;">
-            <thead>
-                <tr>
-                    @foreach (var h in headings)
-                    {
-                        <th>@h</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in rows)
-                {
-                    <tr>
-                        @foreach (var x in row.Split())
-                        {
-                            <td>@x</td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </MudSimpleTable>
-        <MudToolBar>
-            <MudSwitch @bind-Value="hover" Color="Color.Primary">Hover</MudSwitch>
-            <MudSwitch @bind-Value="dense" Color="Color.Secondary">Dense</MudSwitch>
-            <MudSwitch @bind-Value="striped" Color="Color.Tertiary">Striped</MudSwitch>
-            <MudSwitch @bind-Value="bordered" Color="Color.Warning">Bordered</MudSwitch>
+    <!-- LEFT SIDE — Navigation Drawer -->
+    <MudDrawer Open="true"
+               ClipMode="DrawerClipMode.Always"
+               Style="background: #2A1200;">
+        <MudNavMenu Style="padding-top: 16px;">
 
-            <MudSpacer />
+            <MudText Typo="Typo.caption"
+                     Style="color: #E8B4A0; padding-left: 16px;
+                            letter-spacing: 2px;">
+                MAIN MENU
+            </MudText>
 
-            <MudButton Variant="Variant.Outlined">Accept</MudButton>
-            <MudButton Variant="Variant.Outlined" Color="Color.Primary">Update</MudButton>
-            <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Delete</MudButton>
-        </MudToolBar>
+            <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
 
+            <MudNavLink Href="/home"
+                        Icon="@Icons.Material.Filled.Dashboard"
+                        Style="color: #F5D6C8;">
+                Dashboard
+            </MudNavLink>
 
-    </MudItem>
+            <MudNavLink Href="/products"
+                        Icon="@Icons.Material.Filled.Cake"
+                        Style="color: #F5D6C8;">
+                Products
+            </MudNavLink>
 
+            <MudNavLink Href="/orders"
+                        Icon="@Icons.Material.Filled.ShoppingCart"
+                        Style="color: #F5D6C8;">
+                Orders
+            </MudNavLink>
 
-</MudGrid>
+            <MudNavLink Href="/users"
+                        Icon="@Icons.Material.Filled.People"
+                        Style="color: #F5D6C8;">
+                Users
+            </MudNavLink>
 
+            <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
 
+            <MudNavLink Icon="@Icons.Material.Filled.Logout"
+                        Style="color: #E8B4A0;"
+                        OnClick="HandleLogout">
+                Logout
+            </MudNavLink>
+
+        </MudNavMenu>
+    </MudDrawer>
+
+    <!-- MAIN CONTENT -->
+    <MudMainContent Style="background: #FDF6EC; padding: 24px;">
+
+        @if (isLoading)
+        {
+            <div style="display: flex; justify-content: center;
+                        align-items: center; height: 60vh;">
+                <MudProgressCircular Indeterminate="true"
+                                     Size="Size.Large"
+                                     Style="color: #3E1C00;" />
+            </div>
+        }
+        else
+        {
+            <!-- PAGE TITLE -->
+            <MudText Typo="Typo.h5"
+                     Style="color: #3E1C00; font-weight: bold; margin-bottom: 4px;">
+                Admin Dashboard
+            </MudText>
+            <MudText Typo="Typo.body2"
+                     Style="color: #B86830; margin-bottom: 24px;">
+                Logged in as: <strong>@adminName</strong> — @adminEmail
+            </MudText>
+
+            <!-- SUMMARY CARDS -->
+            <MudGrid>
+
+                <!-- TOTAL PRODUCTS — CLICKABLE -->
+                <MudItem xs="12" sm="6" md="3">
+                    <MudPaper Elevation="3"
+                              Style="padding: 20px; border-radius: 16px;
+                                     background: #3E1C00; cursor: pointer;"
+                              @onclick='() => Navigation.NavigateTo("/products")'>
+                        <MudText Typo="Typo.caption" Style="color: #E8B4A0;">
+                            Total Products
+                        </MudText>
+                        <MudText Typo="Typo.h4"
+                                 Style="color: white; font-weight: bold;">
+                            @totalProducts
+                        </MudText>
+                        <MudIcon Icon="@Icons.Material.Filled.Cake"
+                                 Style="color: #E8C547;" />
+                    </MudPaper>
+                </MudItem>
+
+                <!-- TOTAL ORDERS — CLICKABLE -->
+                <MudItem xs="12" sm="6" md="3">
+                    <MudPaper Elevation="3"
+                              Style="padding: 20px; border-radius: 16px;
+                                     background: #B86830; cursor: pointer;"
+                              @onclick='() => Navigation.NavigateTo("/orders")'>
+                        <MudText Typo="Typo.caption" Style="color: #FFF8F0;">
+                            Total Orders
+                        </MudText>
+                        <MudText Typo="Typo.h4"
+                                 Style="color: white; font-weight: bold;">
+                            @totalOrders
+                        </MudText>
+                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart"
+                                 Style="color: white;" />
+                    </MudPaper>
+                </MudItem>
+
+                <!-- PENDING ORDERS — CLICKABLE -->
+                <MudItem xs="12" sm="6" md="3">
+                    <MudPaper Elevation="3"
+                              Style="padding: 20px; border-radius: 16px;
+                                     background: #D4874E; cursor: pointer;"
+                              @onclick='() => Navigation.NavigateTo("/orders")'>
+                        <MudText Typo="Typo.caption" Style="color: #FFF8F0;">
+                            Pending Orders
+                        </MudText>
+                        <MudText Typo="Typo.h4"
+                                 Style="color: white; font-weight: bold;">
+                            @pendingOrders
+                        </MudText>
+                        <MudIcon Icon="@Icons.Material.Filled.HourglassEmpty"
+                                 Style="color: white;" />
+                    </MudPaper>
+                </MudItem>
+
+                <!-- TOTAL USERS — CLICKABLE -->
+                <MudItem xs="12" sm="6" md="3">
+                    <MudPaper Elevation="3"
+                              Style="padding: 20px; border-radius: 16px;
+                                     background: #FFF8F0;
+                                     border: 2px solid #D4874E;
+                                     cursor: pointer;"
+                              @onclick='() => Navigation.NavigateTo("/users")'>
+                        <MudText Typo="Typo.caption" Style="color: #B86830;">
+                            Total Users
+                        </MudText>
+                        <MudText Typo="Typo.h4"
+                                 Style="color: #3E1C00; font-weight: bold;">
+                            @totalUsers
+                        </MudText>
+                        <MudIcon Icon="@Icons.Material.Filled.People"
+                                 Style="color: #D4874E;" />
+                    </MudPaper>
+                </MudItem>
+
+            </MudGrid>
+
+            <!-- ADMIN INFO CARD -->
+            <MudText Typo="Typo.h6"
+                     Style="color: #3E1C00; font-weight: bold;
+                            margin-top: 32px; margin-bottom: 12px;">
+                👤 Logged In Admin Details
+            </MudText>
+
+            <MudPaper Elevation="3"
+                      Style="padding: 24px; border-radius: 16px;
+                             background: #FFF8F0; margin-bottom: 32px;">
+                <MudGrid>
+                    <MudItem xs="12" md="4">
+                        <MudText Typo="Typo.caption" Style="color: #B86830;">
+                            Admin ID
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 Style="color: #3E1C00; font-weight: bold;">
+                            @adminId
+                        </MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudText Typo="Typo.caption" Style="color: #B86830;">
+                            Full Name
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 Style="color: #3E1C00; font-weight: bold;">
+                            @adminName
+                        </MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudText Typo="Typo.caption" Style="color: #B86830;">
+                            Email
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 Style="color: #3E1C00; font-weight: bold;">
+                            @adminEmail
+                        </MudText>
+                    </MudItem>
+                </MudGrid>
+            </MudPaper>
+
+            
+        }
+
+    </MudMainContent>
+
+</MudLayout>
 
 @code {
-    private bool dense = false;
-    private bool hover = true;
-    private bool striped = false;
-    private bool bordered = false;
 
-    string[] headings = { "ID", "Name", "Email", "Orders", "Location" };
+    bool isLoading = true;
 
-    string[] rows = {
-        @"1 Clara clara.jones+team@example.com Cookie Danao",
-        @"2 Felix felix_martin88@example.net Cake Lapu-Lapu",
-        @"3 Isla isla-fernandez@example.org Bread Cebu",
-        @"4 Jonah jonah.brown_dev@example.com Cake Mandaue",
-        @"5 Mia mia.chen-marketing@example.net Cupcake Cordova",
-        @"6 Hugo hugo.taylor123@example.org Cookie Bogo",
-    };
+    int adminId = 0;
+    string adminName = string.Empty;
+    string adminEmail = string.Empty;
+
+    int totalProducts = 0;
+    int totalOrders = 0;
+    int pendingOrders = 0;
+    int totalUsers = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await LocalStorage.GetItemAsync<string>("token");
+
+        if (string.IsNullOrEmpty(token))
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        adminId = await LocalStorage.GetItemAsync<int>("adminId");
+        adminName = await LocalStorage.GetItemAsync<string>("adminName");
+        adminEmail = await LocalStorage.GetItemAsync<string>("adminEmail");
+
+        await LoadDashboardCounts();
+
+        isLoading = false;
+    }
+
+    async Task LoadDashboardCounts()
+    {
+        try
+        {
+            var productResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
+                "Product/GetAllProducts"
+            );
+            if (productResponse != null && productResponse.Status == 200
+                && productResponse.Data != null)
+            {
+                totalProducts = productResponse.Data.Count;
+            }
+        }
+        catch { totalProducts = 0; }
+
+        try
+        {
+            var orderResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
+                "Order/GetAllOrders"
+            );
+            if (orderResponse != null && orderResponse.Status == 200
+                && orderResponse.Data != null)
+            {
+                totalOrders = orderResponse.Data.Count;
+
+                pendingOrders = orderResponse.Data
+                    .Count(o => o.TryGetProperty("status", out var s) &&
+                                s.GetString().ToLower() == "pending");
+            }
+        }
+        catch { totalOrders = 0; pendingOrders = 0; }
+
+        try
+        {
+            var userResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
+                "User/GetAllUsers"
+            );
+            if (userResponse != null && userResponse.Status == 200
+                && userResponse.Data != null)
+            {
+                totalUsers = userResponse.Data.Count;
+            }
+        }
+        catch { totalUsers = 0; }
+    }
+
+    async Task HandleLogout()
+    {
+        await LocalStorage.RemoveItemAsync("token");
+        await LocalStorage.RemoveItemAsync("adminId");
+        await LocalStorage.RemoveItemAsync("adminName");
+        await LocalStorage.RemoveItemAsync("adminEmail");
+        Navigation.NavigateTo("/login");
+    }
 }

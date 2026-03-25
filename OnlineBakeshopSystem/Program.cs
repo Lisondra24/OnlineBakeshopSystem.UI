@@ -17,7 +17,7 @@ public class Program
         builder.Services.AddBlazoredLocalStorage();
         builder.Services.AddScoped(sp => new HttpClient
         {
-            BaseAddress = new Uri("http://10.26.228.192:5112")
+            BaseAddress = new Uri("http://localhost:5112")
         });
 
         await builder.Build().RunAsync();

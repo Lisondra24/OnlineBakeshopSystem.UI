@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+
 @* Required *@
 <MudThemeProvider />
 <MudPopoverProvider />
@@ -9,8 +10,10 @@
 @* Needed for snackbars *@
 <MudSnackbarProvider />
 
-<div class = "main">
-    <div class="content px-6" >
-        @Body       
-    </div>
-</div>
+<MudLayout>
+    <MudMainContent>
+        <div class="content px-6">
+            @Body
+        </div>
+    </MudMainContent>
+</MudLayout>
