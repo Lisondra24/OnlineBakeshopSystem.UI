@@ -1,0 +1,407 @@
+﻿@page "/users"
+@using OnlineBakeshopSystem.Model
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
+
+<MudLayout>
+
+    <!-- TOP APP BAR -->
+    <MudAppBar Style="background: #3E1C00;" Fixed="true" Elevation="3">
+        <MudText Typo="Typo.h6" Style="color: #E8C547; font-weight: bold;">
+            🎂 Sweet Cengsations
+        </MudText>
+        <MudSpacer />
+        <MudText Typo="Typo.body2" Style="color: #F5D6C8; margin-right: 16px;">
+            Welcome, @adminName!
+        </MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.Logout"
+                       Style="color: #E8C547;"
+                       OnClick="HandleLogout" />
+    </MudAppBar>
+
+    <!-- LEFT SIDE — Navigation Drawer -->
+    <MudDrawer Open="true"
+               ClipMode="DrawerClipMode.Always"
+               Style="background: #2A1200;">
+        <MudNavMenu Style="padding-top: 16px;">
+
+            <MudText Typo="Typo.caption"
+                     Style="color: #E8B4A0; padding-left: 16px;
+                            letter-spacing: 2px;">
+                MAIN MENU
+            </MudText>
+
+            <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
+
+            <MudNavLink Href="/home"
+                        Icon="@Icons.Material.Filled.Dashboard"
+                        Style="color: #F5D6C8;">
+                Dashboard
+            </MudNavLink>
+
+            <MudNavLink Href="/products"
+                        Icon="@Icons.Material.Filled.Cake"
+                        Style="color: #F5D6C8;">
+                Products
+            </MudNavLink>
+
+            <MudNavLink Href="/orders"
+                        Icon="@Icons.Material.Filled.ShoppingCart"
+                        Style="color: #F5D6C8;">
+                Orders
+            </MudNavLink>
+
+            <MudNavLink Href="/users"
+                        Icon="@Icons.Material.Filled.People"
+                        Style="color: #F5D6C8;">
+                Users
+            </MudNavLink>
+
+            <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
+
+            <MudNavLink Icon="@Icons.Material.Filled.Logout"
+                        Style="color: #E8B4A0;"
+                        OnClick="HandleLogout">
+                Logout
+            </MudNavLink>
+
+        </MudNavMenu>
+    </MudDrawer>
+
+    <!-- MAIN CONTENT -->
+    <MudMainContent Style="background: #FDF6EC; padding: 24px;">
+
+        <!-- PAGE HEADER -->
+        <div style="display: flex; justify-content: space-between;
+                    align-items: center; margin-bottom: 24px;">
+            <div>
+                <MudText Typo="Typo.h5"
+                         Style="color: #3E1C00; font-weight: bold;">
+                    👥 Users
+                </MudText>
+                <MudText Typo="Typo.body2" Style="color: #B86830;">
+                    Manage all registered users
+                </MudText>
+            </div>
+        </div>
+
+        <!-- LOADING -->
+        @if (isLoading)
+        {
+            <div style="display: flex; justify-content: center;
+                        align-items: center; height: 60vh;">
+                <MudProgressCircular Indeterminate="true"
+                                     Size="Size.Large"
+                                     Style="color: #3E1C00;" />
+            </div>
+        }
+        else if (users == null || users.Count == 0)
+        {
+            <MudAlert Severity="Severity.Info" Style="border-radius: 12px;">
+                No users found.
+            </MudAlert>
+        }
+        else
+        {
+            <!-- USERS TABLE -->
+            <MudPaper Elevation="3" Style="border-radius: 16px; overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse;
+                               background: #FFF8F0;">
+                    <thead>
+                        <tr style="background: #3E1C00;">
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                ID
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Full Name
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Email
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Address
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Contact No
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Date Joined
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (UserModel user in users)
+                        {
+                            <tr style="border-bottom: 1px solid #F5E6D8;">
+                                <td style="padding: 12px 16px; color: #3E1C00;">
+                                    @user.UserId
+                                </td>
+                                <td style="padding: 12px 16px; color: #3E1C00;
+                                           font-weight: bold;">
+                                    @user.FullName
+                                </td>
+                                <td style="padding: 12px 16px; color: #3E1C00;">
+                                    @user.Email
+                                </td>
+                                <td style="padding: 12px 16px; color: #3E1C00;">
+                                    @user.Address
+                                </td>
+                                <td style="padding: 12px 16px; color: #3E1C00;">
+                                    @user.ContactNo
+                                </td>
+                                <td style="padding: 12px 16px; color: #3E1C00;">
+                                    @user.DateCreated.ToString("MMM dd, yyyy")
+                                </td>
+                                <td style="padding: 12px 16px;">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                                   Style="color: #B86830;"
+                                                   OnClick="() => OpenEditDialog(user)" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                                   Style="color: #D32F2F;"
+                                                   OnClick="() => DeleteUser(user.UserId)" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </MudPaper>
+        }
+
+        <!-- EDIT DIALOG -->
+        @if (showDialog)
+        {
+            <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
+
+            <div style="position: fixed; top: 0; left: 0;
+                        width: 100vw; height: 100vh;
+                        display: flex; align-items: center;
+                        justify-content: center; z-index: 10;">
+
+                <MudPaper Elevation="5"
+                          Style="width: 100%; max-width: 500px;
+                                 padding: 32px; border-radius: 20px;
+                                 background: #FFF8F0;">
+
+                    <MudText Typo="Typo.h6"
+                             Style="color: #3E1C00; font-weight: bold;
+                                    margin-bottom: 24px;">
+                        Edit User
+                    </MudText>
+
+                    <MudTextField @bind-Value="selectedUser.FullName"
+                                  Label="Full Name"
+                                  Variant="Variant.Outlined"
+                                  FullWidth="true"
+                                  Style="margin-bottom: 16px;" />
+
+                    <MudTextField @bind-Value="selectedUser.Email"
+                                  Label="Email"
+                                  Variant="Variant.Outlined"
+                                  FullWidth="true"
+                                  Style="margin-bottom: 16px;" />
+
+                    <MudTextField @bind-Value="selectedUser.Address"
+                                  Label="Address"
+                                  Variant="Variant.Outlined"
+                                  FullWidth="true"
+                                  Style="margin-bottom: 16px;" />
+
+                    <MudTextField @bind-Value="selectedUser.ContactNo"
+                                  Label="Contact No"
+                                  Variant="Variant.Outlined"
+                                  FullWidth="true"
+                                  Style="margin-bottom: 16px;" />
+
+                    @if (!string.IsNullOrEmpty(dialogError))
+                    {
+                        <MudAlert Severity="Severity.Error"
+                                  Style="margin-bottom: 16px; border-radius: 8px;">
+                            @dialogError
+                        </MudAlert>
+                    }
+
+                    <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                        <MudButton OnClick="CloseDialog"
+                                   Variant="Variant.Outlined"
+                                   Style="color: #B86830; border-color: #B86830;
+                                          border-radius: 8px;">
+                            Cancel
+                        </MudButton>
+                        <MudButton Variant="Variant.Filled"
+                                   Disabled="@isSaving"
+                                   OnClick="SaveUser"
+                                   Style="background: #3E1C00; color: white;
+                                          border-radius: 8px;">
+                            @if (isSaving)
+                            {
+                                <MudProgressCircular Size="Size.Small"
+                                                     Indeterminate="true"
+                                                     Style="margin-right: 8px;" />
+                                <span>Saving...</span>
+                            }
+                            else
+                            {
+                                <span>Save</span>
+                            }
+                        </MudButton>
+                    </div>
+
+                </MudPaper>
+            </div>
+        }
+
+    </MudMainContent>
+
+</MudLayout>
+
+@code {
+
+    bool isLoading  = true;
+    bool isSaving   = false;
+    bool showDialog = false;
+
+    string adminName   = string.Empty;
+    string dialogError = string.Empty;
+
+    List<UserModel> users  = new List<UserModel>();
+    UserModel selectedUser = new UserModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await LocalStorage.GetItemAsync<string>("token");
+        if (string.IsNullOrEmpty(token))
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        adminName = await LocalStorage.GetItemAsync<string>("adminName");
+        await LoadUsers();
+        isLoading = false;
+    }
+
+    async Task LoadUsers()
+    {
+        try
+        {
+            var response = await Http.GetFromJsonAsync<ServiceResponse<List<UserModel>>>(
+                "User/GetAllUsers"
+            );
+
+            if (response != null && response.Status == 200 && response.Data != null)
+            {
+                users = response.Data;
+            }
+            else
+            {
+                users = new List<UserModel>();
+            }
+        }
+        catch
+        {
+            users = new List<UserModel>();
+        }
+    }
+
+    void OpenEditDialog(UserModel user)
+    {
+        dialogError = string.Empty;
+
+        selectedUser = new UserModel
+        {
+            UserId    = user.UserId,
+            FullName  = user.FullName,
+            Email     = user.Email,
+            Address   = user.Address,
+            ContactNo = user.ContactNo
+        };
+
+        showDialog = true;
+    }
+
+    void CloseDialog()
+    {
+        showDialog  = false;
+        dialogError = string.Empty;
+    }
+
+    async Task SaveUser()
+    {
+        dialogError = string.Empty;
+
+        if (string.IsNullOrEmpty(selectedUser.FullName))
+        {
+            dialogError = "Full Name is required.";
+            return;
+        }
+
+        if (string.IsNullOrEmpty(selectedUser.Email))
+        {
+            dialogError = "Email is required.";
+            return;
+        }
+
+        isSaving = true;
+
+        try
+        {
+            var response = await Http.PutAsJsonAsync(
+                "User/UpdateUser", selectedUser
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                showDialog = false;
+                await LoadUsers();
+            }
+            else
+            {
+                dialogError = "Failed to update user. Please try again.";
+            }
+        }
+        catch
+        {
+            dialogError = "Cannot connect to server. Please try again.";
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    async Task DeleteUser(int userId)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync(
+                $"User/DeleteUser?userId={userId}"
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadUsers();
+            }
+        }
+        catch { }
+    }
+
+    async Task HandleLogout()
+    {
+        await LocalStorage.RemoveItemAsync("token");
+        await LocalStorage.RemoveItemAsync("adminId");
+        await LocalStorage.RemoveItemAsync("adminName");
+        await LocalStorage.RemoveItemAsync("adminEmail");
+        Navigation.NavigateTo("/login");
+    }
+}

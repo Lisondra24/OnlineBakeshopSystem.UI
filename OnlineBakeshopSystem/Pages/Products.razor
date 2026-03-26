@@ -4,6 +4,7 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject ILocalStorageService LocalStorage
+@inject IJSRuntime JS
 
 <MudLayout>
 
@@ -112,87 +113,125 @@
         }
         else
         {
+            <!-- PRODUCTS TABLE -->
             <MudPaper Elevation="3" Style="border-radius: 16px; overflow: hidden;">
-                <MudTable Items="products"
-                          Hover="true"
-                          Striped="true"
-                          Style="background: #FFF8F0;">
-                    <HeaderContent>
-                        <MudTh Style="background: #3E1C00; color: #E8C547;
-                                      font-weight: bold;">ID</MudTh>
-                        <MudTh Style="background: #3E1C00; color: #E8C547;
-                                      font-weight: bold;">Image</MudTh>
-                        <MudTh Style="background: #3E1C00; color: #E8C547;
-                                      font-weight: bold;">Product Name</MudTh>
-                        <MudTh Style="background: #3E1C00; color: #E8C547;
-                                      font-weight: bold;">Description</MudTh>
-                        <MudTh Style="background: #3E1C00; color: #E8C547;
-                                      font-weight: bold;">Price</MudTh>
-                        <MudTh Style="background: #3E1C00; color: #E8C547;
-                                      font-weight: bold;">Status</MudTh>
-                        <MudTh Style="background: #3E1C00; color: #E8C547;
-                                      font-weight: bold;">Actions</MudTh>
-                    </HeaderContent>
-                    <RowTemplate>
-                        <MudTd Style="color: #3E1C00;">
-                            @context.ProductId
-                        </MudTd>
+                <table style="width: 100%; border-collapse: collapse;
+                               background: #FFF8F0;">
+                    <thead>
+                        <tr style="background: #3E1C00;">
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                ID
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Image
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Product Name
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Description
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Price
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Status
+                            </th>
+                            <th style="padding: 14px 16px; color: #E8C547;
+                                       text-align: left; font-weight: bold;">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ProductModel product in products)
+                        {
+                            <tr style="border-bottom: 1px solid #F5E6D8;">
+                                <td style="padding: 12px 16px; color: #3E1C00;">
+                                    @product.ProductId
+                                </td>
 
-                        <!-- IMAGE THUMBNAIL IN TABLE -->
-                        <MudTd>
-                            @if (!string.IsNullOrEmpty(context.ImageUrl))
-                            {
-                                <img src="@context.ImageUrl"
-                                     style="width: 50px; height: 50px;
-                                            border-radius: 8px; object-fit: cover;
-                                            border: 2px solid #D4874E;" />
-                            }
-                            else
-                            {
-                                <MudIcon Icon="@Icons.Material.Filled.ImageNotSupported"
-                                         Style="color: #D4874E;" />
-                            }
-                        </MudTd>
+                                <!-- IMAGE THUMBNAIL -->
+                                <td style="padding: 12px 16px;">
+                                    @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                    {
+                                        <img src="@(apiBaseUrl + product.ImageUrl)"
+                                             alt="@product.ProductName"
+                                             style="width: 60px; height: 60px;
+                                                    object-fit: cover;
+                                                    border-radius: 8px;
+                                                    border: 2px solid #D4874E;" />
+                                    }
+                                    else
+                                    {
+                                        <div style="width: 60px; height: 60px;
+                                                    background: #E8B4A0;
+                                                    border-radius: 8px;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;">
+                                            <MudIcon Icon="@Icons.Material.Filled.ImageNotSupported"
+                                                     Style="color: #3E1C00;" />
+                                        </div>
+                                    }
+                                </td>
 
-                        <MudTd Style="color: #3E1C00; font-weight: bold;">
-                            @context.ProductName
-                        </MudTd>
-                        <MudTd Style="color: #3E1C00;">
-                            @context.Description
-                        </MudTd>
-                        <MudTd Style="color: #3E1C00;">
-                            ₱@context.Price.ToString("N2")
-                        </MudTd>
-                        <MudTd>
-                            @if (context.IsAvailable)
-                            {
-                                <MudChip T="string"
-                                         Style="background: #4CAF50; color: white;
-                                                border-radius: 8px;"
-                                         Size="Size.Small">
-                                    Available
-                                </MudChip>
-                            }
-                            else
-                            {
-                                <MudChip T="string"
-                                         Style="background: #D32F2F; color: white;
-                                                border-radius: 8px;"
-                                         Size="Size.Small">
-                                    Unavailable
-                                </MudChip>
-                            }
-                        </MudTd>
-                        <MudTd>
-                            <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                                           Style="color: #B86830;"
-                                           OnClick="() => OpenEditDialog(context)" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                                           Style="color: #D32F2F;"
-                                           OnClick="() => DeleteProduct(context.ProductId)" />
-                        </MudTd>
-                    </RowTemplate>
-                </MudTable>
+                                <td style="padding: 12px 16px; color: #3E1C00;
+                                           font-weight: bold;">
+                                    @product.ProductName
+                                </td>
+                                <td style="padding: 12px 16px; color: #3E1C00;">
+                                    @product.Description
+                                </td>
+                                <td style="padding: 12px 16px; color: #3E1C00;">
+                                    ₱@product.Price.ToString("N2")
+                                </td>
+
+                                <!-- STATUS BADGE -->
+                                <td style="padding: 12px 16px;">
+                                    @if (product.IsAvailable)
+                                    {
+                                        <span style="background: #4CAF50;
+                                                     color: white;
+                                                     padding: 4px 12px;
+                                                     border-radius: 20px;
+                                                     font-size: 12px;
+                                                     font-weight: bold;">
+                                            Available
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span style="background: #D32F2F;
+                                                     color: white;
+                                                     padding: 4px 12px;
+                                                     border-radius: 20px;
+                                                     font-size: 12px;
+                                                     font-weight: bold;">
+                                            Unavailable
+                                        </span>
+                                    }
+                                </td>
+
+                                <!-- ACTIONS -->
+                                <td style="padding: 12px 16px;">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                                   Style="color: #B86830;"
+                                                   OnClick="() => OpenEditDialog(product)" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                                   Style="color: #D32F2F;"
+                                                   OnClick="() => DeleteProduct(product.ProductId)" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </MudPaper>
         }
 
@@ -212,21 +251,18 @@
                                  background: #FFF8F0;
                                  max-height: 90vh; overflow-y: auto;">
 
-                    <!-- DIALOG TITLE -->
                     <MudText Typo="Typo.h6"
                              Style="color: #3E1C00; font-weight: bold;
                                     margin-bottom: 24px;">
                         @dialogTitle
                     </MudText>
 
-                    <!-- PRODUCT NAME -->
                     <MudTextField @bind-Value="selectedProduct.ProductName"
                                   Label="Product Name"
                                   Variant="Variant.Outlined"
                                   FullWidth="true"
                                   Style="margin-bottom: 16px;" />
 
-                    <!-- DESCRIPTION -->
                     <MudTextField @bind-Value="selectedProduct.Description"
                                   Label="Description"
                                   Variant="Variant.Outlined"
@@ -234,7 +270,6 @@
                                   Lines="3"
                                   Style="margin-bottom: 16px;" />
 
-                   @* PRice *@
                     <MudTextField @bind-Value="selectedProduct.Price"
                                   Label="Price"
                                   Variant="Variant.Outlined"
@@ -242,44 +277,56 @@
                                   InputType="InputType.Number"
                                   Style="margin-bottom: 16px;" />
 
-                    <div style="margin-bottom: 16px;">
-                        <MudText Typo="Typo.body2"
-                                 Style="color: #B86830; margin-bottom: 6px;
-                                        font-weight: bold;">
-                            Product Image
-                        </MudText>
+                    <MudText Typo="Typo.body2"
+                             Style="color: #B86830; margin-bottom: 6px;
+                                    font-weight: bold;">
+                        Product Image
+                    </MudText>
 
-                        <InputFile id="fileInput"
-                                   OnChange="OnImageSelected"
-                                   accept="image/*"
-                                   style="display: none;" />
+                    <InputFile id="fileInput"
+                               OnChange="OnImageSelected"
+                               accept="image/*"
+                               style="display: none;" />
 
-                        <label for="fileInput"
-                               style="display: flex; align-items: center; gap: 12px;
-                                      cursor: pointer; background: #FDF6EC;
-                                      border: 2px dashed #B86830; border-radius: 12px;
-                                      padding: 12px 16px;">
-                            <MudIcon Icon="@Icons.Material.Filled.UploadFile"
-                                     Style="color: #B86830;" />
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">
-                                @(string.IsNullOrEmpty(selectedProduct.ImageUrl)
-                                    ? "Click to choose an image"
-                                    : "Image selected ✅ (click to change)")
-                            </MudText>
-                        </label>
+                    <div style="display: flex; align-items: center;
+                                gap: 12px; margin-bottom: 12px;">
+                        <MudButton Variant="Variant.Outlined"
+                                   StartIcon="@Icons.Material.Filled.UploadFile"
+                                   OnClick="TriggerFileInput"
+                                   Style="color: #3E1C00; border-color: #3E1C00;
+                                          border-radius: 8px;">
+                            Choose Image
+                        </MudButton>
 
-                        @if (!string.IsNullOrEmpty(selectedProduct.ImageUrl))
+                        @if (!string.IsNullOrEmpty(selectedFileName))
                         {
-                            <div style="margin-top: 12px; text-align: center;">
-                                <img src="@selectedProduct.ImageUrl"
-                                     style="max-height: 120px; border-radius: 12px;
-                                            border: 2px solid #D4874E;
-                                            object-fit: cover;" />
-                            </div>
+                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
+                                ✅ @selectedFileName
+                            </MudText>
                         }
                     </div>
 
-                  
+                    @if (!string.IsNullOrEmpty(imagePreviewUrl))
+                    {
+                        <div style="margin-bottom: 16px; text-align: center;">
+                            <img src="@imagePreviewUrl"
+                                 alt="Preview"
+                                 style="max-height: 120px; border-radius: 12px;
+                                        border: 2px solid #D4874E;
+                                        object-fit: cover;" />
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(selectedProduct.ImageUrl))
+                    {
+                        <div style="margin-bottom: 16px; text-align: center;">
+                            <img src="@(apiBaseUrl + selectedProduct.ImageUrl)"
+                                 alt="Current Image"
+                                 style="max-height: 120px; border-radius: 12px;
+                                        border: 2px solid #D4874E;
+                                        object-fit: cover;" />
+                        </div>
+                    }
+
                     @if (isEditMode)
                     {
                         <MudSwitch @bind-Value="selectedProduct.IsAvailable"
@@ -289,7 +336,6 @@
                         </MudSwitch>
                     }
 
-                    <!-- ERROR MESSAGE -->
                     @if (!string.IsNullOrEmpty(dialogError))
                     {
                         <MudAlert Severity="Severity.Error"
@@ -298,7 +344,6 @@
                         </MudAlert>
                     }
 
-                    <!-- BUTTONS -->
                     <div style="display: flex; justify-content: flex-end; gap: 12px;">
                         <MudButton OnClick="CloseDialog"
                                    Variant="Variant.Outlined"
@@ -335,16 +380,22 @@
 
 @code {
 
-    bool isLoading = true;
-    bool isSaving = false;
+    bool isLoading  = true;
+    bool isSaving   = false;
     bool showDialog = false;
     bool isEditMode = false;
 
-    string adminName = string.Empty;
-    string dialogTitle = string.Empty;
-    string dialogError = string.Empty;
+    string adminName        = string.Empty;
+    string dialogTitle      = string.Empty;
+    string dialogError      = string.Empty;
+    string selectedFileName = string.Empty;
+    string imagePreviewUrl  = string.Empty;
 
-    List<ProductModel> products = new List<ProductModel>();
+    string apiBaseUrl = "http://localhost:5112";
+
+    IBrowserFile selectedFile = null;
+
+    List<ProductModel> products  = new List<ProductModel>();
     ProductModel selectedProduct = new ProductModel();
 
     protected override async Task OnInitializedAsync()
@@ -386,59 +437,69 @@
 
     void OpenAddDialog()
     {
-        isEditMode = false;
-        dialogTitle = "Add New Product";
-        dialogError = string.Empty;
-        selectedProduct = new ProductModel();
-        showDialog = true;
+        isEditMode       = false;
+        dialogTitle      = "Add New Product";
+        dialogError      = string.Empty;
+        selectedProduct  = new ProductModel();
+        selectedFile     = null;
+        selectedFileName = string.Empty;
+        imagePreviewUrl  = string.Empty;
+        showDialog       = true;
     }
 
     void OpenEditDialog(ProductModel product)
     {
-        isEditMode = true;
+        isEditMode  = true;
         dialogTitle = "Edit Product";
         dialogError = string.Empty;
 
         selectedProduct = new ProductModel
-            {
-                ProductId = product.ProductId,
-                ProductName = product.ProductName,
-                Description = product.Description,
-                Price = product.Price,
-                ImageUrl = product.ImageUrl,
-                IsAvailable = product.IsAvailable
-            };
+        {
+            ProductId   = product.ProductId,
+            ProductName = product.ProductName,
+            Description = product.Description,
+            Price       = product.Price,
+            ImageUrl    = product.ImageUrl,
+            IsAvailable = product.IsAvailable
+        };
 
-        showDialog = true;
+        selectedFile     = null;
+        selectedFileName = string.Empty;
+        imagePreviewUrl  = string.Empty;
+        showDialog       = true;
     }
 
     void CloseDialog()
     {
-        showDialog = false;
-        dialogError = string.Empty;
+        showDialog       = false;
+        dialogError      = string.Empty;
+        selectedFile     = null;
+        selectedFileName = string.Empty;
+        imagePreviewUrl  = string.Empty;
+    }
+
+    async Task TriggerFileInput()
+    {
+        await JS.InvokeVoidAsync("triggerClick", "fileInput");
     }
 
     async Task OnImageSelected(InputFileChangeEventArgs e)
     {
-        var file = e.File;
+        selectedFile     = e.File;
+        selectedFileName = e.File.Name;
 
-        if (file == null) return;
-
-       
-        if (file.Size > 2 * 1024 * 1024)
+        if (selectedFile.Size > 5 * 1024 * 1024)
         {
-            dialogError = "Image must be less than 2MB.";
+            dialogError      = "Image must be less than 5MB.";
+            selectedFile     = null;
+            selectedFileName = string.Empty;
             return;
         }
 
-        var buffer = new byte[file.Size];
-        await file.OpenReadStream(2 * 1024 * 1024).ReadAsync(buffer);
-
+        var buffer = new byte[selectedFile.Size];
+        await selectedFile.OpenReadStream(5 * 1024 * 1024).ReadAsync(buffer);
         string base64 = Convert.ToBase64String(buffer);
-        string mimeType = file.ContentType;
-
-       
-        selectedProduct.ImageUrl = $"data:{mimeType};base64,{base64}";
+        imagePreviewUrl = $"data:{selectedFile.ContentType};base64,{base64}";
     }
 
     async Task SaveProduct()
@@ -461,19 +522,41 @@
 
         try
         {
+            if (selectedFile != null)
+            {
+                var content    = new MultipartFormDataContent();
+                var fileStream = selectedFile.OpenReadStream(maxAllowedSize: 5 * 1024 * 1024);
+                var streamContent = new StreamContent(fileStream);
+                streamContent.Headers.ContentType =
+                    new System.Net.Http.Headers.MediaTypeHeaderValue(selectedFile.ContentType);
+                content.Add(streamContent, "file", selectedFile.Name);
+
+                var uploadResponse = await Http.PostAsync("Upload/UploadProductImage", content);
+
+                if (uploadResponse.IsSuccessStatusCode)
+                {
+                    var uploadResult = await uploadResponse.Content
+                        .ReadFromJsonAsync<System.Text.Json.JsonElement>();
+                    selectedProduct.ImageUrl = uploadResult
+                        .GetProperty("imageUrl").GetString();
+                }
+                else
+                {
+                    dialogError = "Image upload failed. Please try again.";
+                    isSaving    = false;
+                    return;
+                }
+            }
+
             HttpResponseMessage response;
 
             if (isEditMode)
             {
-                response = await Http.PutAsJsonAsync(
-                    "Product/UpdateProduct", selectedProduct
-                );
+                response = await Http.PutAsJsonAsync("Product/UpdateProduct", selectedProduct);
             }
             else
             {
-                response = await Http.PostAsJsonAsync(
-                    "Product/CreateProduct", selectedProduct
-                );
+                response = await Http.PostAsJsonAsync("Product/CreateProduct", selectedProduct);
             }
 
             if (response.IsSuccessStatusCode)
