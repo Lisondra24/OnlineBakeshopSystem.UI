@@ -21,51 +21,19 @@
     </MudAppBar>
 
     <!-- LEFT SIDE — Navigation Drawer -->
-    <MudDrawer Open="true"
-               ClipMode="DrawerClipMode.Always"
-               Style="background: #2A1200;">
+    <MudDrawer Open="true" ClipMode="DrawerClipMode.Always" Style="background: #2A1200;">
         <MudNavMenu Style="padding-top: 16px;">
-
             <MudText Typo="Typo.caption"
-                     Style="color: #E8B4A0; padding-left: 16px;
-                            letter-spacing: 2px;">
+                     Style="color: #E8B4A0; padding-left: 16px; letter-spacing: 2px;">
                 MAIN MENU
             </MudText>
-
             <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
-
-            <MudNavLink Href="/home"
-                        Icon="@Icons.Material.Filled.Dashboard"
-                        Style="color: #F5D6C8;">
-                Dashboard
-            </MudNavLink>
-
-            <MudNavLink Href="/products"
-                        Icon="@Icons.Material.Filled.Cake"
-                        Style="color: #F5D6C8;">
-                Products
-            </MudNavLink>
-
-            <MudNavLink Href="/orders"
-                        Icon="@Icons.Material.Filled.ShoppingCart"
-                        Style="color: #F5D6C8;">
-                Orders
-            </MudNavLink>
-
-            <MudNavLink Href="/users"
-                        Icon="@Icons.Material.Filled.People"
-                        Style="color: #F5D6C8;">
-                Users
-            </MudNavLink>
-
+            <MudNavLink Href="/home" Icon="@Icons.Material.Filled.Dashboard" Style="color: #F5D6C8;">Dashboard</MudNavLink>
+            <MudNavLink Href="/products" Icon="@Icons.Material.Filled.Cake" Style="color: #F5D6C8;">Products</MudNavLink>
+            <MudNavLink Href="/orders" Icon="@Icons.Material.Filled.ShoppingCart" Style="color: #F5D6C8;">Orders</MudNavLink>
+            <MudNavLink Href="/users" Icon="@Icons.Material.Filled.People" Style="color: #F5D6C8;">Users</MudNavLink>
             <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
-
-            <MudNavLink Icon="@Icons.Material.Filled.Logout"
-                        Style="color: #E8B4A0;"
-                        OnClick="HandleLogout">
-                Logout
-            </MudNavLink>
-
+            <MudNavLink Icon="@Icons.Material.Filled.Logout" Style="color: #E8B4A0;" OnClick="HandleLogout">Logout</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 
@@ -74,228 +42,261 @@
 
         @if (isLoading)
         {
-            <div style="display: flex; justify-content: center;
-                        align-items: center; height: 60vh;">
-                <MudProgressCircular Indeterminate="true"
-                                     Size="Size.Large"
-                                     Style="color: #3E1C00;" />
+            <div style="display: flex; justify-content: center; align-items: center; height: 60vh;">
+                <MudProgressCircular Indeterminate="true" Size="Size.Large" Style="color: #3E1C00;" />
             </div>
         }
         else
         {
             <!-- PAGE TITLE -->
-            <MudText Typo="Typo.h5"
-                     Style="color: #3E1C00; font-weight: bold; margin-bottom: 4px;">
+            <MudText Typo="Typo.h5" Style="color: #3E1C00; font-weight: bold; margin-bottom: 4px;">
                 Admin Dashboard
             </MudText>
-            <MudText Typo="Typo.body2"
-                     Style="color: #B86830; margin-bottom: 24px;">
+            <MudText Typo="Typo.body2" Style="color: #B86830; margin-bottom: 24px;">
                 Logged in as: <strong>@adminName</strong> — @adminEmail
             </MudText>
 
             <!-- SUMMARY CARDS -->
             <MudGrid>
-
-                <!-- TOTAL PRODUCTS — CLICKABLE -->
                 <MudItem xs="12" sm="6" md="3">
                     <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px;
-                                     background: #3E1C00; cursor: pointer;"
+                              Style="padding: 20px; border-radius: 16px; background: #3E1C00; cursor: pointer;"
                               @onclick='() => Navigation.NavigateTo("/products")'>
-                        <MudText Typo="Typo.caption" Style="color: #E8B4A0;">
-                            Total Products
-                        </MudText>
-                        <MudText Typo="Typo.h4"
-                                 Style="color: white; font-weight: bold;">
-                            @totalProducts
-                        </MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.Cake"
-                                 Style="color: #E8C547;" />
+                        <MudText Typo="Typo.caption" Style="color: #E8B4A0;">Total Products</MudText>
+                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalProducts</MudText>
+                        <MudIcon Icon="@Icons.Material.Filled.Cake" Style="color: #E8C547;" />
                     </MudPaper>
                 </MudItem>
-
-                <!-- TOTAL ORDERS — CLICKABLE -->
                 <MudItem xs="12" sm="6" md="3">
                     <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px;
-                                     background: #B86830; cursor: pointer;"
+                              Style="padding: 20px; border-radius: 16px; background: #B86830; cursor: pointer;"
                               @onclick='() => Navigation.NavigateTo("/orders")'>
-                        <MudText Typo="Typo.caption" Style="color: #FFF8F0;">
-                            Total Orders
-                        </MudText>
-                        <MudText Typo="Typo.h4"
-                                 Style="color: white; font-weight: bold;">
-                            @totalOrders
-                        </MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart"
-                                 Style="color: white;" />
+                        <MudText Typo="Typo.caption" Style="color: #FFF8F0;">Total Orders</MudText>
+                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalOrders</MudText>
+                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Style="color: white;" />
                     </MudPaper>
                 </MudItem>
-
-                <!-- para sa pending nga orders-->
                 <MudItem xs="12" sm="6" md="3">
                     <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px;
-                                     background: #D4874E; cursor: pointer;"
+                              Style="padding: 20px; border-radius: 16px; background: #D4874E; cursor: pointer;"
                               @onclick='() => Navigation.NavigateTo("/orders")'>
-                        <MudText Typo="Typo.caption" Style="color: #FFF8F0;">
-                            Pending Orders
-                        </MudText>
-                        <MudText Typo="Typo.h4"
-                                 Style="color: white; font-weight: bold;">
-                            @pendingOrders
-                        </MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.HourglassEmpty"
-                                 Style="color: white;" />
+                        <MudText Typo="Typo.caption" Style="color: #FFF8F0;">Pending Orders</MudText>
+                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@pendingOrders</MudText>
+                        <MudIcon Icon="@Icons.Material.Filled.HourglassEmpty" Style="color: white;" />
                     </MudPaper>
                 </MudItem>
-
-                <!-- TOTAL USERS — CLICKABLE -->
                 <MudItem xs="12" sm="6" md="3">
                     <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px;
-                                     background: #FFF8F0;
-                                     border: 2px solid #D4874E;
-                                     cursor: pointer;"
+                              Style="padding: 20px; border-radius: 16px; background: #FFF8F0;
+                                     border: 2px solid #D4874E; cursor: pointer;"
                               @onclick='() => Navigation.NavigateTo("/users")'>
-                        <MudText Typo="Typo.caption" Style="color: #B86830;">
-                            Total Users
-                        </MudText>
-                        <MudText Typo="Typo.h4"
-                                 Style="color: #3E1C00; font-weight: bold;">
-                            @totalUsers
-                        </MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.People"
-                                 Style="color: #D4874E;" />
+                        <MudText Typo="Typo.caption" Style="color: #B86830;">Total Users</MudText>
+                        <MudText Typo="Typo.h4" Style="color: #3E1C00; font-weight: bold;">@totalUsers</MudText>
+                        <MudIcon Icon="@Icons.Material.Filled.People" Style="color: #D4874E;" />
                     </MudPaper>
                 </MudItem>
-
             </MudGrid>
 
-            <!-- ADMIN INFO CARD -->
+            <!-- LINE GRAPH — Monthly Orders -->
             <MudText Typo="Typo.h6"
-                     Style="color: #3E1C00; font-weight: bold;
-                            margin-top: 32px; margin-bottom: 12px;">
-                👤 Logged In Admin Details
+                     Style="color: #3E1C00; font-weight: bold; margin-top: 24px; margin-bottom: 12px;">
+                📈 Monthly Orders
             </MudText>
 
             <MudPaper Elevation="3"
-                      Style="padding: 24px; border-radius: 16px;
-                             background: #FFF8F0; margin-bottom: 32px;">
-                <MudGrid>
-                    <MudItem xs="12" md="4">
-                        <MudText Typo="Typo.caption" Style="color: #B86830;">
-                            Admin ID
-                        </MudText>
-                        <MudText Typo="Typo.body1"
-                                 Style="color: #3E1C00; font-weight: bold;">
-                            @adminId
-                        </MudText>
-                    </MudItem>
-                    <MudItem xs="12" md="4">
-                        <MudText Typo="Typo.caption" Style="color: #B86830;">
-                            Full Name
-                        </MudText>
-                        <MudText Typo="Typo.body1"
-                                 Style="color: #3E1C00; font-weight: bold;">
-                            @adminName
-                        </MudText>
-                    </MudItem>
-                    <MudItem xs="12" md="4">
-                        <MudText Typo="Typo.caption" Style="color: #B86830;">
-                            Email
-                        </MudText>
-                        <MudText Typo="Typo.body1"
-                                 Style="color: #3E1C00; font-weight: bold;">
-                            @adminEmail
-                        </MudText>
-                    </MudItem>
-                </MudGrid>
+                      Style="padding: 24px; border-radius: 16px; background: #FFF8F0;">
+                @if (chartLabels == null || chartLabels.Length == 0)
+                {
+                    <MudText Typo="Typo.body2" Style="color: #B86830; text-align: center; padding: 24px;">
+                        No order data available to display yet.
+                    </MudText>
+                }
+                else
+                {
+                    <MudChart ChartType="ChartType.Line"
+                              ChartSeries="@chartSeries"
+                              XAxisLabels="@chartLabels"
+                              Width="100%"
+                              Height="calc(100vh - 420px)"
+                              ChartOptions="@chartOptions" />
+                }
             </MudPaper>
-
-           
         }
 
     </MudMainContent>
-
 </MudLayout>
 
 @code {
 
     bool isLoading = true;
 
-    int adminId       = 0;
-    string adminName  = string.Empty;
+    int adminId = 0;
+    string adminName = string.Empty;
     string adminEmail = string.Empty;
 
     int totalProducts = 0;
-    int totalOrders   = 0;
+    int totalOrders = 0;
     int pendingOrders = 0;
-    int totalUsers    = 0;
+    int totalUsers = 0;
+
+    // ── Chart ──
+    string[] chartLabels = Array.Empty<string>();
+    List<ChartSeries> chartSeries = new();
+    ChartOptions chartOptions = new ChartOptions
+        {
+            LineStrokeWidth = 3,
+            YAxisLines = true,
+            YAxisTicks = 1,
+            MaxNumYAxisTicks = 10
+        };
 
     protected override async Task OnInitializedAsync()
     {
         var token = await LocalStorage.GetItemAsync<string>("token");
-
         if (string.IsNullOrEmpty(token))
         {
             Navigation.NavigateTo("/login");
             return;
         }
 
-        adminId    = await LocalStorage.GetItemAsync<int>("adminId");
-        adminName  = await LocalStorage.GetItemAsync<string>("adminName");
+        adminId = await LocalStorage.GetItemAsync<int>("adminId");
+        adminName = await LocalStorage.GetItemAsync<string>("adminName");
         adminEmail = await LocalStorage.GetItemAsync<string>("adminEmail");
 
         await LoadDashboardCounts();
-
         isLoading = false;
     }
 
     async Task LoadDashboardCounts()
     {
+        // ── Products ──
         try
         {
             var productResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
-                "Product/GetAllProducts"
-            );
-            if (productResponse != null && productResponse.Status == 200
-                && productResponse.Data != null)
-            {
+                "Product/GetAllProducts");
+            if (productResponse?.Status == 200 && productResponse.Data != null)
                 totalProducts = productResponse.Data.Count;
-            }
         }
         catch { totalProducts = 0; }
 
+        // ── Orders ──
         try
         {
             var orderResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
-                "Orders/GetAllOrders"
-            );
-            if (orderResponse != null && orderResponse.Status == 200
-                && orderResponse.Data != null)
+                "Orders/GetAllOrders");
+
+            if (orderResponse?.Status == 200 && orderResponse.Data != null)
             {
                 totalOrders = orderResponse.Data.Count;
 
-                pendingOrders = orderResponse.Data
-                    .Count(o => o.TryGetProperty("orderStatus", out var s) &&
-                                s.GetString().ToLower() == "pending");
+                pendingOrders = orderResponse.Data.Count(o =>
+                {
+                    // try both casings for orderStatus
+                    if (o.TryGetProperty("orderStatus", out var s1))
+                        return s1.GetString()?.ToLower() == "pending";
+                    if (o.TryGetProperty("OrderStatus", out var s2))
+                        return s2.GetString()?.ToLower() == "pending";
+                    return false;
+                });
+
+                BuildOrdersChart(orderResponse.Data);
+                StateHasChanged();
             }
         }
         catch { totalOrders = 0; pendingOrders = 0; }
 
+        // ── Users ──
         try
         {
             var userResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
-                "User/GetAllUsers"
-            );
-            if (userResponse != null && userResponse.Status == 200
-                && userResponse.Data != null)
-            {
+                "User/GetAllUsers");
+            if (userResponse?.Status == 200 && userResponse.Data != null)
                 totalUsers = userResponse.Data.Count;
-            }
         }
         catch { totalUsers = 0; }
+    }
+
+    // ── Tries every possible property name and date format ──
+    string GetOrderDateRaw(System.Text.Json.JsonElement o)
+    {
+        // Try all common casings of the date field
+        string[] possibleKeys = new[]
+        {
+            "orderDate", "OrderDate",
+            "dateCreated", "DateCreated",
+            "createdAt", "CreatedAt",
+            "date", "Date"
+        };
+
+        foreach (var key in possibleKeys)
+        {
+            if (o.TryGetProperty(key, out var prop))
+            {
+                var val = prop.GetString();
+                if (!string.IsNullOrEmpty(val))
+                    return val;
+            }
+        }
+        return string.Empty;
+    }
+
+    bool TryParseOrderDate(string raw, out DateTime result)
+    {
+        return DateTime.TryParseExact(
+            raw,
+            new[]
+            {
+                "yyyy-MM-dd HH:mm:ss.fff",
+                "yyyy-MM-dd HH:mm:ss.ff",
+                "yyyy-MM-dd HH:mm:ss.f",
+                "yyyy-MM-dd HH:mm:ss",
+                "yyyy-MM-ddTHH:mm:ss.fffZ",
+                "yyyy-MM-ddTHH:mm:ss.fff",
+                "yyyy-MM-ddTHH:mm:ss",
+                "yyyy-MM-dd",
+                "MM/dd/yyyy",
+                "MM/dd/yyyy HH:mm:ss"
+                },
+            System.Globalization.CultureInfo.InvariantCulture,
+            System.Globalization.DateTimeStyles.None,
+            out result);
+    }
+
+    void BuildOrdersChart(List<System.Text.Json.JsonElement> orders)
+    {
+        var dates = new List<DateTime>();
+
+        foreach (var order in orders)
+        {
+            var raw = GetOrderDateRaw(order);
+            if (string.IsNullOrEmpty(raw)) continue;
+
+            // Also try plain DateTime.Parse as last resort
+            if (TryParseOrderDate(raw, out var dt))
+                dates.Add(dt);
+            else if (DateTime.TryParse(raw, out var dt2))
+                dates.Add(dt2);
+        }
+
+        if (!dates.Any()) return;
+
+        var grouped = dates
+            .GroupBy(dt => new DateTime(dt.Year, dt.Month, 1))
+            .OrderBy(g => g.Key)
+            .ToList();
+
+        chartLabels = grouped
+            .Select(g => g.Key.ToString("MMM yyyy"))
+            .ToArray();
+
+        chartSeries = new List<ChartSeries>
+        {
+            new ChartSeries
+            {
+                Name = "Orders",
+                Data = grouped.Select(g => (double)g.Count()).ToArray()
+            }
+        };
     }
 
     async Task HandleLogout()

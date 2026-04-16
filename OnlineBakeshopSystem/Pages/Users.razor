@@ -21,51 +21,19 @@
     </MudAppBar>
 
     <!-- LEFT SIDE — Navigation Drawer -->
-    <MudDrawer Open="true"
-               ClipMode="DrawerClipMode.Always"
-               Style="background: #2A1200;">
+    <MudDrawer Open="true" ClipMode="DrawerClipMode.Always" Style="background: #2A1200;">
         <MudNavMenu Style="padding-top: 16px;">
-
             <MudText Typo="Typo.caption"
-                     Style="color: #E8B4A0; padding-left: 16px;
-                            letter-spacing: 2px;">
+                     Style="color: #E8B4A0; padding-left: 16px; letter-spacing: 2px;">
                 MAIN MENU
             </MudText>
-
             <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
-
-            <MudNavLink Href="/home"
-                        Icon="@Icons.Material.Filled.Dashboard"
-                        Style="color: #F5D6C8;">
-                Dashboard
-            </MudNavLink>
-
-            <MudNavLink Href="/products"
-                        Icon="@Icons.Material.Filled.Cake"
-                        Style="color: #F5D6C8;">
-                Products
-            </MudNavLink>
-
-            <MudNavLink Href="/orders"
-                        Icon="@Icons.Material.Filled.ShoppingCart"
-                        Style="color: #F5D6C8;">
-                Orders
-            </MudNavLink>
-
-            <MudNavLink Href="/users"
-                        Icon="@Icons.Material.Filled.People"
-                        Style="color: #F5D6C8;">
-                Users
-            </MudNavLink>
-
+            <MudNavLink Href="/home" Icon="@Icons.Material.Filled.Dashboard" Style="color: #F5D6C8;">Dashboard</MudNavLink>
+            <MudNavLink Href="/products" Icon="@Icons.Material.Filled.Cake" Style="color: #F5D6C8;">Products</MudNavLink>
+            <MudNavLink Href="/orders" Icon="@Icons.Material.Filled.ShoppingCart" Style="color: #F5D6C8;">Orders</MudNavLink>
+            <MudNavLink Href="/users" Icon="@Icons.Material.Filled.People" Style="color: #F5D6C8;">Users</MudNavLink>
             <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
-
-            <MudNavLink Icon="@Icons.Material.Filled.Logout"
-                        Style="color: #E8B4A0;"
-                        OnClick="HandleLogout">
-                Logout
-            </MudNavLink>
-
+            <MudNavLink Icon="@Icons.Material.Filled.Logout" Style="color: #E8B4A0;" OnClick="HandleLogout">Logout</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 
@@ -76,8 +44,7 @@
         <div style="display: flex; justify-content: space-between;
                     align-items: center; margin-bottom: 24px;">
             <div>
-                <MudText Typo="Typo.h5"
-                         Style="color: #3E1C00; font-weight: bold;">
+                <MudText Typo="Typo.h5" Style="color: #3E1C00; font-weight: bold;">
                     👥 Users
                 </MudText>
                 <MudText Typo="Typo.body2" Style="color: #B86830;">
@@ -104,84 +71,91 @@
         }
         else
         {
-            <!-- USERS TABLE -->
+            <!-- USERS TABLE WITH SEARCH BAR INSIDE -->
             <MudPaper Elevation="3" Style="border-radius: 16px; overflow: hidden;">
-                <table style="width: 100%; border-collapse: collapse;
-                              background: #FFF8F0;">
-                    <thead>
-                        <tr style="background: #3E1C00;">
-                            <th style="padding: 14px 16px; color: #E8C547;
-                                       text-align: left; font-weight: bold;">
-                                ID
-                            </th>
-                            <th style="padding: 14px 16px; color: #E8C547;
-                                       text-align: left; font-weight: bold;">
-                                Full Name
-                            </th>
-                            <th style="padding: 14px 16px; color: #E8C547;
-                                       text-align: left; font-weight: bold;">
-                                Email
-                            </th>
-                            <th style="padding: 14px 16px; color: #E8C547;
-                                       text-align: left; font-weight: bold;">
-                                Address
-                            </th>
-                            <th style="padding: 14px 16px; color: #E8C547;
-                                       text-align: left; font-weight: bold;">
-                                Contact No
-                            </th>
-                            <th style="padding: 14px 16px; color: #E8C547;
-                                       text-align: left; font-weight: bold;">
-                                Date Joined
-                            </th>
-                            <th style="padding: 14px 16px; color: #E8C547;
-                                       text-align: left; font-weight: bold;">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (UserModel user in users)
-                        {
-                            <tr style="border-bottom: 1px solid #F5E6D8;">
-                                <td style="padding: 12px 16px; color: #3E1C00;">
-                                    @user.UserId
-                                </td>
-                                <td style="padding: 12px 16px; color: #3E1C00;
-                                           font-weight: bold;">
-                                    @user.FullName
-                                </td>
-                                <td style="padding: 12px 16px; color: #3E1C00;">
-                                    @user.Email
-                                </td>
-                                <td style="padding: 12px 16px; color: #3E1C00;">
-                                    @user.Address
-                                </td>
-                                <td style="padding: 12px 16px; color: #3E1C00;">
-                                    @user.ContactNo
-                                </td>
-                                <td style="padding: 12px 16px; color: #3E1C00;">
-                                    @user.DateCreated.ToString("MMM dd, yyyy")
-                                </td>
-                                <td style="padding: 12px 16px;">
-                                    <button style="background: none; border: none;
-                                                   cursor: pointer; padding: 4px 8px;
-                                                   color: #B86830; font-size: 18px;
-                                                   margin-right: 4px;"
-                                            @onclick="() => OpenEditDialog(user)">
-                                        ✏️
-                                    </button>
-                                    <button style="background: none; border: none;
-                                                   cursor: pointer; padding: 4px 8px;
-                                                   color: #D32F2F; font-size: 18px;"
-                                            @onclick="() => DeleteUser(user.UserId)">
-                                        🗑️
-                                    </button>
-                                </td>
+
+                <!-- SEARCH BAR ROW — inside the dark header -->
+                <div style="background: #3E1C00; padding: 12px 16px;
+                            display: flex; align-items: center; gap: 12px;">
+                    <MudIcon Icon="@Icons.Material.Filled.Search" Style="color: #E8C547;" />
+                    <input value="@searchQuery"
+                           @oninput="e => OnSearchChanged(e.Value?.ToString() ?? string.Empty)"
+                           placeholder="Search by User ID or Name..."
+                           style="flex: 1;
+                                  background: rgba(255,255,255,0.12);
+                                  border: 1px solid #6B3A1F;
+                                  border-radius: 8px;
+                                  padding: 8px 12px;
+                                  color: white;
+                                  font-size: 14px;
+                                  outline: none;" />
+                    @if (!string.IsNullOrEmpty(searchQuery))
+                    {
+                        <span style="color: #E8B4A0; font-size: 12px; white-space: nowrap;">
+                            @filteredUsers.Count of @users.Count result(s)
+                        </span>
+                        <button @onclick="ClearSearch"
+                                style="background: none; border: none;
+                                       color: #E8C547; cursor: pointer;
+                                       font-size: 18px; line-height: 1;">
+                            ✕
+                        </button>
+                    }
+                </div>
+
+                @if (filteredUsers.Count == 0)
+                {
+                    <div style="padding: 32px; text-align: center; background: #FFF8F0;">
+                        <MudText Typo="Typo.body1" Style="color: #B86830;">
+                            No users match "<strong>@searchQuery</strong>".
+                        </MudText>
+                    </div>
+                }
+                else
+                {
+                    <table style="width: 100%; border-collapse: collapse; background: #FFF8F0;">
+                        <thead>
+                            <tr style="background: #5C2A00;">
+                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">ID</th>
+                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Full Name</th>
+                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Email</th>
+                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Address</th>
+                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Contact No</th>
+                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Date Joined</th>
+                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Actions</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (UserModel user in filteredUsers)
+                            {
+                                <tr style="border-bottom: 1px solid #F5E6D8;">
+                                    <td style="padding: 12px 16px; color: #3E1C00;">@user.UserId</td>
+                                    <td style="padding: 12px 16px; color: #3E1C00; font-weight: bold;">@user.FullName</td>
+                                    <td style="padding: 12px 16px; color: #3E1C00;">@user.Email</td>
+                                    <td style="padding: 12px 16px; color: #3E1C00;">@user.Address</td>
+                                    <td style="padding: 12px 16px; color: #3E1C00;">@user.ContactNo</td>
+                                    <td style="padding: 12px 16px; color: #3E1C00;">
+                                        @user.DateCreated.ToString("MMM dd, yyyy")
+                                    </td>
+                                    <td style="padding: 12px 16px;">
+                                        <button style="background: none; border: none; cursor: pointer;
+                                                       padding: 4px 8px; color: #B86830;
+                                                       font-size: 18px; margin-right: 4px;"
+                                                @onclick="() => OpenEditDialog(user)">
+                                            ✏️
+                                        </button>
+                                        <button style="background: none; border: none; cursor: pointer;
+                                                       padding: 4px 8px; color: #D32F2F; font-size: 18px;"
+                                                @onclick="() => DeleteUser(user.UserId)">
+                                            🗑️
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
             </MudPaper>
         }
 
@@ -189,52 +163,30 @@
         @if (showDialog)
         {
             <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
-
             <div style="position: fixed; top: 0; left: 0;
                         width: 100vw; height: 100vh;
                         display: flex; align-items: center;
                         justify-content: center; z-index: 10;">
-
                 <MudPaper Elevation="5"
                           Style="width: 100%; max-width: 500px;
                                  padding: 32px; border-radius: 20px;
                                  background: #FFF8F0;">
-
                     <MudText Typo="Typo.h6"
-                             Style="color: #3E1C00; font-weight: bold;
-                                    margin-bottom: 24px;">
+                             Style="color: #3E1C00; font-weight: bold; margin-bottom: 24px;">
                         Edit User
                     </MudText>
-
-                    <!-- FULL NAME -->
-                    <MudTextField @bind-Value="selectedUser.FullName"
-                                  Label="Full Name"
-                                  Variant="Variant.Outlined"
-                                  FullWidth="true"
+                    <MudTextField @bind-Value="selectedUser.FullName" Label="Full Name"
+                                  Variant="Variant.Outlined" FullWidth="true"
                                   Style="margin-bottom: 16px;" />
-
-                    <!-- EMAIL -->
-                    <MudTextField @bind-Value="selectedUser.Email"
-                                  Label="Email"
-                                  Variant="Variant.Outlined"
-                                  FullWidth="true"
+                    <MudTextField @bind-Value="selectedUser.Email" Label="Email"
+                                  Variant="Variant.Outlined" FullWidth="true"
                                   Style="margin-bottom: 16px;" />
-
-                    <!-- ADDRESS -->
-                    <MudTextField @bind-Value="selectedUser.Address"
-                                  Label="Address"
-                                  Variant="Variant.Outlined"
-                                  FullWidth="true"
+                    <MudTextField @bind-Value="selectedUser.Address" Label="Address"
+                                  Variant="Variant.Outlined" FullWidth="true"
                                   Style="margin-bottom: 16px;" />
-
-                    <!-- CONTACT NO -->
-                    <MudTextField @bind-Value="selectedUser.ContactNo"
-                                  Label="Contact No"
-                                  Variant="Variant.Outlined"
-                                  FullWidth="true"
+                    <MudTextField @bind-Value="selectedUser.ContactNo" Label="Contact No"
+                                  Variant="Variant.Outlined" FullWidth="true"
                                   Style="margin-bottom: 16px;" />
-
-                    <!-- ERROR -->
                     @if (!string.IsNullOrEmpty(dialogError))
                     {
                         <MudAlert Severity="Severity.Error"
@@ -242,48 +194,31 @@
                             @dialogError
                         </MudAlert>
                     }
-
-                    <!-- BUTTONS -->
                     <div style="display: flex; justify-content: flex-end; gap: 12px;">
-                        <button style="padding: 10px 20px;
-                                       background: white;
-                                       border: 2px solid #B86830;
-                                       border-radius: 8px;
-                                       color: #B86830;
-                                       font-weight: bold;
-                                       cursor: pointer;"
+                        <button style="padding: 10px 20px; background: white;
+                                       border: 2px solid #B86830; border-radius: 8px;
+                                       color: #B86830; font-weight: bold; cursor: pointer;"
                                 @onclick="CloseDialog">
                             Cancel
                         </button>
-                        <button style="padding: 10px 20px;
-                                       background: #3E1C00;
-                                       border: none;
-                                       border-radius: 8px;
-                                       color: white;
-                                       font-weight: bold;
-                                       cursor: pointer;"
-                                @onclick="SaveUser"
-                                disabled="@isSaving">
+                        <button style="padding: 10px 20px; background: #3E1C00;
+                                       border: none; border-radius: 8px;
+                                       color: white; font-weight: bold; cursor: pointer;"
+                                @onclick="SaveUser" disabled="@isSaving">
                             @if (isSaving)
                             {
-                                <MudProgressCircular Size="Size.Small"
-                                                     Indeterminate="true"
+                                <MudProgressCircular Size="Size.Small" Indeterminate="true"
                                                      Style="margin-right: 8px;" />
                                 <span>Saving...</span>
                             }
-                            else
-                            {
-                                <span>Save</span>
-                            }
+                            else { <span>Save</span> }
                         </button>
                     </div>
-
                 </MudPaper>
             </div>
         }
 
     </MudMainContent>
-
 </MudLayout>
 
 @code {
@@ -294,9 +229,11 @@
 
     string adminName   = string.Empty;
     string dialogError = string.Empty;
+    string searchQuery = string.Empty;
 
-    List<UserModel> users  = new List<UserModel>();
-    UserModel selectedUser = new UserModel();
+    List<UserModel> users         = new();
+    List<UserModel> filteredUsers = new();
+    UserModel selectedUser        = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -306,7 +243,6 @@
             Navigation.NavigateTo("/login");
             return;
         }
-
         adminName = await LocalStorage.GetItemAsync<string>("adminName");
         await LoadUsers();
         isLoading = false;
@@ -319,32 +255,52 @@
     {
         try
         {
-            var response = await Http.GetFromJsonAsync<ServiceResponse<List<UserModel>>>(
-                "User/GetAllUsers"
-            );
+            var response = await Http.GetFromJsonAsync<ServiceResponse<List<UserModel>>>("User/GetAllUsers");
+            users = response?.Status == 200 && response.Data != null
+                ? response.Data : new List<UserModel>();
+        }
+        catch { users = new List<UserModel>(); }
 
-            if (response != null && response.Status == 200 && response.Data != null)
-            {
-                users = response.Data;
-            }
-            else
-            {
-                users = new List<UserModel>();
-            }
-        }
-        catch
-        {
-            users = new List<UserModel>();
-        }
+        ApplySearch();
     }
 
     // =============================================
-    // OPEN EDIT DIALOG
+    // SEARCH LOGIC — by ID or Name
+    // =============================================
+    void OnSearchChanged(string value)
+    {
+        searchQuery = value;
+        ApplySearch();
+    }
+
+    void ClearSearch()
+    {
+        searchQuery = string.Empty;
+        ApplySearch();
+    }
+
+    void ApplySearch()
+    {
+        if (string.IsNullOrWhiteSpace(searchQuery))
+        {
+            filteredUsers = new List<UserModel>(users);
+            return;
+        }
+
+        var q = searchQuery.Trim().ToLower();
+
+        filteredUsers = users.Where(u =>
+            u.UserId.ToString().Contains(q) ||
+            (u.FullName ?? "").ToLower().Contains(q)
+        ).ToList();
+    }
+
+    // =============================================
+    // OPEN / CLOSE / SAVE DIALOG
     // =============================================
     void OpenEditDialog(UserModel user)
     {
         dialogError = string.Empty;
-
         selectedUser = new UserModel
         {
             UserId    = user.UserId,
@@ -353,64 +309,30 @@
             Address   = user.Address,
             ContactNo = user.ContactNo
         };
-
         showDialog = true;
     }
 
-    // =============================================
-    // CLOSE DIALOG
-    // =============================================
     void CloseDialog()
     {
         showDialog  = false;
         dialogError = string.Empty;
     }
 
-    // =============================================
-    // SAVE USER
-    // =============================================
     async Task SaveUser()
     {
         dialogError = string.Empty;
-
-        if (string.IsNullOrEmpty(selectedUser.FullName))
-        {
-            dialogError = "Full Name is required.";
-            return;
-        }
-
-        if (string.IsNullOrEmpty(selectedUser.Email))
-        {
-            dialogError = "Email is required.";
-            return;
-        }
+        if (string.IsNullOrEmpty(selectedUser.FullName)) { dialogError = "Full Name is required."; return; }
+        if (string.IsNullOrEmpty(selectedUser.Email))    { dialogError = "Email is required."; return; }
 
         isSaving = true;
-
         try
         {
-            var response = await Http.PutAsJsonAsync(
-                "User/UpdateUser", selectedUser
-            );
-
-            if (response.IsSuccessStatusCode)
-            {
-                showDialog = false;
-                await LoadUsers();
-            }
-            else
-            {
-                dialogError = "Failed to update user. Please try again.";
-            }
+            var response = await Http.PutAsJsonAsync("User/UpdateUser", selectedUser);
+            if (response.IsSuccessStatusCode) { showDialog = false; await LoadUsers(); }
+            else dialogError = "Failed to update user. Please try again.";
         }
-        catch
-        {
-            dialogError = "Cannot connect to server. Please try again.";
-        }
-        finally
-        {
-            isSaving = false;
-        }
+        catch { dialogError = "Cannot connect to server. Please try again."; }
+        finally { isSaving = false; }
     }
 
     // =============================================
@@ -420,14 +342,8 @@
     {
         try
         {
-            var response = await Http.DeleteAsync(
-                $"User/DeleteUser?userId={userId}"
-            );
-
-            if (response.IsSuccessStatusCode)
-            {
-                await LoadUsers();
-            }
+            var response = await Http.DeleteAsync($"User/DeleteUser?userId={userId}");
+            if (response.IsSuccessStatusCode) await LoadUsers();
         }
         catch { }
     }
