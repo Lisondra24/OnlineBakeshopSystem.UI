@@ -1,5 +1,4 @@
 ﻿@page "/home"
-@using OnlineBakeshopSystem.Model
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject ILocalStorageService LocalStorage
@@ -56,69 +55,156 @@
                 Logged in as: <strong>@adminName</strong> — @adminEmail
             </MudText>
 
-            <!-- SUMMARY CARDS -->
+            <!-- 4 SUMMARY CARDS -->
             <MudGrid>
+
+                <!-- Total Regular Orders -->
                 <MudItem xs="12" sm="6" md="3">
                     <MudPaper Elevation="3"
                               Style="padding: 20px; border-radius: 16px; background: #3E1C00; cursor: pointer;"
-                              @onclick='() => Navigation.NavigateTo("/products")'>
-                        <MudText Typo="Typo.caption" Style="color: #E8B4A0;">Total Products</MudText>
-                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalProducts</MudText>
+                              @onclick='() => Navigation.NavigateTo("/orders")'>
+                        <MudText Typo="Typo.caption" Style="color: #E8B4A0;">Regular Orders</MudText>
+                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalRegularOrders</MudText>
+                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Style="color: #E8C547;" />
+                    </MudPaper>
+                </MudItem>
+
+                <!-- Total Custom Orders -->
+                <MudItem xs="12" sm="6" md="3">
+                    <MudPaper Elevation="3"
+                              Style="padding: 20px; border-radius: 16px; background: #6A1B9A; cursor: pointer;"
+                              @onclick='() => Navigation.NavigateTo("/orders")'>
+                        <MudText Typo="Typo.caption" Style="color: #E1BEE7;">Custom Orders</MudText>
+                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalCustomOrders</MudText>
                         <MudIcon Icon="@Icons.Material.Filled.Cake" Style="color: #E8C547;" />
                     </MudPaper>
                 </MudItem>
+
+                <!-- Total All Orders Combined -->
                 <MudItem xs="12" sm="6" md="3">
                     <MudPaper Elevation="3"
                               Style="padding: 20px; border-radius: 16px; background: #B86830; cursor: pointer;"
                               @onclick='() => Navigation.NavigateTo("/orders")'>
                         <MudText Typo="Typo.caption" Style="color: #FFF8F0;">Total Orders</MudText>
-                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalOrders</MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Style="color: white;" />
+                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@(totalRegularOrders + totalCustomOrders)</MudText>
+                        <MudIcon Icon="@Icons.Material.Filled.BarChart" Style="color: white;" />
                     </MudPaper>
                 </MudItem>
+
+                <!-- Awaiting Quote -->
                 <MudItem xs="12" sm="6" md="3">
                     <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px; background: #D4874E; cursor: pointer;"
+                              Style="padding: 20px; border-radius: 16px; background: #FFA000; cursor: pointer;"
                               @onclick='() => Navigation.NavigateTo("/orders")'>
-                        <MudText Typo="Typo.caption" Style="color: #FFF8F0;">Pending Orders</MudText>
-                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@pendingOrders</MudText>
+                        <MudText Typo="Typo.caption" Style="color: #FFF8E1;">Awaiting Quote</MudText>
+                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalAwaitingQuote</MudText>
                         <MudIcon Icon="@Icons.Material.Filled.HourglassEmpty" Style="color: white;" />
                     </MudPaper>
                 </MudItem>
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px; background: #FFF8F0;
-                                     border: 2px solid #D4874E; cursor: pointer;"
-                              @onclick='() => Navigation.NavigateTo("/users")'>
-                        <MudText Typo="Typo.caption" Style="color: #B86830;">Total Users</MudText>
-                        <MudText Typo="Typo.h4" Style="color: #3E1C00; font-weight: bold;">@totalUsers</MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.People" Style="color: #D4874E;" />
-                    </MudPaper>
-                </MudItem>
+
             </MudGrid>
 
-            <!-- LINE GRAPH — Monthly Orders -->
+            <!-- LINE CHART — Monthly Orders -->
             <MudText Typo="Typo.h6"
-                     Style="color: #3E1C00; font-weight: bold; margin-top: 24px; margin-bottom: 12px;">
-                📈 Monthly Orders
+                     Style="color: #3E1C00; font-weight: bold; margin-top: 32px; margin-bottom: 12px;">
+                📈 Monthly Overview
             </MudText>
 
             <MudPaper Elevation="3"
                       Style="padding: 24px; border-radius: 16px; background: #FFF8F0;">
+
                 @if (chartLabels == null || chartLabels.Length == 0)
                 {
                     <MudText Typo="Typo.body2" Style="color: #B86830; text-align: center; padding: 24px;">
-                        No order data available to display yet.
+                        No data available to display yet.
                     </MudText>
                 }
                 else
                 {
+                    <!-- Chart Toggle Buttons -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <MudButton Variant="@(showRegular ? Variant.Filled : Variant.Outlined)"
+                                   Style="@(showRegular ? "background:#3E1C00;color:white;" : "color:#3E1C00;border-color:#3E1C00;")"
+                                   Size="Size.Small"
+                                   OnClick="ToggleRegular">
+                            Regular Orders
+                        </MudButton>
+                        <MudButton Variant="@(showCustom ? Variant.Filled : Variant.Outlined)"
+                                   Style="@(showCustom ? "background:#6A1B9A;color:white;" : "color:#6A1B9A;border-color:#6A1B9A;")"
+                                   Size="Size.Small"
+                                   OnClick="ToggleCustom">
+                            Custom Orders
+                        </MudButton>
+                    </div>
+
                     <MudChart ChartType="ChartType.Line"
-                              ChartSeries="@chartSeries"
+                              ChartSeries="@activeChartSeries"
                               XAxisLabels="@chartLabels"
                               Width="100%"
-                              Height="calc(100vh - 420px)"
+                              Height="320px"
                               ChartOptions="@chartOptions" />
+                }
+            </MudPaper>
+
+            <!-- RECENT ORDERS TABLE -->
+            <MudText Typo="Typo.h6"
+                     Style="color: #3E1C00; font-weight: bold; margin-top: 32px; margin-bottom: 12px;">
+                🧾 Recent Orders
+            </MudText>
+
+            <MudPaper Elevation="3" Style="border-radius: 16px; background: #FFF8F0; overflow: hidden;">
+                @if (recentOrders == null || !recentOrders.Any())
+                {
+                    <MudText Typo="Typo.body2" Style="color: #B86830; text-align: center; padding: 24px;">
+                        No recent orders found.
+                    </MudText>
+                }
+                else
+                {
+                    <MudTable Items="@recentOrders" Hover="true" Striped="true"
+                              Style="background: transparent;"
+                              Elevation="0">
+                        <HeaderContent>
+                            <MudTh Style="color: #3E1C00; font-weight: bold;">Order ID</MudTh>
+                            <MudTh Style="color: #3E1C00; font-weight: bold;">Type</MudTh>
+                            <MudTh Style="color: #3E1C00; font-weight: bold;">Customer</MudTh>
+                            <MudTh Style="color: #3E1C00; font-weight: bold;">Amount</MudTh>
+                            <MudTh Style="color: #3E1C00; font-weight: bold;">Status</MudTh>
+                            <MudTh Style="color: #3E1C00; font-weight: bold;">Date</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd Style="color: #3E1C00; font-weight: bold;">@context.DisplayId</MudTd>
+                            <MudTd>
+                                @if (context.IsCustom)
+                                {
+                                    <span style="background: #6A1B9A; color: white;
+                                                 padding: 3px 10px; border-radius: 20px;
+                                                 font-size: 12px; font-weight: bold;">
+                                        ✨ Custom
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="background: #3E1C00; color: white;
+                                                 padding: 3px 10px; border-radius: 20px;
+                                                 font-size: 12px; font-weight: bold;">
+                                        🛒 Regular
+                                    </span>
+                                }
+                            </MudTd>
+                            <MudTd Style="color: #3E1C00;">@context.CustomerName</MudTd>
+                            <MudTd Style="color: #3E1C00;">
+                                @(context.TotalAmount > 0 ? "₱" + context.TotalAmount.ToString("N2") : "—")
+                            </MudTd>
+                            <MudTd>
+                                <MudChip T="string" Size="Size.Small"
+                                         Style="@GetStatusStyle(context.OrderStatus)">
+                                    @context.OrderStatus
+                                </MudChip>
+                            </MudTd>
+                            <MudTd Style="color: #B86830;">@context.OrderDate</MudTd>
+                        </RowTemplate>
+                    </MudTable>
                 }
             </MudPaper>
         }
@@ -134,14 +220,19 @@
     string adminName = string.Empty;
     string adminEmail = string.Empty;
 
-    int totalProducts = 0;
-    int totalOrders = 0;
-    int pendingOrders = 0;
-    int totalUsers = 0;
+    // ── Stat card counts ──
+    int totalRegularOrders = 0;
+    int totalCustomOrders = 0;
+    int totalAwaitingQuote = 0;
 
     // ── Chart ──
     string[] chartLabels = Array.Empty<string>();
-    List<ChartSeries> chartSeries = new();
+    List<ChartSeries> allChartSeries = new();
+    List<ChartSeries> activeChartSeries = new();
+
+    bool showRegular = true;
+    bool showCustom = true;
+
     ChartOptions chartOptions = new ChartOptions
         {
             LineStrokeWidth = 3,
@@ -149,6 +240,20 @@
             YAxisTicks = 1,
             MaxNumYAxisTicks = 10
         };
+
+    // ── Recent Orders Table ──
+    List<RecentOrderItem> recentOrders = new();
+
+    class RecentOrderItem
+    {
+        public string DisplayId { get; set; } = string.Empty;
+        public bool IsCustom { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
+        public double TotalAmount { get; set; }
+        public string OrderStatus { get; set; } = string.Empty;
+        public string OrderDate { get; set; } = string.Empty;
+        public DateTime SortDate { get; set; }
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -163,140 +268,222 @@
         adminName = await LocalStorage.GetItemAsync<string>("adminName");
         adminEmail = await LocalStorage.GetItemAsync<string>("adminEmail");
 
-        await LoadDashboardCounts();
+        await LoadDashboardData();
         isLoading = false;
     }
 
-    async Task LoadDashboardCounts()
+    async Task LoadDashboardData()
     {
-        // ── Products ──
-        try
-        {
-            var productResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
-                "Product/GetAllProducts");
-            if (productResponse?.Status == 200 && productResponse.Data != null)
-                totalProducts = productResponse.Data.Count;
-        }
-        catch { totalProducts = 0; }
+        var allItems = new List<RecentOrderItem>();
 
-        // ── Orders ──
+        // ── 1. Regular Orders ──
         try
         {
-            var orderResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
+            var regularResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
                 "Orders/GetAllOrders");
 
-            if (orderResponse?.Status == 200 && orderResponse.Data != null)
+            if (regularResponse?.Status == 200 && regularResponse.Data != null)
             {
-                totalOrders = orderResponse.Data.Count;
+                var orders = regularResponse.Data;
+                totalRegularOrders = orders.Count;
 
-                pendingOrders = orderResponse.Data.Count(o =>
+                foreach (var o in orders)
                 {
-                    // try both casings for orderStatus
-                    if (o.TryGetProperty("orderStatus", out var s1))
-                        return s1.GetString()?.ToLower() == "pending";
-                    if (o.TryGetProperty("OrderStatus", out var s2))
-                        return s2.GetString()?.ToLower() == "pending";
-                    return false;
-                });
+                    var raw = GetDateRaw(o);
+                    TryParseDate(raw, out var dt);
+                    allItems.Add(new RecentOrderItem
+                        {
+                            DisplayId = "ORD-" + TryGetInt(o, "orderId", "OrderId"),
+                            IsCustom = false,
+                            CustomerName = "User #" + TryGetInt(o, "userId", "UserId"),
+                            TotalAmount = TryGetDouble(o, "totalPrice", "TotalPrice", "totalAmount", "TotalAmount"),
+                            OrderStatus = TryGetString(o, "orderStatus", "OrderStatus", "status", "Status"),
+                            OrderDate = dt != default ? dt.ToString("MMM dd, yyyy") : raw,
+                            SortDate = dt
+                        });
+                }
 
-                BuildOrdersChart(orderResponse.Data);
-                StateHasChanged();
+                BuildChart(orders, "Regular Orders", ref allChartSeries, isRegular: true);
             }
         }
-        catch { totalOrders = 0; pendingOrders = 0; }
+        catch { totalRegularOrders = 0; }
 
-        // ── Users ──
+        // ── 2. Custom Orders ──
         try
         {
-            var userResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
-                "User/GetAllUsers");
-            if (userResponse?.Status == 200 && userResponse.Data != null)
-                totalUsers = userResponse.Data.Count;
+            var customResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
+                "CustomOrder/GetAllCustomOrders");
+
+            if (customResponse?.Status == 200 && customResponse.Data != null)
+            {
+                var customs = customResponse.Data;
+                totalCustomOrders = customs.Count;
+                totalAwaitingQuote = customs.Count(c =>
+                {
+                    var s = TryGetString(c, "orderStatus", "OrderStatus");
+                    return s == "Awaiting Quote";
+                });
+
+                foreach (var c in customs)
+                {
+                    var raw = GetDateRaw(c);
+                    TryParseDate(raw, out var dt);
+                    allItems.Add(new RecentOrderItem
+                        {
+                            DisplayId = "CST-" + TryGetInt(c, "customOrderId", "CustomOrderId"),
+                            IsCustom = true,
+                            CustomerName = TryGetString(c, "fullName", "FullName") is var n && !string.IsNullOrEmpty(n)
+                                               ? n : "User #" + TryGetInt(c, "userId", "UserId"),
+                            TotalAmount = TryGetDouble(c, "quotedPrice", "QuotedPrice"),
+                            OrderStatus = TryGetString(c, "orderStatus", "OrderStatus"),
+                            OrderDate = dt != default ? dt.ToString("MMM dd, yyyy") : raw,
+                            SortDate = dt
+                        });
+                }
+
+                AppendCustomChart(customs);
+            }
         }
-        catch { totalUsers = 0; }
+        catch { totalCustomOrders = 0; totalAwaitingQuote = 0; }
+
+        // ── 3. Recent Orders — latest 5 combined ──
+        recentOrders = allItems
+            .OrderByDescending(x => x.SortDate)
+            .Take(5)
+            .ToList();
+
+        RefreshActiveChart();
+        StateHasChanged();
     }
 
-    // ── Tries every possible property name and date format ──
-    string GetOrderDateRaw(System.Text.Json.JsonElement o)
+    // ── Chart: build Regular series ──
+    void BuildChart(List<System.Text.Json.JsonElement> orders, string seriesName,
+                    ref List<ChartSeries> target, bool isRegular)
     {
-        // Try all common casings of the date field
-        string[] possibleKeys = new[]
-        {
-            "orderDate", "OrderDate",
-            "dateCreated", "DateCreated",
-            "createdAt", "CreatedAt",
-            "date", "Date"
-        };
+        target = new List<ChartSeries>();
+        var parsed = ParseDates(orders);
+        if (!parsed.Any()) return;
 
-        foreach (var key in possibleKeys)
+        var grouped = parsed
+            .GroupBy(x => new DateTime(x.Year, x.Month, 1))
+            .OrderBy(g => g.Key)
+            .ToList();
+
+        chartLabels = grouped.Select(g => g.Key.ToString("MMM yyyy")).ToArray();
+
+        target.Add(new ChartSeries
+            {
+                Name = seriesName,
+                Data = grouped.Select(g => (double)g.Count()).ToArray()
+            });
+    }
+
+    // ── Chart: append Custom series using same month labels ──
+    void AppendCustomChart(List<System.Text.Json.JsonElement> customs)
+    {
+        var parsed = ParseDates(customs);
+        if (!parsed.Any() || chartLabels.Length == 0) return;
+
+        var monthKeys = chartLabels
+            .Select(l => DateTime.ParseExact(l, "MMM yyyy",
+                System.Globalization.CultureInfo.InvariantCulture))
+            .ToList();
+
+        var grouped = parsed
+            .GroupBy(x => new DateTime(x.Year, x.Month, 1))
+            .ToDictionary(g => g.Key, g => g.Count());
+
+        allChartSeries.Add(new ChartSeries
+            {
+                Name = "Custom Orders",
+                Data = monthKeys.Select(m => (double)(grouped.ContainsKey(m) ? grouped[m] : 0)).ToArray()
+            });
+    }
+
+    List<DateTime> ParseDates(List<System.Text.Json.JsonElement> items)
+    {
+        var result = new List<DateTime>();
+        foreach (var o in items)
         {
+            var raw = GetDateRaw(o);
+            if (string.IsNullOrEmpty(raw)) continue;
+            if (TryParseDate(raw, out var dt) || DateTime.TryParse(raw, out dt))
+                result.Add(dt);
+        }
+        return result;
+    }
+
+    void ToggleRegular() { showRegular = !showRegular; RefreshActiveChart(); }
+    void ToggleCustom() { showCustom = !showCustom; RefreshActiveChart(); }
+
+    void RefreshActiveChart()
+    {
+        activeChartSeries = new List<ChartSeries>();
+        if (showRegular && allChartSeries.Count > 0) activeChartSeries.Add(allChartSeries[0]);
+        if (showCustom && allChartSeries.Count > 1) activeChartSeries.Add(allChartSeries[1]);
+    }
+
+    string GetStatusStyle(string status) => status?.ToLower() switch
+    {
+        "pending" => "background:#FFA000;color:white;",
+        "preparing" => "background:#1565C0;color:white;",
+        "ready for pickup" => "background:#6A1B9A;color:white;",
+        "delivered" => "background:#4CAF50;color:white;",
+        "awaiting quote" => "background:#795548;color:white;",
+        "quoted" => "background:#0288D1;color:white;",
+        "rejected" => "background:#D32F2F;color:white;",
+        _ => "background:#9E9E9E;color:white;"
+    };
+
+    // ── Date helpers ──
+    string GetDateRaw(System.Text.Json.JsonElement o)
+    {
+        foreach (var key in new[] { "orderDate", "OrderDate", "dateOrdered", "DateOrdered",
+                                    "dateCreated", "DateCreated", "createdAt", "CreatedAt", "date", "Date" })
             if (o.TryGetProperty(key, out var prop))
             {
                 var val = prop.GetString();
-                if (!string.IsNullOrEmpty(val))
-                    return val;
+                if (!string.IsNullOrEmpty(val)) return val;
             }
-        }
         return string.Empty;
     }
 
-    bool TryParseOrderDate(string raw, out DateTime result)
-    {
-        return DateTime.TryParseExact(
-            raw,
+    bool TryParseDate(string raw, out DateTime result) =>
+        DateTime.TryParseExact(raw,
             new[]
             {
-                "yyyy-MM-dd HH:mm:ss.fff",
-                "yyyy-MM-dd HH:mm:ss.ff",
-                "yyyy-MM-dd HH:mm:ss.f",
-                "yyyy-MM-dd HH:mm:ss",
-                "yyyy-MM-ddTHH:mm:ss.fffZ",
-                "yyyy-MM-ddTHH:mm:ss.fff",
-                "yyyy-MM-ddTHH:mm:ss",
-                "yyyy-MM-dd",
-                "MM/dd/yyyy",
-                "MM/dd/yyyy HH:mm:ss"
+                "yyyy-MM-dd HH:mm:ss.fff", "yyyy-MM-dd HH:mm:ss.ff",
+                "yyyy-MM-dd HH:mm:ss.f",   "yyyy-MM-dd HH:mm:ss",
+                "yyyy-MM-ddTHH:mm:ss.fffZ","yyyy-MM-ddTHH:mm:ss.fff",
+                "yyyy-MM-ddTHH:mm:ss",     "yyyy-MM-dd",
+                "MM/dd/yyyy",              "MM/dd/yyyy HH:mm:ss"
                 },
             System.Globalization.CultureInfo.InvariantCulture,
             System.Globalization.DateTimeStyles.None,
             out result);
+
+    string TryGetString(System.Text.Json.JsonElement o, params string[] keys)
+    {
+        foreach (var key in keys)
+            if (o.TryGetProperty(key, out var v))
+                return v.GetString() ?? string.Empty;
+        return string.Empty;
     }
 
-    void BuildOrdersChart(List<System.Text.Json.JsonElement> orders)
+    int TryGetInt(System.Text.Json.JsonElement o, params string[] keys)
     {
-        var dates = new List<DateTime>();
+        foreach (var key in keys)
+            if (o.TryGetProperty(key, out var v) && v.TryGetInt32(out var i))
+                return i;
+        return 0;
+    }
 
-        foreach (var order in orders)
-        {
-            var raw = GetOrderDateRaw(order);
-            if (string.IsNullOrEmpty(raw)) continue;
-
-            // Also try plain DateTime.Parse as last resort
-            if (TryParseOrderDate(raw, out var dt))
-                dates.Add(dt);
-            else if (DateTime.TryParse(raw, out var dt2))
-                dates.Add(dt2);
-        }
-
-        if (!dates.Any()) return;
-
-        var grouped = dates
-            .GroupBy(dt => new DateTime(dt.Year, dt.Month, 1))
-            .OrderBy(g => g.Key)
-            .ToList();
-
-        chartLabels = grouped
-            .Select(g => g.Key.ToString("MMM yyyy"))
-            .ToArray();
-
-        chartSeries = new List<ChartSeries>
-        {
-            new ChartSeries
-            {
-                Name = "Orders",
-                Data = grouped.Select(g => (double)g.Count()).ToArray()
-            }
-        };
+    double TryGetDouble(System.Text.Json.JsonElement o, params string[] keys)
+    {
+        foreach (var key in keys)
+            if (o.TryGetProperty(key, out var v) && v.TryGetDouble(out var d))
+                return d;
+        return 0;
     }
 
     async Task HandleLogout()
