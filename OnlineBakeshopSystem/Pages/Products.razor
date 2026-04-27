@@ -380,22 +380,22 @@
 
 @code {
 
-    bool isLoading  = true;
-    bool isSaving   = false;
+    bool isLoading = true;
+    bool isSaving = false;
     bool showDialog = false;
     bool isEditMode = false;
 
-    string adminName        = string.Empty;
-    string dialogTitle      = string.Empty;
-    string dialogError      = string.Empty;
+    string adminName = string.Empty;
+    string dialogTitle = string.Empty;
+    string dialogError = string.Empty;
     string selectedFileName = string.Empty;
-    string imagePreviewUrl  = string.Empty;
+    string imagePreviewUrl = string.Empty;
 
     string apiBaseUrl = "http://localhost:5112";
 
     IBrowserFile selectedFile = null;
 
-    List<ProductModel> products  = new List<ProductModel>();
+    List<ProductModel> products = new List<ProductModel>();
     ProductModel selectedProduct = new ProductModel();
 
     protected override async Task OnInitializedAsync()
@@ -437,45 +437,45 @@
 
     void OpenAddDialog()
     {
-        isEditMode       = false;
-        dialogTitle      = "Add New Product";
-        dialogError      = string.Empty;
-        selectedProduct  = new ProductModel();
-        selectedFile     = null;
+        isEditMode = false;
+        dialogTitle = "Add New Product";
+        dialogError = string.Empty;
+        selectedProduct = new ProductModel();
+        selectedFile = null;
         selectedFileName = string.Empty;
-        imagePreviewUrl  = string.Empty;
-        showDialog       = true;
+        imagePreviewUrl = string.Empty;
+        showDialog = true;
     }
 
     void OpenEditDialog(ProductModel product)
     {
-        isEditMode  = true;
+        isEditMode = true;
         dialogTitle = "Edit Product";
         dialogError = string.Empty;
 
         selectedProduct = new ProductModel
-        {
-            ProductId   = product.ProductId,
-            ProductName = product.ProductName,
-            Description = product.Description,
-            Price       = product.Price,
-            ImageUrl    = product.ImageUrl,
-            IsAvailable = product.IsAvailable
-        };
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                Description = product.Description,
+                Price = product.Price,
+                ImageUrl = product.ImageUrl,
+                IsAvailable = product.IsAvailable
+            };
 
-        selectedFile     = null;
+        selectedFile = null;
         selectedFileName = string.Empty;
-        imagePreviewUrl  = string.Empty;
-        showDialog       = true;
+        imagePreviewUrl = string.Empty;
+        showDialog = true;
     }
 
     void CloseDialog()
     {
-        showDialog       = false;
-        dialogError      = string.Empty;
-        selectedFile     = null;
+        showDialog = false;
+        dialogError = string.Empty;
+        selectedFile = null;
         selectedFileName = string.Empty;
-        imagePreviewUrl  = string.Empty;
+        imagePreviewUrl = string.Empty;
     }
 
     async Task TriggerFileInput()
@@ -485,13 +485,13 @@
 
     async Task OnImageSelected(InputFileChangeEventArgs e)
     {
-        selectedFile     = e.File;
+        selectedFile = e.File;
         selectedFileName = e.File.Name;
 
         if (selectedFile.Size > 5 * 1024 * 1024)
         {
-            dialogError      = "Image must be less than 5MB.";
-            selectedFile     = null;
+            dialogError = "Image must be less than 5MB.";
+            selectedFile = null;
             selectedFileName = string.Empty;
             return;
         }
@@ -524,7 +524,7 @@
         {
             if (selectedFile != null)
             {
-                var content    = new MultipartFormDataContent();
+                var content = new MultipartFormDataContent();
                 var fileStream = selectedFile.OpenReadStream(maxAllowedSize: 5 * 1024 * 1024);
                 var streamContent = new StreamContent(fileStream);
                 streamContent.Headers.ContentType =
@@ -537,13 +537,15 @@
                 {
                     var uploadResult = await uploadResponse.Content
                         .ReadFromJsonAsync<System.Text.Json.JsonElement>();
+
+                    // ✅ FIXED: Capital "I" matches UploadController's return property
                     selectedProduct.ImageUrl = uploadResult
-                        .GetProperty("imageUrl").GetString();
+                        .GetProperty("ImageUrl").GetString();
                 }
                 else
                 {
                     dialogError = "Image upload failed. Please try again.";
-                    isSaving    = false;
+                    isSaving = false;
                     return;
                 }
             }

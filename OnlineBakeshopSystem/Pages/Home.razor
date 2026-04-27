@@ -27,186 +27,287 @@
                 MAIN MENU
             </MudText>
             <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
-            <MudNavLink Href="/home" Icon="@Icons.Material.Filled.Dashboard" Style="color: #F5D6C8;">Dashboard</MudNavLink>
-            <MudNavLink Href="/products" Icon="@Icons.Material.Filled.Cake" Style="color: #F5D6C8;">Products</MudNavLink>
-            <MudNavLink Href="/orders" Icon="@Icons.Material.Filled.ShoppingCart" Style="color: #F5D6C8;">Orders</MudNavLink>
-            <MudNavLink Href="/users" Icon="@Icons.Material.Filled.People" Style="color: #F5D6C8;">Users</MudNavLink>
+            <MudNavLink Href="/home" Icon="@Icons.Material.Filled.Dashboard" Style="color: #E8C547;">
+                Dashboard
+            </MudNavLink>
+            <MudNavLink Href="/products" Icon="@Icons.Material.Filled.Cake" Style="color: #F5D6C8;">
+                Products
+            </MudNavLink>
+            <MudNavLink Href="/orders" Icon="@Icons.Material.Filled.ShoppingCart" Style="color: #F5D6C8;">
+                Orders
+            </MudNavLink>
+            <MudNavLink Href="/users" Icon="@Icons.Material.Filled.People" Style="color: #F5D6C8;">
+                Users
+            </MudNavLink>
             <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
-            <MudNavLink Icon="@Icons.Material.Filled.Logout" Style="color: #E8B4A0;" OnClick="HandleLogout">Logout</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.Logout" Style="color: #E8B4A0;" OnClick="HandleLogout">
+                Logout
+            </MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 
-    <!-- MAIN CONTENT -->
-    <MudMainContent Style="background: #FDF6EC; padding: 24px;">
+    <!-- MAIN CONTENT — overflow-y:auto fixes the scroll issue -->
+    <MudMainContent Style="background: #FDF6EC; padding: 24px; overflow-y: auto; height: 100vh;">
 
         @if (isLoading)
         {
-            <div style="display: flex; justify-content: center; align-items: center; height: 60vh;">
-                <MudProgressCircular Indeterminate="true" Size="Size.Large" Style="color: #3E1C00;" />
+            <div style="display:flex; justify-content:center; align-items:center; height:60vh;">
+                <MudProgressCircular Indeterminate="true" Size="Size.Large" Style="color:#3E1C00;" />
             </div>
         }
         else
         {
             <!-- PAGE TITLE -->
-            <MudText Typo="Typo.h5" Style="color: #3E1C00; font-weight: bold; margin-bottom: 4px;">
-                Admin Dashboard
-            </MudText>
-            <MudText Typo="Typo.body2" Style="color: #B86830; margin-bottom: 24px;">
-                Logged in as: <strong>@adminName</strong> — @adminEmail
-            </MudText>
+            <div style="margin-bottom: 20px;">
+                <div style="color:#3E1C00; font-size:22px; font-weight:700; margin-bottom:2px;">
+                    Bakery Management Control Panel
+                </div>
+            </div>
 
-            <!-- 4 SUMMARY CARDS -->
-            <MudGrid>
+            <!-- ── ROW 1: 4 STAT CARDS ── -->
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px;">
 
-                <!-- Total Regular Orders -->
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px; background: #3E1C00; cursor: pointer;"
-                              @onclick='() => Navigation.NavigateTo("/orders")'>
-                        <MudText Typo="Typo.caption" Style="color: #E8B4A0;">Regular Orders</MudText>
-                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalRegularOrders</MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Style="color: #E8C547;" />
-                    </MudPaper>
-                </MudItem>
+                <div @onclick='() => Navigation.NavigateTo("/orders")'
+                     style="background:#3E1C00; border-radius:16px; padding:20px; cursor:pointer;
+                            box-shadow:0 4px 16px rgba(62,28,0,0.2); position:relative; overflow:hidden;">
+                    <div style="font-size:10px; font-weight:700; letter-spacing:2px; color:#E8C547; margin-bottom:8px;">
+                        REGULAR ORDERS
+                    </div>
+                    <div style="font-size:44px; font-weight:800; color:white; line-height:1; margin-bottom:6px;">
+                        @totalRegularOrders
+                    </div>
+                    <div style="font-size:12px; color:#F5D6C8;">All regular orders</div>
+                    <div style="position:absolute; right:14px; top:50%; transform:translateY(-50%);
+                                font-size:52px; opacity:0.15; pointer-events:none;">
+                        🛒
+                    </div>
+                </div>
 
-                <!-- Total Custom Orders -->
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px; background: #6A1B9A; cursor: pointer;"
-                              @onclick='() => Navigation.NavigateTo("/orders")'>
-                        <MudText Typo="Typo.caption" Style="color: #E1BEE7;">Custom Orders</MudText>
-                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalCustomOrders</MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.Cake" Style="color: #E8C547;" />
-                    </MudPaper>
-                </MudItem>
+                <div @onclick='() => Navigation.NavigateTo("/orders")'
+                     style="background:#7A3B1E; border-radius:16px; padding:20px; cursor:pointer;
+                            box-shadow:0 4px 16px rgba(122,59,30,0.2); position:relative; overflow:hidden;">
+                    <div style="font-size:10px; font-weight:700; letter-spacing:2px; color:#E8C547; margin-bottom:8px;">
+                        CUSTOM ORDERS
+                    </div>
+                    <div style="font-size:44px; font-weight:800; color:white; line-height:1; margin-bottom:6px;">
+                        @totalCustomOrders
+                    </div>
+                    <div style="font-size:12px; color:#F5D6C8;">Cake &amp; cupcake custom</div>
+                    <div style="position:absolute; right:14px; top:50%; transform:translateY(-50%);
+                                font-size:52px; opacity:0.15; pointer-events:none;">
+                        🎂
+                    </div>
+                </div>
 
-                <!-- Total All Orders Combined -->
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px; background: #B86830; cursor: pointer;"
-                              @onclick='() => Navigation.NavigateTo("/orders")'>
-                        <MudText Typo="Typo.caption" Style="color: #FFF8F0;">Total Orders</MudText>
-                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@(totalRegularOrders + totalCustomOrders)</MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.BarChart" Style="color: white;" />
-                    </MudPaper>
-                </MudItem>
+                <div @onclick='() => Navigation.NavigateTo("/orders")'
+                     style="background:#B86830; border-radius:16px; padding:20px; cursor:pointer;
+                            box-shadow:0 4px 16px rgba(184,104,48,0.2); position:relative; overflow:hidden;">
+                    <div style="font-size:10px; font-weight:700; letter-spacing:2px; color:#FFF0C0; margin-bottom:8px;">
+                        TOTAL ORDERS
+                    </div>
+                    <div style="font-size:44px; font-weight:800; color:white; line-height:1; margin-bottom:6px;">
+                        @(totalRegularOrders + totalCustomOrders)
+                    </div>
+                    <div style="font-size:12px; color:#FFF8F0;">Regular + custom combined</div>
+                    <div style="position:absolute; right:14px; top:50%; transform:translateY(-50%);
+                                font-size:52px; opacity:0.15; pointer-events:none;">
+                        📦
+                    </div>
+                </div>
 
-                <!-- Awaiting Quote -->
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px; background: #FFA000; cursor: pointer;"
-                              @onclick='() => Navigation.NavigateTo("/orders")'>
-                        <MudText Typo="Typo.caption" Style="color: #FFF8E1;">Awaiting Quote</MudText>
-                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalAwaitingQuote</MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.HourglassEmpty" Style="color: white;" />
-                    </MudPaper>
-                </MudItem>
+                <div @onclick='() => Navigation.NavigateTo("/orders")'
+                     style="background:#C8960C; border-radius:16px; padding:20px; cursor:pointer;
+                            box-shadow:0 4px 16px rgba(200,150,12,0.2); position:relative; overflow:hidden;">
+                    <div style="font-size:10px; font-weight:700; letter-spacing:2px; color:#FFF0A0; margin-bottom:8px;">
+                        PENDING ORDERS
+                    </div>
+                    <div style="font-size:44px; font-weight:800; color:white; line-height:1; margin-bottom:6px;">
+                        @totalPendingOrders
+                    </div>
+                    <div style="font-size:12px; color:#FFF8E0;">All new incoming orders</div>
+                    <div style="position:absolute; right:14px; top:50%; transform:translateY(-50%);
+                                font-size:52px; opacity:0.15; pointer-events:none;">
+                        ⏳
+                    </div>
+                </div>
 
-            </MudGrid>
+            </div>
 
-            <!-- LINE CHART — Monthly Orders -->
-            <MudText Typo="Typo.h6"
-                     Style="color: #3E1C00; font-weight: bold; margin-top: 32px; margin-bottom: 12px;">
-                📈 Monthly Overview
-            </MudText>
+            <!-- ── ROW 2: CHART + STATUS BREAKDOWN ── -->
+            <div style="display:grid; grid-template-columns:3fr 2fr; gap:16px; margin-bottom:24px;">
 
-            <MudPaper Elevation="3"
-                      Style="padding: 24px; border-radius: 16px; background: #FFF8F0;">
-
-                @if (chartLabels == null || chartLabels.Length == 0)
-                {
-                    <MudText Typo="Typo.body2" Style="color: #B86830; text-align: center; padding: 24px;">
-                        No data available to display yet.
-                    </MudText>
-                }
-                else
-                {
-                    <!-- Chart Toggle Buttons -->
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <MudButton Variant="@(showRegular ? Variant.Filled : Variant.Outlined)"
-                                   Style="@(showRegular ? "background:#3E1C00;color:white;" : "color:#3E1C00;border-color:#3E1C00;")"
-                                   Size="Size.Small"
-                                   OnClick="ToggleRegular">
-                            Regular Orders
-                        </MudButton>
-                        <MudButton Variant="@(showCustom ? Variant.Filled : Variant.Outlined)"
-                                   Style="@(showCustom ? "background:#6A1B9A;color:white;" : "color:#6A1B9A;border-color:#6A1B9A;")"
-                                   Size="Size.Small"
-                                   OnClick="ToggleCustom">
-                            Custom Orders
-                        </MudButton>
+                <!-- Chart Panel -->
+                <div style="background:#FFF8F0; border-radius:16px; padding:22px;
+                            box-shadow:0 2px 12px rgba(62,28,0,0.07);">
+                    <div style="color:#3E1C00; font-size:16px; font-weight:700; margin-bottom:2px;">
+                        📈 Monthly Overview
+                    </div>
+                    <div style="color:#B86830; font-size:12px; margin-bottom:14px;">
+                        Orders placed each month
                     </div>
 
-                    <MudChart ChartType="ChartType.Line"
-                              ChartSeries="@activeChartSeries"
-                              XAxisLabels="@chartLabels"
-                              Width="100%"
-                              Height="320px"
-                              ChartOptions="@chartOptions" />
-                }
-            </MudPaper>
+                    <div style="display:flex; gap:8px; margin-bottom:16px;">
+                        <button @onclick="ToggleRegular"
+                                style="padding:6px 18px; border-radius:20px; border:2px solid #3E1C00;
+                                       cursor:pointer; font-size:12px; font-weight:600; transition:all 0.2s;
+                                       background:@(showRegular ? "#3E1C00" : "transparent");
+                                       color:@(showRegular ? "white" : "#3E1C00");">
+                            Regular Orders
+                        </button>
+                        <button @onclick="ToggleCustom"
+                                style="padding:6px 18px; border-radius:20px; border:2px solid #B86830;
+                                       cursor:pointer; font-size:12px; font-weight:600; transition:all 0.2s;
+                                       background:@(showCustom ? "#B86830" : "transparent");
+                                       color:@(showCustom ? "white" : "#B86830");">
+                            Custom Orders
+                        </button>
+                    </div>
 
-            <!-- RECENT ORDERS TABLE -->
-            <MudText Typo="Typo.h6"
-                     Style="color: #3E1C00; font-weight: bold; margin-top: 32px; margin-bottom: 12px;">
-                🧾 Recent Orders
-            </MudText>
+                    @if (chartLabels == null || chartLabels.Length == 0)
+                    {
+                        <div style="color:#B86830; text-align:center; padding:60px 0; font-size:13px;">
+                            No chart data available yet.
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- explicit height wrapper so MudChart renders visibly -->
+                        <div style="width:100%; height:280px;">
+                            <MudChart ChartType="ChartType.Bar"
+                                      ChartSeries="@activeChartSeries"
+                                      XAxisLabels="@chartLabels"
+                                      Width="100%"
+                                      Height="280px"
+                                      ChartOptions="@chartOptions" />
+                        </div>
+                    }
+                </div>
 
-            <MudPaper Elevation="3" Style="border-radius: 16px; background: #FFF8F0; overflow: hidden;">
+                <!-- Status Breakdown Panel -->
+                <div style="background:#FFF8F0; border-radius:16px; padding:22px;
+                            box-shadow:0 2px 12px rgba(62,28,0,0.07);">
+                    <div style="color:#3E1C00; font-size:16px; font-weight:700; margin-bottom:2px;">
+                        📊 Order Status
+                    </div>
+                    <div style="color:#B86830; font-size:12px; margin-bottom:18px;">
+                        All orders by current status
+                    </div>
+
+                    @if (!statusBreakdown.Any())
+                    {
+                        <div style="color:#B86830; text-align:center; padding:24px 0; font-size:13px;">
+                            No order data yet.
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var item in statusBreakdown)
+                        {
+                            <div style="margin-bottom:16px;">
+                                <div style="display:flex; justify-content:space-between;
+                                            align-items:center; margin-bottom:5px;">
+                                    <span style="color:#3E1C00; font-size:13px; font-weight:500;">
+                                        @item.Status
+                                    </span>
+                                    <span style="background:@item.Color; color:white;
+                                                 padding:2px 12px; border-radius:12px;
+                                                 font-size:12px; font-weight:700; min-width:32px;
+                                                 text-align:center;">
+                                        @item.Count
+                                    </span>
+                                </div>
+                                <div style="background:#F0DCC8; border-radius:6px; height:7px;">
+                                    <div style="background:@item.Color;
+                                                width:@(item.Percent.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%;
+                                                height:7px; border-radius:6px;">
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+
+            <!-- ── ROW 3: RECENT ORDERS TABLE ── -->
+            <div style="background:#FFF8F0; border-radius:16px; overflow:hidden;
+                        box-shadow:0 2px 12px rgba(62,28,0,0.07); margin-bottom:32px;">
+
+                <div style="padding:18px 22px 12px; border-bottom:1px solid #F0DCC8;">
+                    <div style="color:#3E1C00; font-size:16px; font-weight:700;">🧾 Recent Orders</div>
+                    <div style="color:#B86830; font-size:12px;">Latest 8 orders across all types</div>
+                </div>
+
                 @if (recentOrders == null || !recentOrders.Any())
                 {
-                    <MudText Typo="Typo.body2" Style="color: #B86830; text-align: center; padding: 24px;">
+                    <div style="color:#B86830; text-align:center; padding:32px; font-size:13px;">
                         No recent orders found.
-                    </MudText>
+                    </div>
                 }
                 else
                 {
-                    <MudTable Items="@recentOrders" Hover="true" Striped="true"
-                              Style="background: transparent;"
-                              Elevation="0">
-                        <HeaderContent>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Order ID</MudTh>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Type</MudTh>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Customer</MudTh>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Amount</MudTh>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Status</MudTh>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Date</MudTh>
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd Style="color: #3E1C00; font-weight: bold;">@context.DisplayId</MudTd>
-                            <MudTd>
-                                @if (context.IsCustom)
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%; border-collapse:collapse; min-width:700px;">
+                            <thead>
+                                <tr style="background:#3E1C00;">
+                                    <th style="padding:12px 16px; color:#E8C547; text-align:left; font-size:12px; font-weight:700; letter-spacing:0.5px;">Order ID</th>
+                                    <th style="padding:12px 16px; color:#E8C547; text-align:left; font-size:12px; font-weight:700; letter-spacing:0.5px;">Type</th>
+                                    <th style="padding:12px 16px; color:#E8C547; text-align:left; font-size:12px; font-weight:700; letter-spacing:0.5px;">Customer</th>
+                                    <th style="padding:12px 16px; color:#E8C547; text-align:left; font-size:12px; font-weight:700; letter-spacing:0.5px;">Details</th>
+                                    <th style="padding:12px 16px; color:#E8C547; text-align:left; font-size:12px; font-weight:700; letter-spacing:0.5px;">Amount</th>
+                                    <th style="padding:12px 16px; color:#E8C547; text-align:left; font-size:12px; font-weight:700; letter-spacing:0.5px;">Status</th>
+                                    <th style="padding:12px 16px; color:#E8C547; text-align:left; font-size:12px; font-weight:700; letter-spacing:0.5px;">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in recentOrders)
                                 {
-                                    <span style="background: #6A1B9A; color: white;
-                                                 padding: 3px 10px; border-radius: 20px;
-                                                 font-size: 12px; font-weight: bold;">
-                                        ✨ Custom
-                                    </span>
+                                    <tr style="border-bottom:1px solid #F5E6D8;">
+                                        <td style="padding:12px 16px; color:#3E1C00; font-weight:700; font-size:13px;">
+                                            @item.DisplayId
+                                        </td>
+                                        <td style="padding:12px 16px;">
+                                            @if (item.IsCustom)
+                                            {
+                                                <span style="background:#7A3B1E; color:#FFD99A; padding:4px 12px;
+                                                             border-radius:12px; font-size:11px; font-weight:700;">
+                                                    ✨ Custom
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span style="background:#3E1C00; color:#E8C547; padding:4px 12px;
+                                                             border-radius:12px; font-size:11px; font-weight:700;">
+                                                    🛒 Regular
+                                                </span>
+                                            }
+                                        </td>
+                                        <td style="padding:12px 16px; color:#3E1C00; font-size:13px;">
+                                            @item.CustomerName
+                                        </td>
+                                        <td style="padding:12px 16px; color:#7A5030; font-size:12px;">
+                                            @item.Details
+                                        </td>
+                                        <td style="padding:12px 16px; color:#3E1C00; font-weight:700; font-size:13px;">
+                                            @(item.TotalAmount > 0 ? "₱" + item.TotalAmount.ToString("N2") : "—")
+                                        </td>
+                                        <td style="padding:12px 16px;">
+                                            <span style="@GetStatusStyle(item.OrderStatus)
+                                                         padding:4px 12px; border-radius:12px;
+                                                         font-size:11px; font-weight:700; display:inline-block;">
+                                                @item.OrderStatus
+                                            </span>
+                                        </td>
+                                        <td style="padding:12px 16px; color:#B86830; font-size:13px;">
+                                            @item.OrderDate
+                                        </td>
+                                    </tr>
                                 }
-                                else
-                                {
-                                    <span style="background: #3E1C00; color: white;
-                                                 padding: 3px 10px; border-radius: 20px;
-                                                 font-size: 12px; font-weight: bold;">
-                                        🛒 Regular
-                                    </span>
-                                }
-                            </MudTd>
-                            <MudTd Style="color: #3E1C00;">@context.CustomerName</MudTd>
-                            <MudTd Style="color: #3E1C00;">
-                                @(context.TotalAmount > 0 ? "₱" + context.TotalAmount.ToString("N2") : "—")
-                            </MudTd>
-                            <MudTd>
-                                <MudChip T="string" Size="Size.Small"
-                                         Style="@GetStatusStyle(context.OrderStatus)">
-                                    @context.OrderStatus
-                                </MudChip>
-                            </MudTd>
-                            <MudTd Style="color: #B86830;">@context.OrderDate</MudTd>
-                        </RowTemplate>
-                    </MudTable>
+                            </tbody>
+                        </table>
+                    </div>
                 }
-            </MudPaper>
+            </div>
         }
 
     </MudMainContent>
@@ -220,12 +321,10 @@
     string adminName = string.Empty;
     string adminEmail = string.Empty;
 
-    // ── Stat card counts ──
     int totalRegularOrders = 0;
     int totalCustomOrders = 0;
-    int totalAwaitingQuote = 0;
+    int totalPendingOrders = 0;
 
-    // ── Chart ──
     string[] chartLabels = Array.Empty<string>();
     List<ChartSeries> allChartSeries = new();
     List<ChartSeries> activeChartSeries = new();
@@ -238,17 +337,26 @@
             LineStrokeWidth = 3,
             YAxisLines = true,
             YAxisTicks = 1,
-            MaxNumYAxisTicks = 10
+            MaxNumYAxisTicks = 8
         };
 
-    // ── Recent Orders Table ──
+    List<StatusRow> statusBreakdown = new();
     List<RecentOrderItem> recentOrders = new();
+
+    class StatusRow
+    {
+        public string Status { get; set; } = string.Empty;
+        public int Count { get; set; }
+        public double Percent { get; set; }
+        public string Color { get; set; } = "#9E9E9E";
+    }
 
     class RecentOrderItem
     {
         public string DisplayId { get; set; } = string.Empty;
         public bool IsCustom { get; set; }
         public string CustomerName { get; set; } = string.Empty;
+        public string Details { get; set; } = string.Empty;
         public double TotalAmount { get; set; }
         public string OrderStatus { get; set; } = string.Empty;
         public string OrderDate { get; set; } = string.Empty;
@@ -276,18 +384,20 @@
     {
         var allItems = new List<RecentOrderItem>();
 
-        // ── 1. Regular Orders ──
+        // Regular Orders
         try
         {
-            var regularResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
+            var res = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
                 "Orders/GetAllOrders");
 
-            if (regularResponse?.Status == 200 && regularResponse.Data != null)
+            if (res?.Status == 200 && res.Data != null)
             {
-                var orders = regularResponse.Data;
-                totalRegularOrders = orders.Count;
+                totalRegularOrders = res.Data.Count;
 
-                foreach (var o in orders)
+                totalPendingOrders += res.Data.Count(o =>
+                    TryGetString(o, "orderStatus", "OrderStatus") != "Rejected");
+
+                foreach (var o in res.Data)
                 {
                     var raw = GetDateRaw(o);
                     TryParseDate(raw, out var dt);
@@ -296,44 +406,48 @@
                             DisplayId = "ORD-" + TryGetInt(o, "orderId", "OrderId"),
                             IsCustom = false,
                             CustomerName = "User #" + TryGetInt(o, "userId", "UserId"),
-                            TotalAmount = TryGetDouble(o, "totalPrice", "TotalPrice", "totalAmount", "TotalAmount"),
-                            OrderStatus = TryGetString(o, "orderStatus", "OrderStatus", "status", "Status"),
+                            Details = "Product #" + TryGetInt(o, "productId", "ProductId")
+                                           + " | Qty: " + TryGetInt(o, "quantity", "Quantity"),
+                            TotalAmount = TryGetDouble(o, "totalPrice", "TotalPrice"),
+                            OrderStatus = TryGetString(o, "orderStatus", "OrderStatus"),
                             OrderDate = dt != default ? dt.ToString("MMM dd, yyyy") : raw,
                             SortDate = dt
                         });
                 }
 
-                BuildChart(orders, "Regular Orders", ref allChartSeries, isRegular: true);
+                BuildRegularChart(res.Data);
             }
         }
         catch { totalRegularOrders = 0; }
 
-        // ── 2. Custom Orders ──
+        // Custom Orders
         try
         {
-            var customResponse = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
+            var res = await Http.GetFromJsonAsync<ServiceResponse<List<System.Text.Json.JsonElement>>>(
                 "CustomOrder/GetAllCustomOrders");
 
-            if (customResponse?.Status == 200 && customResponse.Data != null)
+            if (res?.Status == 200 && res.Data != null)
             {
-                var customs = customResponse.Data;
-                totalCustomOrders = customs.Count;
-                totalAwaitingQuote = customs.Count(c =>
-                {
-                    var s = TryGetString(c, "orderStatus", "OrderStatus");
-                    return s == "Awaiting Quote";
-                });
+                totalCustomOrders = res.Data.Count;
 
-                foreach (var c in customs)
+                totalPendingOrders += res.Data.Count(o =>
+                    TryGetString(o, "orderStatus", "OrderStatus") != "Rejected");
+
+                foreach (var c in res.Data)
                 {
                     var raw = GetDateRaw(c);
                     TryParseDate(raw, out var dt);
+                    var name = TryGetString(c, "fullName", "FullName");
                     allItems.Add(new RecentOrderItem
                         {
                             DisplayId = "CST-" + TryGetInt(c, "customOrderId", "CustomOrderId"),
                             IsCustom = true,
-                            CustomerName = TryGetString(c, "fullName", "FullName") is var n && !string.IsNullOrEmpty(n)
-                                               ? n : "User #" + TryGetInt(c, "userId", "UserId"),
+                            CustomerName = !string.IsNullOrEmpty(name)
+                                               ? name
+                                               : "User #" + TryGetInt(c, "userId", "UserId"),
+                            Details = TryGetString(c, "orderType", "OrderType")
+                                           + " | " + (TryGetString(c, "flavor", "Flavor") is var f
+                                                       && !string.IsNullOrEmpty(f) ? f : "Custom"),
                             TotalAmount = TryGetDouble(c, "quotedPrice", "QuotedPrice"),
                             OrderStatus = TryGetString(c, "orderStatus", "OrderStatus"),
                             OrderDate = dt != default ? dt.ToString("MMM dd, yyyy") : raw,
@@ -341,26 +455,25 @@
                         });
                 }
 
-                AppendCustomChart(customs);
+                AppendCustomChart(res.Data);
             }
         }
-        catch { totalCustomOrders = 0; totalAwaitingQuote = 0; }
+        catch { totalCustomOrders = 0; }
 
-        // ── 3. Recent Orders — latest 5 combined ──
+        BuildStatusBreakdown(allItems);
+
         recentOrders = allItems
             .OrderByDescending(x => x.SortDate)
-            .Take(5)
+            .Take(8)
             .ToList();
 
         RefreshActiveChart();
         StateHasChanged();
     }
 
-    // ── Chart: build Regular series ──
-    void BuildChart(List<System.Text.Json.JsonElement> orders, string seriesName,
-                    ref List<ChartSeries> target, bool isRegular)
+    void BuildRegularChart(List<System.Text.Json.JsonElement> orders)
     {
-        target = new List<ChartSeries>();
+        allChartSeries = new List<ChartSeries>();
         var parsed = ParseDates(orders);
         if (!parsed.Any()) return;
 
@@ -370,15 +483,13 @@
             .ToList();
 
         chartLabels = grouped.Select(g => g.Key.ToString("MMM yyyy")).ToArray();
-
-        target.Add(new ChartSeries
+        allChartSeries.Add(new ChartSeries
             {
-                Name = seriesName,
+                Name = "Regular Orders",
                 Data = grouped.Select(g => (double)g.Count()).ToArray()
             });
     }
 
-    // ── Chart: append Custom series using same month labels ──
     void AppendCustomChart(List<System.Text.Json.JsonElement> customs)
     {
         var parsed = ParseDates(customs);
@@ -396,21 +507,37 @@
         allChartSeries.Add(new ChartSeries
             {
                 Name = "Custom Orders",
-                Data = monthKeys.Select(m => (double)(grouped.ContainsKey(m) ? grouped[m] : 0)).ToArray()
+                Data = monthKeys.Select(m => grouped.ContainsKey(m) ? (double)grouped[m] : 0).ToArray()
             });
     }
 
-    List<DateTime> ParseDates(List<System.Text.Json.JsonElement> items)
+    void BuildStatusBreakdown(List<RecentOrderItem> all)
     {
-        var result = new List<DateTime>();
-        foreach (var o in items)
+        var colors = new Dictionary<string, string>
         {
-            var raw = GetDateRaw(o);
-            if (string.IsNullOrEmpty(raw)) continue;
-            if (TryParseDate(raw, out var dt) || DateTime.TryParse(raw, out dt))
-                result.Add(dt);
-        }
-        return result;
+            { "Pending",          "#FFA000" },
+            { "Awaiting Quote",   "#795548" },
+            { "Quoted",           "#0288D1" },
+            { "Preparing",        "#1565C0" },
+            { "Ready for Pickup", "#6A1B9A" },
+            { "Delivered",        "#2E7D32" },
+            { "Rejected",         "#C62828" }
+        };
+
+        var counts = all
+            .GroupBy(x => x.OrderStatus)
+            .Select(g => new { Status = g.Key, Count = g.Count() })
+            .OrderByDescending(x => x.Count)
+            .ToList();
+
+        int total = counts.Sum(x => x.Count);
+        statusBreakdown = counts.Select(x => new StatusRow
+            {
+                Status = x.Status,
+                Count = x.Count,
+                Percent = total > 0 ? Math.Round((double)x.Count / total * 100, 1) : 0,
+                Color = colors.ContainsKey(x.Status) ? colors[x.Status] : "#9E9E9E"
+            }).ToList();
     }
 
     void ToggleRegular() { showRegular = !showRegular; RefreshActiveChart(); }
@@ -428,35 +555,49 @@
         "pending" => "background:#FFA000;color:white;",
         "preparing" => "background:#1565C0;color:white;",
         "ready for pickup" => "background:#6A1B9A;color:white;",
-        "delivered" => "background:#4CAF50;color:white;",
+        "delivered" => "background:#2E7D32;color:white;",
         "awaiting quote" => "background:#795548;color:white;",
         "quoted" => "background:#0288D1;color:white;",
-        "rejected" => "background:#D32F2F;color:white;",
+        "rejected" => "background:#C62828;color:white;",
         _ => "background:#9E9E9E;color:white;"
     };
 
-    // ── Date helpers ──
     string GetDateRaw(System.Text.Json.JsonElement o)
     {
-        foreach (var key in new[] { "orderDate", "OrderDate", "dateOrdered", "DateOrdered",
-                                    "dateCreated", "DateCreated", "createdAt", "CreatedAt", "date", "Date" })
+        foreach (var key in new[] {
+            "orderDate","OrderDate","dateOrdered","DateOrdered",
+            "dateCreated","DateCreated","createdAt","CreatedAt","date","Date" })
+        {
             if (o.TryGetProperty(key, out var prop))
             {
                 var val = prop.GetString();
                 if (!string.IsNullOrEmpty(val)) return val;
             }
+        }
         return string.Empty;
+    }
+
+    List<DateTime> ParseDates(List<System.Text.Json.JsonElement> items)
+    {
+        var result = new List<DateTime>();
+        foreach (var o in items)
+        {
+            var raw = GetDateRaw(o);
+            if (string.IsNullOrEmpty(raw)) continue;
+            if (TryParseDate(raw, out var dt)) result.Add(dt);
+            else if (DateTime.TryParse(raw, out dt)) result.Add(dt);
+        }
+        return result;
     }
 
     bool TryParseDate(string raw, out DateTime result) =>
         DateTime.TryParseExact(raw,
-            new[]
-            {
-                "yyyy-MM-dd HH:mm:ss.fff", "yyyy-MM-dd HH:mm:ss.ff",
-                "yyyy-MM-dd HH:mm:ss.f",   "yyyy-MM-dd HH:mm:ss",
+            new[] {
+                "yyyy-MM-dd HH:mm:ss.fff","yyyy-MM-dd HH:mm:ss.ff",
+                "yyyy-MM-dd HH:mm:ss.f",  "yyyy-MM-dd HH:mm:ss",
                 "yyyy-MM-ddTHH:mm:ss.fffZ","yyyy-MM-ddTHH:mm:ss.fff",
-                "yyyy-MM-ddTHH:mm:ss",     "yyyy-MM-dd",
-                "MM/dd/yyyy",              "MM/dd/yyyy HH:mm:ss"
+                "yyyy-MM-ddTHH:mm:ss",    "yyyy-MM-dd",
+                "MM/dd/yyyy",             "MM/dd/yyyy HH:mm:ss"
                 },
             System.Globalization.CultureInfo.InvariantCulture,
             System.Globalization.DateTimeStyles.None,
