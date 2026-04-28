@@ -1,5 +1,6 @@
 ﻿@page "/users"
 @using OnlineBakeshopSystem.Model
+@using System.Net.Http.Headers
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject ILocalStorageService LocalStorage
@@ -145,6 +146,13 @@
                                             ✏️
                                         </button>
                                         <button style="background: none; border: none; cursor: pointer;
+                                                    padding: 4px 8px; color: #1976D2;
+                                                    font-size: 18px; margin-right: 4px;"
+                                                title="Send push notification"
+                                                @onclick="() => OpenNotifyDialog(user)">
+                                            🔔
+                                        </button>
+                                        <button style="background: none; border: none; cursor: pointer;
                                                        padding: 4px 8px; color: #D32F2F; font-size: 18px;"
                                                 @onclick="() => DeleteUser(user.UserId)">
                                             🗑️
@@ -218,6 +226,77 @@
             </div>
         }
 
+        @if (showNotifyDialog)
+        {
+            <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
+            <div style="position: fixed; top: 0; left: 0;
+                        width: 100vw; height: 100vh;
+                        display: flex; align-items: center;
+                        justify-content: center; z-index: 10;">
+                <MudPaper Elevation="5"
+                          Style="width: 100%; max-width: 520px;
+                                 padding: 32px; border-radius: 20px;
+                                 background: #FFF8F0;">
+                    <MudText Typo="Typo.h6"
+                             Style="color: #3E1C00; font-weight: bold; margin-bottom: 8px;">
+                        Send Push Notification
+                    </MudText>
+
+                    <MudText Typo="Typo.body2"
+                             Style="color: #B86830; margin-bottom: 20px;">
+                        To: @notifyTargetName (@notifyTargetEmail)
+                    </MudText>
+
+                    <MudTextField @bind-Value="notificationTitle" Label="Title"
+                                  Variant="Variant.Outlined" FullWidth="true"
+                                  Style="margin-bottom: 16px;" />
+                    <MudTextField @bind-Value="notificationMessage" Label="Message"
+                                  Variant="Variant.Outlined" FullWidth="true"
+                                  Lines="4" />
+
+                    @if (!string.IsNullOrEmpty(notifyError))
+                    {
+                        <MudAlert Severity="Severity.Error"
+                                  Style="margin-top: 16px; border-radius: 8px;">
+                            @notifyError
+                        </MudAlert>
+                    }
+
+                    @if (!string.IsNullOrEmpty(notifySuccess))
+                    {
+                        <MudAlert Severity="Severity.Success"
+                                  Style="margin-top: 16px; border-radius: 8px;">
+                            @notifySuccess
+                        </MudAlert>
+                    }
+
+                    <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+                        <button style="padding: 10px 20px; background: white;
+                                       border: 2px solid #B86830; border-radius: 8px;
+                                       color: #B86830; font-weight: bold; cursor: pointer;"
+                                @onclick="CloseNotifyDialog" disabled="@isSendingNotification">
+                            Cancel
+                        </button>
+                        <button style="padding: 10px 20px; background: #1976D2;
+                                       border: none; border-radius: 8px;
+                                       color: white; font-weight: bold; cursor: pointer;"
+                                @onclick="SendPushNotification" disabled="@isSendingNotification">
+                            @if (isSendingNotification)
+                            {
+                                <MudProgressCircular Size="Size.Small" Indeterminate="true"
+                                                     Style="margin-right: 8px;" />
+                                <span>Sending...</span>
+                            }
+                            else
+                            {
+                                <span>Send</span>
+                            }
+                        </button>
+                    </div>
+                </MudPaper>
+            </div>
+        }
+
     </MudMainContent>
 </MudLayout>
 
@@ -226,10 +305,19 @@
     bool isLoading  = true;
     bool isSaving   = false;
     bool showDialog = false;
+    bool showNotifyDialog       = false;
+    bool isSendingNotification  = false;
 
     string adminName   = string.Empty;
     string dialogError = string.Empty;
     string searchQuery = string.Empty;
+    string notifyTargetName    = string.Empty;
+    string notifyTargetEmail   = string.Empty;
+    string notificationTitle   = string.Empty;
+    string notificationMessage = string.Empty;
+    string notifyError         = string.Empty;
+    string notifySuccess       = string.Empty;
+    int notifyTargetUserId     = 0;
 
     List<UserModel> users         = new();
     List<UserModel> filteredUsers = new();
@@ -333,6 +421,98 @@
         }
         catch { dialogError = "Cannot connect to server. Please try again."; }
         finally { isSaving = false; }
+    }
+
+    void OpenNotifyDialog(UserModel user)
+    {
+        notifyError = string.Empty;
+        notifySuccess = string.Empty;
+
+        notifyTargetUserId = user.UserId;
+        notifyTargetName = user.FullName ?? string.Empty;
+        notifyTargetEmail = user.Email ?? string.Empty;
+
+        notificationTitle = "Sweet Cengsations";
+        notificationMessage = string.Empty;
+        showNotifyDialog = true;
+    }
+
+    void CloseNotifyDialog()
+    {
+        if (isSendingNotification) return;
+
+        showNotifyDialog = false;
+        notifyError = string.Empty;
+        notifySuccess = string.Empty;
+    }
+
+    async Task SendPushNotification()
+    {
+        notifyError = string.Empty;
+        notifySuccess = string.Empty;
+
+        var token = await LocalStorage.GetItemAsync<string>("token");
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            notifyError = "Session expired. Please log in again.";
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        if (notifyTargetUserId <= 0)
+        {
+            notifyError = "Invalid user selected.";
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(notificationTitle))
+        {
+            notifyError = "Notification title is required.";
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(notificationMessage))
+        {
+            notifyError = "Notification message is required.";
+            return;
+        }
+
+        isSendingNotification = true;
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/admin/notifications/send", new
+            {
+                TargetUserIds = new[] { notifyTargetUserId },
+                Title = notificationTitle.Trim(),
+                Body = notificationMessage.Trim(),
+                Type = "admin_manual",
+                Data = new Dictionary<string, string>
+                {
+                    ["source"] = "admin_users_page",
+                    ["targetUserId"] = notifyTargetUserId.ToString()
+                }
+            });
+
+            if (response.IsSuccessStatusCode)
+            {
+                notifySuccess = "Push notification sent successfully.";
+            }
+            else
+            {
+                var errorBody = await response.Content.ReadAsStringAsync();
+                notifyError = string.IsNullOrWhiteSpace(errorBody)
+                    ? "Failed to send push notification."
+                    : errorBody;
+            }
+        }
+        catch
+        {
+            notifyError = "Cannot connect to server. Please try again.";
+        }
+        finally
+        {
+            isSendingNotification = false;
+        }
     }
 
     // =============================================
