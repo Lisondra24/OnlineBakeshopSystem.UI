@@ -6,812 +6,542 @@
 
 <MudLayout>
 
-    <!-- TOP APP BAR -->
     <MudAppBar Style="background: #3E1C00;" Fixed="true" Elevation="3">
-        <MudText Typo="Typo.h6" Style="color: #E8C547; font-weight: bold;">
-            🎂 Sweet Cengsations
-        </MudText>
+        <MudText Typo="Typo.h6" Style="color: #E8C547; font-weight: bold;">🎂 Sweet Cengsations</MudText>
         <MudSpacer />
-        <MudText Typo="Typo.body2" Style="color: #F5D6C8; margin-right: 16px;">
-            Welcome, @adminName!
-        </MudText>
-        <MudIconButton Icon="@Icons.Material.Filled.Logout"
-                       Style="color: #E8C547;"
-                       OnClick="HandleLogout" />
+        <MudText Typo="Typo.body2" Style="color: #F5D6C8; margin-right: 16px;">Welcome, @adminName!</MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.Logout" Style="color: #E8C547;" OnClick="HandleLogout" />
     </MudAppBar>
 
-    
-    <MudDrawer Open="true"
-               ClipMode="DrawerClipMode.Always"
-               Style="background: #2A1200;">
+    <MudDrawer Open="true" ClipMode="DrawerClipMode.Always" Style="background: #2A1200;">
         <MudNavMenu Style="padding-top: 16px;">
-
-            <MudText Typo="Typo.caption"
-                     Style="color: #E8B4A0; padding-left: 16px; letter-spacing: 2px;">
-                MAIN MENU
-            </MudText>
-
+            <MudText Typo="Typo.caption" Style="color: #E8B4A0; padding-left: 16px; letter-spacing: 2px;">MAIN MENU</MudText>
             <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
-
-            <MudNavLink Href="/home"
-                        Icon="@Icons.Material.Filled.Dashboard"
-                        Style="color: #F5D6C8;">
-                Dashboard
-            </MudNavLink>
-
-            <MudNavLink Href="/products"
-                        Icon="@Icons.Material.Filled.Cake"
-                        Style="color: #F5D6C8;">
-                Products
-            </MudNavLink>
-
-            <MudNavLink Href="/orders"
-                        Icon="@Icons.Material.Filled.ShoppingCart"
-                        Style="color: #E8C547;">
-                Orders
-            </MudNavLink>
- 
-
-            <MudNavLink Href="/users"
-                        Icon="@Icons.Material.Filled.People"
-                        Style="color: #F5D6C8;">
-                Users
-            </MudNavLink>
-
+            <MudNavLink Href="/home" Icon="@Icons.Material.Filled.Dashboard" Style="color: #F5D6C8;">Dashboard</MudNavLink>
+            <MudNavLink Href="/products" Icon="@Icons.Material.Filled.Cake" Style="color: #F5D6C8;">Products</MudNavLink>
+            <MudNavLink Href="/orders" Icon="@Icons.Material.Filled.ShoppingCart" Style="color: #E8C547;">Orders</MudNavLink>
+            <MudNavLink Href="/users" Icon="@Icons.Material.Filled.People" Style="color: #F5D6C8;">Users</MudNavLink>
             <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
-
-            <MudNavLink Icon="@Icons.Material.Filled.Logout"
-                        Style="color: #E8B4A0;"
-                        OnClick="HandleLogout">
-                Logout
-            </MudNavLink>
-
+            <MudNavLink Icon="@Icons.Material.Filled.Logout" Style="color: #E8B4A0;" OnClick="HandleLogout">Logout</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 
-    <!-- MAIN CONTENT -->
-    <MudMainContent Style="background: #FDF6EC; padding: 24px;">
+    <MudMainContent Style="background: #FDF6EC; padding: 0; overflow: hidden;">
+        <div style="height: calc(100vh - 64px); overflow-y: auto; overflow-x: hidden; padding: 24px;">
 
-        <div style="margin-bottom: 24px;">
-            <MudText Typo="Typo.h5" Style="color: #3E1C00; font-weight: bold;">
-                🛒 Orders
-            </MudText>
-            <MudText Typo="Typo.body2" Style="color: #B86830;">
-                Manage all customer orders
-            </MudText>
-        </div>
-
-        <!-- LOADING -->
-        @if (isLoading)
-        {
-            <div style="display: flex; justify-content: center;
-                        align-items: center; height: 60vh;">
-                <MudProgressCircular Indeterminate="true"
-                                     Size="Size.Large"
-                                     Style="color: #3E1C00;" />
-            </div>
-        }
-        else
-        {
-            <!-- STAT CARDS -->
-            <div style="display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-                        gap: 16px; margin-bottom: 28px;">
-
-                <MudPaper Elevation="2"
-                          Style="border-radius: 16px; padding: 20px; background: #3E1C00;">
-                    <MudText Typo="Typo.body2"
-                             Style="color: #E8C547; font-weight: bold;
-                                    letter-spacing: 1px; font-size: 11px;">
-                        TOTAL ORDERS
-                    </MudText>
-                    <MudText Typo="Typo.h4"
-                             Style="color: white; font-weight: bold; margin-top: 4px;">
-                        @orders.Count
-                    </MudText>
-                    <MudText Typo="Typo.caption" Style="color: #F5D6C8;">
-                        Regular orders
-                    </MudText>
-                </MudPaper>
-
-                <MudPaper Elevation="2"
-                          Style="border-radius: 16px; padding: 20px; background: #6A1B9A;">
-                    <MudText Typo="Typo.body2"
-                             Style="color: #E8C547; font-weight: bold;
-                                    letter-spacing: 1px; font-size: 11px;">
-                        CUSTOM ORDERS
-                    </MudText>
-                    <MudText Typo="Typo.h4"
-                             Style="color: white; font-weight: bold; margin-top: 4px;">
-                        @customOrders.Count
-                    </MudText>
-                    <MudText Typo="Typo.caption" Style="color: #E1BEE7;">
-                        Custom cake & cupcake
-                    </MudText>
-                </MudPaper>
-
-                <MudPaper Elevation="2"
-                          Style="border-radius: 16px; padding: 20px; background: #FFA000;">
-                    <MudText Typo="Typo.body2"
-                             Style="color: white; font-weight: bold;
-                                    letter-spacing: 1px; font-size: 11px;">
-                        AWAITING QUOTE
-                    </MudText>
-                    <MudText Typo="Typo.h4"
-                             Style="color: white; font-weight: bold; margin-top: 4px;">
-                        @customOrders.Count(x => x.OrderStatus == "Awaiting Quote")
-                    </MudText>
-                    <MudText Typo="Typo.caption" Style="color: #FFF8E1;">
-                        Needs price set
-                    </MudText>
-                </MudPaper>
-
-                <MudPaper Elevation="2"
-                          Style="border-radius: 16px; padding: 20px; background: #D32F2F;">
-                    <MudText Typo="Typo.body2"
-                             Style="color: white; font-weight: bold;
-                                    letter-spacing: 1px; font-size: 11px;">
-                        UNPAID CUSTOM
-                    </MudText>
-                    <MudText Typo="Typo.h4"
-                             Style="color: white; font-weight: bold; margin-top: 4px;">
-                        @customOrders.Count(x => x.PaymentStatus == "Unpaid"
-                                             && x.OrderStatus != "Awaiting Quote"
-                                             && x.OrderStatus != "Rejected")
-                    </MudText>
-                    <MudText Typo="Typo.caption" Style="color: #FFCDD2;">
-                        Needs payment confirmation
-                    </MudText>
-                </MudPaper>
-
+            <div style="margin-bottom: 24px;">
+                <MudText Typo="Typo.h5" Style="color: #3E1C00; font-weight: bold;">🛒 Orders</MudText>
+                <MudText Typo="Typo.body2" Style="color: #B86830;">Manage all customer orders</MudText>
             </div>
 
-            <!-- COMBINED TABLE -->
-            @if (combinedOrders == null || combinedOrders.Count == 0)
+            @if (isLoading)
             {
-                <MudAlert Severity="Severity.Info" Style="border-radius: 12px;">
-                    No orders found.
-                </MudAlert>
+                <div style="display: flex; justify-content: center; align-items: center; height: 60vh;">
+                    <MudProgressCircular Indeterminate="true" Size="Size.Large" Style="color: #3E1C00;" />
+                </div>
             }
             else
             {
-                <MudPaper Elevation="3" Style="border-radius: 16px; overflow: hidden;">
-                    <table style="width: 100%; border-collapse: collapse;
-                                   background: #FFF8F0;">
-                        <thead>
-                            <tr style="background: #3E1C00;">
-                                <th style="padding: 14px 16px; color: #E8C547;
-                                           text-align: left; font-weight: bold;">
-                                    Order ID
-                                </th>
-                                <th style="padding: 14px 16px; color: #E8C547;
-                                           text-align: left; font-weight: bold;">
-                                    Type
-                                </th>
-                                <th style="padding: 14px 16px; color: #E8C547;
-                                           text-align: left; font-weight: bold;">
-                                    Customer
-                                </th>
-                                <th style="padding: 14px 16px; color: #E8C547;
-                                           text-align: left; font-weight: bold;">
-                                    Details
-                                </th>
-                                <th style="padding: 14px 16px; color: #E8C547;
-                                           text-align: left; font-weight: bold;">
-                                    Price
-                                </th>
-                                <th style="padding: 14px 16px; color: #E8C547;
-                                           text-align: left; font-weight: bold;">
-                                    Order Date
-                                </th>
-                                <th style="padding: 14px 16px; color: #E8C547;
-                                           text-align: left; font-weight: bold;">
-                                    Status
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (CombinedOrderRow row in combinedOrders)
-                            {
-                                <tr style="border-bottom: 1px solid #F5E6D8; cursor: pointer;"
-                                    @onclick="() => OpenRow(row)">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px;">
 
-                                    <td style="padding: 12px 16px; color: #3E1C00;
-                                               font-weight: bold;">
-                                        @row.DisplayId
-                                    </td>
+                    <MudPaper Elevation="@(activeFilter == "all" ? 6 : 2)"
+                              Style="@("border-radius: 16px; padding: 20px; background: #3E1C00; cursor: pointer;" + (activeFilter == "all" ? " outline: 3px solid #E8C547;" : ""))"
+                              @onclick='() => SetFilter("all")'>
+                        <MudText Typo="Typo.body2" Style="color: #E8C547; font-weight: bold; letter-spacing: 1px; font-size: 11px;">TOTAL ORDERS</MudText>
+                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold; margin-top: 4px;">@orders.Count</MudText>
+                        <MudText Typo="Typo.caption" Style="color: #F5D6C8;">Regular orders</MudText>
+                    </MudPaper>
 
-                                    <td style="padding: 12px 16px;">
-                                        @if (row.IsCustom)
-                                        {
-                                            <span style="background: #6A1B9A; color: white;
-                                                         padding: 4px 12px; border-radius: 20px;
-                                                         font-size: 12px; font-weight: bold;">
-                                                ✨ Custom
-                                            </span>
-                                        }
-                                        else
-                                        {
-                                            <span style="background: #3E1C00; color: white;
-                                                         padding: 4px 12px; border-radius: 20px;
-                                                         font-size: 12px; font-weight: bold;">
-                                                🛒 Regular
-                                            </span>
-                                        }
-                                    </td>
+                    <MudPaper Elevation="@(activeFilter == "custom" ? 6 : 2)"
+                              Style="@("border-radius: 16px; padding: 20px; background: #6A1B9A; cursor: pointer;" + (activeFilter == "custom" ? " outline: 3px solid #E8C547;" : ""))"
+                              @onclick='() => SetFilter("custom")'>
+                        <MudText Typo="Typo.body2" Style="color: #E8C547; font-weight: bold; letter-spacing: 1px; font-size: 11px;">CUSTOM ORDERS</MudText>
+                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold; margin-top: 4px;">@customOrders.Count</MudText>
+                        <MudText Typo="Typo.caption" Style="color: #E1BEE7;">Custom cake & cupcake</MudText>
+                    </MudPaper>
 
-                                    <td style="padding: 12px 16px; color: #3E1C00;
-                                               font-weight: bold;">
-                                        @row.CustomerName
-                                        @if (!string.IsNullOrEmpty(row.ContactNo))
-                                        {
-                                            <br />
-                                            <span style="font-weight: normal;
-                                                         font-size: 12px; color: #B86830;">
-                                                @row.ContactNo
-                                            </span>
-                                        }
-                                    </td>
+                    <MudPaper Elevation="2" Style="border-radius: 16px; padding: 20px; background: #FFA000;">
+                        <MudText Typo="Typo.body2" Style="color: white; font-weight: bold; letter-spacing: 1px; font-size: 11px;">AWAITING APPROVAL</MudText>
+                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold; margin-top: 4px;">@customOrders.Count(x => x.OrderStatus == "Awaiting Approval")</MudText>
+                        <MudText Typo="Typo.caption" Style="color: #FFF8E1;">Needs review</MudText>
+                    </MudPaper>
 
-                                    <td style="padding: 12px 16px; color: #3E1C00;">
-                                        @row.Details
-                                    </td>
+                    <MudPaper Elevation="2" Style="border-radius: 16px; padding: 20px; background: #D32F2F;">
+                        <MudText Typo="Typo.body2" Style="color: white; font-weight: bold; letter-spacing: 1px; font-size: 11px;">RECEIPT SUBMITTED</MudText>
+                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold; margin-top: 4px;">@(orders.Count(x => x.PaymentStatus == "Receipt Submitted") + customOrders.Count(x => x.PaymentStatus == "Receipt Submitted"))</MudText>
+                        <MudText Typo="Typo.caption" Style="color: #FFCDD2;">Needs payment confirmation</MudText>
+                    </MudPaper>
 
-                                    <td style="padding: 12px 16px; color: #3E1C00;
-                                               font-weight: bold;">
-                                        @(row.TotalPrice > 0
-                                            ? "₱" + row.TotalPrice.ToString("N2")
-                                            : "—")
-                                    </td>
+                </div>
 
-                                    <td style="padding: 12px 16px; color: #3E1C00;">
-                                        @row.OrderDate.ToString("MMM dd, yyyy")
-                                    </td>
+                @if (activeFilter == "custom")
+                {
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <span style="background: #6A1B9A; color: white; padding: 6px 18px; border-radius: 20px; font-size: 13px; font-weight: bold;">✨ Showing Custom Orders only</span>
+                        <button @onclick='() => SetFilter("all")'
+                                style="background: none; border: 2px solid #B86830; border-radius: 20px; color: #B86830; padding: 4px 14px; font-size: 12px; font-weight: bold; cursor: pointer;">
+                            ✕ Clear filter
+                        </button>
+                    </div>
+                }
 
-                                    <td style="padding: 12px 16px;">
-                                        @{
-                                            string status = row.OrderStatus ?? "";
-                                        }
-                                        @if (status == "Awaiting Quote")
-                                        {
-                                            <span style="background: #795548; color: white;
-                                                         padding: 4px 12px; border-radius: 20px;
-                                                         font-size: 12px; font-weight: bold;">
-                                                ⏳ Awaiting Quote
-                                            </span>
-                                        }
-                                        else if (status == "Quoted")
-                                        {
-                                            <span style="background: #0288D1; color: white;
-                                                         padding: 4px 12px; border-radius: 20px;
-                                                         font-size: 12px; font-weight: bold;">
-                                                💬 Quoted
-                                            </span>
-                                        }
-                                        else if (status == "Pending")
-                                        {
-                                            <span style="background: #FFA000; color: white;
-                                                         padding: 4px 12px; border-radius: 20px;
-                                                         font-size: 12px; font-weight: bold;">
-                                                Pending
-                                            </span>
-                                        }
-                                        else if (status == "Preparing")
-                                        {
-                                            <span style="background: #1565C0; color: white;
-                                                         padding: 4px 12px; border-radius: 20px;
-                                                         font-size: 12px; font-weight: bold;">
-                                                Preparing
-                                            </span>
-                                        }
-                                        else if (status == "Ready for Pickup")
-                                        {
-                                            <span style="background: #6A1B9A; color: white;
-                                                         padding: 4px 12px; border-radius: 20px;
-                                                         font-size: 12px; font-weight: bold;">
-                                                Ready for Pickup
-                                            </span>
-                                        }
-                                        else if (status == "Delivered")
-                                        {
-                                            <span style="background: #4CAF50; color: white;
-                                                         padding: 4px 12px; border-radius: 20px;
-                                                         font-size: 12px; font-weight: bold;">
-                                                Delivered
-                                            </span>
-                                        }
-                                        else if (status == "Rejected")
-                                        {
-                                            <span style="background: #D32F2F; color: white;
-                                                         padding: 4px 12px; border-radius: 20px;
-                                                         font-size: 12px; font-weight: bold;">
-                                                Rejected
-                                            </span>
-                                        }
-                                        else
-                                        {
-                                            <span style="background: #9E9E9E; color: white;
-                                                         padding: 4px 12px; border-radius: 20px;
-                                                         font-size: 12px; font-weight: bold;">
-                                                @status
-                                            </span>
-                                        }
-                                    </td>
-
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </MudPaper>
+                @if (filteredOrders == null || filteredOrders.Count == 0)
+                {
+                    <MudAlert Severity="Severity.Info" Style="border-radius: 12px;">No orders found.</MudAlert>
+                }
+                else
+                {
+                    <MudPaper Elevation="3" Style="border-radius: 16px; overflow: hidden; margin-bottom: 32px;">
+                        <div style="overflow-x: auto; overflow-y: auto; max-height: 600px;">
+                            <table style="width: 100%; border-collapse: collapse; background: #FFF8F0; min-width: 850px;">
+                                <thead style="position: sticky; top: 0; z-index: 2;">
+                                    <tr style="background: #3E1C00;">
+                                        <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Order ID</th>
+                                        <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Type</th>
+                                        <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Customer</th>
+                                        <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Details</th>
+                                        <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Price</th>
+                                        <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Date & Time</th>
+                                        <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Payment</th>
+                                        <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (CombinedOrderRow row in filteredOrders)
+                                    {
+                                        <tr style="border-bottom: 1px solid #F5E6D8; cursor: pointer;" @onclick="() => OpenRow(row)">
+                                            <td style="padding: 12px 16px; color: #3E1C00; font-weight: bold;">@row.DisplayId</td>
+                                            <td style="padding: 12px 16px;">
+                                                @if (row.IsCustom)
+                                                {
+                                                    <span style="background: #6A1B9A; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">✨ Custom</span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="background: #3E1C00; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">🛒 Regular</span>
+                                                }
+                                            </td>
+                                            <td style="padding: 12px 16px; color: #3E1C00; font-weight: bold;">
+                                                @row.CustomerName
+                                                @if (!string.IsNullOrEmpty(row.ContactNo))
+                                                {
+                                                    <br />
+                                                    <span style="font-weight: normal; font-size: 12px; color: #B86830;">@row.ContactNo</span>
+                                                }
+                                            </td>
+                                            <td style="padding: 12px 16px; color: #3E1C00;">@row.Details</td>
+                                            <td style="padding: 12px 16px; color: #3E1C00; font-weight: bold;">@(row.TotalPrice > 0 ? "₱" + row.TotalPrice.ToString("N2") : "—")</td>
+                                            <td style="padding: 12px 16px; color: #3E1C00; font-size: 13px;">
+                                                <div>@row.OrderDate.ToString("MMM dd, yyyy")</div>
+                                                @if (!string.IsNullOrEmpty(row.DeliveryTime))
+                                                {
+                                                    <div style="color: #B86830; font-size: 11px;">🕐 @row.DeliveryTime</div>
+                                                }
+                                            </td>
+                                            <td style="padding: 12px 16px;">
+                                                @if (!string.IsNullOrEmpty(row.PaymentMethod))
+                                                {
+                                                    <div style="font-size: 12px; color: #3E1C00; font-weight: bold;">
+                                                        @(row.PaymentMethod == "GCash" ? "📱 GCash" : "💵 COD")
+                                                    </div>
+                                                }
+                                                @if (!string.IsNullOrEmpty(row.PaymentStatus))
+                                                {
+                                                    <span style="@GetPaymentStatusStyle(row.PaymentStatus) padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">
+                                                        @row.PaymentStatus
+                                                    </span>
+                                                }
+                                            </td>
+                                            <td style="padding: 12px 16px;">
+                                                @{
+                                                    string status = row.OrderStatus ?? "";
+                                                }
+                                                @if (status == "Awaiting Approval")
+                                                {
+                                                    <span style="background: #795548; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">⏳ Awaiting Approval</span>
+                                                }
+                                                else if (status == "Approved")
+                                                {
+                                                    <span style="background: #2E7D32; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">✅ Approved</span>
+                                                }
+                                                else if (status == "Pending")
+                                                {
+                                                    <span style="background: #FFA000; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Pending</span>
+                                                }
+                                                else if (status == "Preparing")
+                                                {
+                                                    <span style="background: #1565C0; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Preparing</span>
+                                                }
+                                                else if (status == "Ready for Pickup")
+                                                {
+                                                    <span style="background: #6A1B9A; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Ready for Pickup</span>
+                                                }
+                                                else if (status == "Delivered")
+                                                {
+                                                    <span style="background: #4CAF50; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Delivered</span>
+                                                }
+                                                else if (status == "Rejected")
+                                                {
+                                                    <span style="background: #D32F2F; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Rejected</span>
+                                                }
+                                                else if (status == "Cancelled")
+                                                {
+                                                    <span style="background: #FF6F00; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">🚫 Cancelled</span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="background: #9E9E9E; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">@status</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </MudPaper>
+                }
             }
-        }
 
-        <!-- para sa regular lang nga order -->
-        @if (showRegularDialog)
-        {
-            <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
+            <!-- REGULAR ORDER DIALOG -->
+            @if (showRegularDialog)
+            {
+                <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
+                <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 10;">
+                    <MudPaper Elevation="5" Style="width: 100%; max-width: 560px; padding: 32px; border-radius: 20px; background: #FFF8F0; max-height: 90vh; overflow-y: auto;">
 
-            <div style="position: fixed; top: 0; left: 0;
-                        width: 100vw; height: 100vh;
-                        display: flex; align-items: center;
-                        justify-content: center; z-index: 10;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <MudText Typo="Typo.h6" Style="color: #3E1C00; font-weight: bold;">🛒 Order Details</MudText>
+                            <span style="background: #3E1C00; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Regular</span>
+                        </div>
 
-                <MudPaper Elevation="5"
-                          Style="width: 100%; max-width: 520px;
-                                 padding: 32px; border-radius: 20px;
-                                 background: #FFF8F0;
-                                 max-height: 90vh; overflow-y: auto;">
+                        <MudText Typo="Typo.body2" Style="color: #B86830; margin-bottom: 20px;">Order ID: <strong>ORD-@selectedOrder.OrderId</strong></MudText>
 
-                    <div style="display: flex; justify-content: space-between;
-                                align-items: center; margin-bottom: 8px;">
-                        <MudText Typo="Typo.h6" Style="color: #3E1C00; font-weight: bold;">
-                            🛒 Order Details
-                        </MudText>
-                        <span style="background: #3E1C00; color: white;
-                                     padding: 4px 12px; border-radius: 20px;
-                                     font-size: 12px; font-weight: bold;">
-                            Regular
-                        </span>
-                    </div>
-
-                    <MudText Typo="Typo.body2" Style="color: #B86830; margin-bottom: 24px;">
-                        Order ID: <strong>ORD-@selectedOrder.OrderId</strong>
-                    </MudText>
-
-                    <div style="background: #FDF6EC; border-radius: 12px;
-                                padding: 16px; margin-bottom: 24px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">User ID</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">
-                                @selectedOrder.UserId
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Product ID</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">
-                                @selectedOrder.ProductId
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Quantity</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">
-                                @selectedOrder.Quantity
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Total Price</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">
-                                ₱@selectedOrder.TotalPrice.ToString("N2")
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Order Date</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">
-                                @selectedOrder.OrderDate.ToString("MMM dd, yyyy")
-                            </MudText>
-                        </div>
-                    </div>
-
-                    <MudText Typo="Typo.body2"
-                             Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">
-                        Update Order Status
-                    </MudText>
-                    <div style="display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;">
-                        <MudButton Variant="Variant.Filled"
-                                   OnClick='() => SetRegularStatus("Pending")'
-                                   Style="@(selectedOrder.OrderStatus == "Pending"
-                                            ? "background: #FFA000; color: white; border-radius: 20px; font-weight: bold;"
-                                            : "background: #FFF8F0; color: #FFA000; border: 2px solid #FFA000; border-radius: 20px;")">
-                            Pending
-                        </MudButton>
-                        <MudButton Variant="Variant.Filled"
-                                   OnClick='() => SetRegularStatus("Preparing")'
-                                   Style="@(selectedOrder.OrderStatus == "Preparing"
-                                            ? "background: #1565C0; color: white; border-radius: 20px; font-weight: bold;"
-                                            : "background: #FFF8F0; color: #1565C0; border: 2px solid #1565C0; border-radius: 20px;")">
-                            Preparing
-                        </MudButton>
-                        <MudButton Variant="Variant.Filled"
-                                   OnClick='() => SetRegularStatus("Ready for Pickup")'
-                                   Style="@(selectedOrder.OrderStatus == "Ready for Pickup"
-                                            ? "background: #6A1B9A; color: white; border-radius: 20px; font-weight: bold;"
-                                            : "background: #FFF8F0; color: #6A1B9A; border: 2px solid #6A1B9A; border-radius: 20px;")">
-                            Ready for Pickup
-                        </MudButton>
-                        <MudButton Variant="Variant.Filled"
-                                   OnClick='() => SetRegularStatus("Delivered")'
-                                   Style="@(selectedOrder.OrderStatus == "Delivered"
-                                            ? "background: #4CAF50; color: white; border-radius: 20px; font-weight: bold;"
-                                            : "background: #FFF8F0; color: #4CAF50; border: 2px solid #4CAF50; border-radius: 20px;")">
-                            Delivered
-                        </MudButton>
-                    </div>
-
-                    @if (!string.IsNullOrEmpty(dialogError))
-                    {
-                        <MudAlert Severity="Severity.Error"
-                                  Style="margin-bottom: 16px; border-radius: 8px;">
-                            @dialogError
-                        </MudAlert>
-                    }
-
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <MudButton Variant="Variant.Filled"
-                                   Disabled="@(selectedOrder.OrderStatus == "Rejected" || isSaving)"
-                                   OnClick="RejectRegularOrder"
-                                   Style="background: #D32F2F; color: white;
-                                          border-radius: 8px; font-weight: bold;">
-                            Reject Order
-                        </MudButton>
-                        <div style="display: flex; gap: 12px;">
-                            <MudButton OnClick="CloseDialog"
-                                       Variant="Variant.Outlined"
-                                       Style="color: #B86830; border-color: #B86830; border-radius: 8px;">
-                                Cancel
-                            </MudButton>
-                            <MudButton Variant="Variant.Filled"
-                                       Disabled="@(selectedOrder.OrderStatus == "Rejected" || isSaving)"
-                                       OnClick="SaveRegularOrder"
-                                       Style="background: #3E1C00; color: white; border-radius: 8px;">
-                                @if (isSaving)
-                                {
-                                    <MudProgressCircular Size="Size.Small" Indeterminate="true"
-                                                         Style="margin-right: 8px;" />
-                                    <span>Saving...</span>
-                                }
-                                else { <span>Save</span> }
-                            </MudButton>
-                        </div>
-                    </div>
-
-                </MudPaper>
-            </div>
-        }
-
-        <!-- para custom order nga dialog-->
-        @if (showCustomDialog && selectedCustomOrder != null)
-        {
-            <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
-
-            <div style="position: fixed; top: 0; left: 0;
-                        width: 100vw; height: 100vh;
-                        display: flex; align-items: center;
-                        justify-content: center; z-index: 10;">
-
-                <MudPaper Elevation="5"
-                          Style="width: 100%; max-width: 600px;
-                                 padding: 32px; border-radius: 20px;
-                                 background: #FFF8F0;
-                                 max-height: 90vh; overflow-y: auto;">
-
-                    <!-- HEADER -->
-                    <div style="display: flex; justify-content: space-between;
-                                align-items: center; margin-bottom: 24px;">
-                        <div>
-                            <MudText Typo="Typo.h6" Style="color: #3E1C00; font-weight: bold;">
-                                ✨ Custom Order #@selectedCustomOrder.CustomOrderId
-                            </MudText>
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">
-                                @selectedCustomOrder.DateOrdered.ToString("MMM dd, yyyy hh:mm tt")
-                            </MudText>
-                        </div>
-                        @if (selectedCustomOrder.OrderType == "Cake")
-                        {
-                            <span style="background: #E8C547; color: #3E1C00;
-                                         padding: 6px 16px; border-radius: 20px;
-                                         font-weight: bold; font-size: 14px;">
-                                🎂 Cake
-                            </span>
-                        }
-                        else
-                        {
-                            <span style="background: #F5D6C8; color: #3E1C00;
-                                         padding: 6px 16px; border-radius: 20px;
-                                         font-weight: bold; font-size: 14px;">
-                                🧁 Cupcake
-                            </span>
-                        }
-                    </div>
-
-                    <!-- CUSTOMER INFO -->
-                    <MudText Typo="Typo.body2"
-                             Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">
-                        Customer Info
-                    </MudText>
-                    <div style="background: #FDF6EC; border-radius: 12px;
-                                padding: 16px; margin-bottom: 16px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Name</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">
-                                @selectedCustomOrder.FullName
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Email</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
-                                @selectedCustomOrder.Email
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Contact</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
-                                @selectedCustomOrder.ContactNo
-                            </MudText>
-                        </div>
-                    </div>
-
-                    <!-- CUSTOMIZATION DETAILS -->
-                    <MudText Typo="Typo.body2"
-                             Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">
-                        Customization Details
-                    </MudText>
-                    <div style="background: #FDF6EC; border-radius: 12px;
-                                padding: 16px; margin-bottom: 16px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Flavor</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
-                                @(selectedCustomOrder.Flavor ?? "—")
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Size</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
-                                @(selectedCustomOrder.Size ?? "—")
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Color / Theme</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
-                                @(selectedCustomOrder.ColorTheme ?? "—")
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Message on Cake</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
-                                @(selectedCustomOrder.MessageOnCake ?? "—")
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Number of Layers</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
-                                @(selectedCustomOrder.NumberOfLayers.HasValue
-                                    ? selectedCustomOrder.NumberOfLayers.ToString() : "—")
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Special Notes</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
-                                @(selectedCustomOrder.SpecialNotes ?? "—")
-                            </MudText>
-                        </div>
-                    </div>
-
-                    <!-- REFERENCE IMAGE -->
-                    @if (!string.IsNullOrEmpty(selectedCustomOrder.ReferenceImage))
-                    {
-                        <MudText Typo="Typo.body2"
-                                 Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">
-                            Reference Image
-                        </MudText>
-                        <div style="margin-bottom: 16px; text-align: center;">
-                            <img src="@("http://localhost:5112" + selectedCustomOrder.ReferenceImage)"
-                                 alt="Reference"
-                                 style="max-height: 160px; border-radius: 12px;
-                                        border: 2px solid #D4874E; object-fit: cover;" />
-                        </div>
-                    }
-
-                    <!-- DELIVERY INFO -->
-                    <MudText Typo="Typo.body2"
-                             Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">
-                        Delivery Info
-                    </MudText>
-                    <div style="background: #FDF6EC; border-radius: 12px;
-                                padding: 16px; margin-bottom: 16px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Delivery Date</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
-                                @(selectedCustomOrder.DeliveryDate.HasValue
-                                    ? selectedCustomOrder.DeliveryDate.Value.ToString("MMM dd, yyyy") : "—")
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Delivery Time</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
-                                @(selectedCustomOrder.DeliveryTime ?? "—")
-                            </MudText>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <MudText Typo="Typo.body2" Style="color: #B86830;">Address</MudText>
-                            <MudText Typo="Typo.body2" Style="color: #3E1C00;">
-                                @(selectedCustomOrder.DeliveryAddress ?? "—")
-                            </MudText>
-                        </div>
-                    </div>
-
-                    <!-- Para maka set og price -->
-                    @if (selectedCustomOrder.OrderStatus == "Awaiting Quote")
-                    {
-                        <MudText Typo="Typo.body2"
-                                 Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">
-                            Set Quoted Price
-                        </MudText>
-                        <div style="background: #FDF6EC; border-radius: 12px;
-                                    padding: 16px; margin-bottom: 16px;
-                                    display: flex; gap: 12px; align-items: center;">
-                            <MudTextField @bind-Value="quotedPriceInput"
-                                          Label="Price (₱)"
-                                          Variant="Variant.Outlined"
-                                          InputType="InputType.Number"
-                                          Style="background: white; border-radius: 8px; flex: 1;"
-                                          Adornment="Adornment.Start"
-                                          AdornmentText="₱" />
-                            <MudButton Variant="Variant.Filled"
-                                       Disabled="@isSaving"
-                                       OnClick="SetQuotedPrice"
-                                       Style="background: #3E1C00; color: white;
-                                              border-radius: 8px; font-weight: bold;
-                                              height: 56px; padding: 0 24px; white-space: nowrap;">
-                                Set Price
-                            </MudButton>
-                        </div>
-                    }
-
-                    <!-- QUOTED PRICE DISPLAY — show once price is set -->
-                    @if (selectedCustomOrder.QuotedPrice.HasValue)
-                    {
-                        <MudText Typo="Typo.body2"
-                                 Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">
-                            Quoted Price
-                        </MudText>
-                        <div style="background: #FDF6EC; border-radius: 12px;
-                                    padding: 16px; margin-bottom: 16px;
-                                    display: flex; justify-content: space-between;
-                                    align-items: center;">
-                            <MudText Typo="Typo.h6" Style="color: #3E1C00; font-weight: bold;">
-                                ₱@selectedCustomOrder.QuotedPrice.Value.ToString("N2")
-                            </MudText>
-                            @if (selectedCustomOrder.OrderStatus != "Awaiting Quote"
-                                 && selectedCustomOrder.OrderStatus != "Rejected")
-                            {
-                                <span style="background: #4CAF50; color: white;
-                                             padding: 4px 12px; border-radius: 20px;
-                                             font-size: 12px; font-weight: bold;">
-                                    ✅ Quoted
+                        <div style="background: #FDF6EC; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">Customer</MudText>
+                                <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">@(selectedOrder.FullName ?? "User #" + selectedOrder.UserId)</MudText>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">Product</MudText>
+                                <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">@(selectedOrder.ProductName ?? "Product #" + selectedOrder.ProductId)</MudText>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">Quantity</MudText>
+                                <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">@selectedOrder.Quantity</MudText>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">Total Price</MudText>
+                                <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">₱@selectedOrder.TotalPrice.ToString("N2")</MudText>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">Fulfillment</MudText>
+                                <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">@(selectedOrder.FulfillmentType ?? "Delivery")</MudText>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">Address / Meetup</MudText>
+                                <MudText Typo="Typo.body2" Style="color: #3E1C00;">@(selectedOrder.DeliveryAddress ?? "—")</MudText>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">Order Date</MudText>
+                                <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">@selectedOrder.OrderDate.ToString("MMM dd, yyyy")</MudText>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">Delivery Date</MudText>
+                                <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">@(selectedOrder.DeliveryDate.HasValue ? selectedOrder.DeliveryDate.Value.ToString("MMM dd, yyyy") : "—")</MudText>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">Delivery Time</MudText>
+                                <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">@(selectedOrder.DeliveryTime ?? "—")</MudText>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">Payment Method</MudText>
+                                <MudText Typo="Typo.body2" Style="color: #3E1C00; font-weight: bold;">@(selectedOrder.PaymentMethod ?? "—")</MudText>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">Payment Status</MudText>
+                                <span style="@GetPaymentStatusStyle(selectedOrder.PaymentStatus ?? "") padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                                    @(selectedOrder.PaymentStatus ?? "—")
                                 </span>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(selectedOrder.ReceiptImage))
+                        {
+                            <MudText Typo="Typo.body2" Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">GCash Receipt</MudText>
+                            <div style="margin-bottom: 16px; text-align: center;">
+                                <img src="@RegularReceiptUrl" alt="Receipt"
+                                     style="max-height: 200px; border-radius: 12px; border: 2px solid #D4874E; object-fit: cover; cursor: zoom-in;"
+                                     @onclick:stopPropagation="true"
+                                     @onclick="() => OpenLightbox(RegularReceiptUrl)" />
+                                <div style="margin-top: 4px;">
+                                    <MudText Typo="Typo.caption" Style="color: #B86830;">🔍 Click image to enlarge</MudText>
+                                </div>
+                            </div>
+                            @if (selectedOrder.PaymentStatus == "Receipt Submitted")
+                            {
+                                <div style="margin-bottom: 16px;">
+                                    <MudButton Variant="Variant.Filled" Disabled="@isSaving" OnClick="ConfirmRegularPayment"
+                                               Style="background: #4CAF50; color: white; border-radius: 8px; font-weight: bold; width: 100%;">
+                                        ✅ Confirm GCash Payment Received
+                                    </MudButton>
+                                </div>
                             }
-                        </div>
-                    }
+                        }
 
-                    <!-- PAYMENT STATUS — hidden while Awaiting Quote -->
-                    @if (selectedCustomOrder.OrderStatus != "Awaiting Quote")
-                    {
-                        <MudText Typo="Typo.body2"
-                                 Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">
-                            Payment Status
-                        </MudText>
-                        <div style="background: #FDF6EC; border-radius: 12px;
-                                    padding: 16px; margin-bottom: 16px;
-                                    display: flex; justify-content: space-between;
-                                    align-items: center;">
-                            @if (selectedCustomOrder.PaymentStatus == "Paid")
+                        <MudText Typo="Typo.body2" Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">Update Order Status</MudText>
+                        <div style="display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;">
+                            <MudButton Variant="Variant.Filled" OnClick='() => SetRegularStatus("Pending")' Style="@(selectedOrder.OrderStatus=="Pending"?"background:#FFA000;color:white;border-radius:20px;font-weight:bold;":"background:#FFF8F0;color:#FFA000;border:2px solid #FFA000;border-radius:20px;")">Pending</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick='() => SetRegularStatus("Preparing")' Style="@(selectedOrder.OrderStatus=="Preparing"?"background:#1565C0;color:white;border-radius:20px;font-weight:bold;":"background:#FFF8F0;color:#1565C0;border:2px solid #1565C0;border-radius:20px;")">Preparing</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick='() => SetRegularStatus("Ready for Pickup")' Style="@(selectedOrder.OrderStatus=="Ready for Pickup"?"background:#6A1B9A;color:white;border-radius:20px;font-weight:bold;":"background:#FFF8F0;color:#6A1B9A;border:2px solid #6A1B9A;border-radius:20px;")">Ready for Pickup</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick='() => SetRegularStatus("Delivered")' Style="@(selectedOrder.OrderStatus=="Delivered"?"background:#4CAF50;color:white;border-radius:20px;font-weight:bold;":"background:#FFF8F0;color:#4CAF50;border:2px solid #4CAF50;border-radius:20px;")">Delivered</MudButton>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(dialogError))
+                        {
+                            <MudAlert Severity="Severity.Error" Style="margin-bottom: 16px; border-radius: 8px;">@dialogError</MudAlert>
+                        }
+
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <MudButton Variant="Variant.Filled" Disabled="@(selectedOrder.OrderStatus=="Rejected"||isSaving)" OnClick="RejectRegularOrder" Style="background:#D32F2F;color:white;border-radius:8px;font-weight:bold;">Reject Order</MudButton>
+                            <div style="display: flex; gap: 12px;">
+                                <MudButton OnClick="CloseDialog" Variant="Variant.Outlined" Style="color:#B86830;border-color:#B86830;border-radius:8px;">Cancel</MudButton>
+                                <MudButton Variant="Variant.Filled" Disabled="@(selectedOrder.OrderStatus=="Rejected"||isSaving)" OnClick="SaveRegularOrder" Style="background:#3E1C00;color:white;border-radius:8px;">
+                                    @if (isSaving)
+                                    {
+                                        <MudProgressCircular Size="Size.Small" Indeterminate="true" Style="margin-right:8px;" />
+                                        <span>Saving...</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Save</span>
+                                    }
+                                </MudButton>
+                            </div>
+                        </div>
+
+                    </MudPaper>
+                </div>
+            }
+
+            <!-- CUSTOM ORDER DIALOG -->
+            @if (showCustomDialog && selectedCustomOrder != null)
+            {
+                <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
+                <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; z-index: 10;">
+                    <MudPaper Elevation="5" Style="width: 100%; max-width: 620px; padding: 32px; border-radius: 20px; background: #FFF8F0; max-height: 92vh; overflow-y: auto;">
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                            <div>
+                                <MudText Typo="Typo.h6" Style="color: #3E1C00; font-weight: bold;">✨ Custom Order #@selectedCustomOrder.CustomOrderId</MudText>
+                                <MudText Typo="Typo.body2" Style="color: #B86830;">@selectedCustomOrder.DateOrdered.ToString("MMM dd, yyyy hh:mm tt")</MudText>
+                            </div>
+                            @if (selectedCustomOrder.OrderType == "Cake")
                             {
-                                <span style="background: #4CAF50; color: white;
-                                             padding: 6px 16px; border-radius: 20px;
-                                             font-weight: bold;">
-                                    ✅ Paid
-                                </span>
+                                <span style="background:#E8C547;color:#3E1C00;padding:6px 16px;border-radius:20px;font-weight:bold;font-size:14px;">🎂 Cake</span>
                             }
                             else
                             {
-                                <span style="background: #FFA000; color: white;
-                                             padding: 6px 16px; border-radius: 20px;
-                                             font-weight: bold;">
-                                    ⏳ Unpaid
-                                </span>
-                                <MudButton Variant="Variant.Filled"
-                                           Disabled="@isSaving"
-                                           OnClick="MarkCustomAsPaid"
-                                           Style="background: #4CAF50; color: white;
-                                                  border-radius: 8px; font-weight: bold;">
-                                    ✅ Mark as Paid
-                                </MudButton>
+                                <span style="background:#F5D6C8;color:#3E1C00;padding:6px 16px;border-radius:20px;font-weight:bold;font-size:14px;">🧁 Cupcake</span>
                             }
                         </div>
 
-                        <!-- UPDATE ORDER STATUS — hidden while Awaiting Quote -->
-                        <MudText Typo="Typo.body2"
-                                 Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">
-                            Update Order Status
-                        </MudText>
-                        <div style="display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;">
-                            <MudButton Variant="Variant.Filled"
-                                       OnClick='() => SetCustomStatus("Preparing")'
-                                       Style="@(selectedCustomOrder.OrderStatus == "Preparing"
-                                                ? "background: #1565C0; color: white; border-radius: 20px; font-weight: bold;"
-                                                : "background: #FFF8F0; color: #1565C0; border: 2px solid #1565C0; border-radius: 20px;")">
-                                Preparing
-                            </MudButton>
-                            <MudButton Variant="Variant.Filled"
-                                       OnClick='() => SetCustomStatus("Ready for Pickup")'
-                                       Style="@(selectedCustomOrder.OrderStatus == "Ready for Pickup"
-                                                ? "background: #6A1B9A; color: white; border-radius: 20px; font-weight: bold;"
-                                                : "background: #FFF8F0; color: #6A1B9A; border: 2px solid #6A1B9A; border-radius: 20px;")">
-                                Ready for Pickup
-                            </MudButton>
-                            <MudButton Variant="Variant.Filled"
-                                       OnClick='() => SetCustomStatus("Delivered")'
-                                       Style="@(selectedCustomOrder.OrderStatus == "Delivered"
-                                                ? "background: #4CAF50; color: white; border-radius: 20px; font-weight: bold;"
-                                                : "background: #FFF8F0; color: #4CAF50; border: 2px solid #4CAF50; border-radius: 20px;")">
-                                Delivered
-                            </MudButton>
+                        <MudText Typo="Typo.body2" Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">Customer Info</MudText>
+                        <div style="background: #FDF6EC; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><MudText Typo="Typo.body2" Style="color:#B86830;">Name</MudText><MudText Typo="Typo.body2" Style="color:#3E1C00;font-weight:bold;">@selectedCustomOrder.FullName</MudText></div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><MudText Typo="Typo.body2" Style="color:#B86830;">Email</MudText><MudText Typo="Typo.body2" Style="color:#3E1C00;">@selectedCustomOrder.Email</MudText></div>
+                            <div style="display:flex;justify-content:space-between;"><MudText Typo="Typo.body2" Style="color:#B86830;">Contact</MudText><MudText Typo="Typo.body2" Style="color:#3E1C00;">@selectedCustomOrder.ContactNo</MudText></div>
                         </div>
-                    }
 
-                    @if (!string.IsNullOrEmpty(dialogError))
-                    {
-                        <MudAlert Severity="Severity.Error"
-                                  Style="margin-bottom: 16px; border-radius: 8px;">
-                            @dialogError
-                        </MudAlert>
-                    }
+                        <MudText Typo="Typo.body2" Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">Customization Details</MudText>
+                        <div style="background: #FDF6EC; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><MudText Typo="Typo.body2" Style="color:#B86830;">Flavor</MudText><MudText Typo="Typo.body2" Style="color:#3E1C00;">@(selectedCustomOrder.Flavor ?? "—")</MudText></div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><MudText Typo="Typo.body2" Style="color:#B86830;">Size</MudText><MudText Typo="Typo.body2" Style="color:#3E1C00;">@(selectedCustomOrder.Size ?? "—")</MudText></div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><MudText Typo="Typo.body2" Style="color:#B86830;">Color / Theme</MudText><MudText Typo="Typo.body2" Style="color:#3E1C00;">@(selectedCustomOrder.ColorTheme ?? "—")</MudText></div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><MudText Typo="Typo.body2" Style="color:#B86830;">Message on Cake</MudText><MudText Typo="Typo.body2" Style="color:#3E1C00;">@(selectedCustomOrder.MessageOnCake ?? "—")</MudText></div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><MudText Typo="Typo.body2" Style="color:#B86830;">Layers</MudText><MudText Typo="Typo.body2" Style="color:#3E1C00;">@(selectedCustomOrder.NumberOfLayers.HasValue ? selectedCustomOrder.NumberOfLayers.ToString() : "—")</MudText></div>
+                            <div style="display:flex;justify-content:space-between;"><MudText Typo="Typo.body2" Style="color:#B86830;">Special Notes</MudText><MudText Typo="Typo.body2" Style="color:#3E1C00;">@(selectedCustomOrder.SpecialNotes ?? "—")</MudText></div>
+                        </div>
 
-                    <!-- BOTTOM BUTTONS -->
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <MudButton Variant="Variant.Filled"
-                                   Disabled="@(selectedCustomOrder.OrderStatus == "Rejected" || isSaving)"
-                                   OnClick="RejectCustomOrder"
-                                   Style="background: #D32F2F; color: white;
-                                          border-radius: 8px; font-weight: bold;">
-                            Reject Order
-                        </MudButton>
-                        <div style="display: flex; gap: 12px;">
-                            <MudButton OnClick="CloseDialog"
-                                       Variant="Variant.Outlined"
-                                       Style="color: #B86830; border-color: #B86830; border-radius: 8px;">
-                                Cancel
-                            </MudButton>
-                            @if (selectedCustomOrder.OrderStatus != "Awaiting Quote"
-                                 && selectedCustomOrder.OrderStatus != "Rejected")
+                        @if (!string.IsNullOrEmpty(selectedCustomOrder.ReferenceImage))
+                        {
+                            <MudText Typo="Typo.body2" Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">Reference Image</MudText>
+                            <div style="margin-bottom: 16px; text-align: center;">
+                                <img src="@CustomRefImageUrl" alt="Reference"
+                                     style="max-height: 160px; border-radius: 12px; border: 2px solid #D4874E; object-fit: cover; cursor: zoom-in;"
+                                     @onclick:stopPropagation="true"
+                                     @onclick="() => OpenLightbox(CustomRefImageUrl)" />
+                                <div style="margin-top: 4px;">
+                                    <MudText Typo="Typo.caption" Style="color: #B86830;">🔍 Click image to enlarge</MudText>
+                                </div>
+                            </div>
+                        }
+
+                        @if (selectedCustomOrder.OrderStatus == "Awaiting Approval")
+                        {
+                            <MudText Typo="Typo.body2" Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">Approve & Set Price</MudText>
+                            <div style="background:#FDF6EC;border-radius:12px;padding:16px;margin-bottom:16px;display:flex;gap:12px;align-items:center;">
+                                <MudTextField @bind-Value="quotedPriceInput" Label="Price (₱)" Variant="Variant.Outlined"
+                                              InputType="InputType.Number" Style="background:white;border-radius:8px;flex:1;"
+                                              Adornment="Adornment.Start" AdornmentText="₱" />
+                                <MudButton Variant="Variant.Filled" Disabled="@isSaving" OnClick="ApproveCustomOrder"
+                                           Style="background:#2E7D32;color:white;border-radius:8px;font-weight:bold;height:56px;padding:0 24px;white-space:nowrap;">
+                                    ✅ Approve
+                                </MudButton>
+                            </div>
+                            <div style="margin-bottom: 16px;">
+                                <MudButton Variant="Variant.Filled" Disabled="@isSaving" OnClick="RejectCustomOrder"
+                                           Style="background:#D32F2F;color:white;border-radius:8px;font-weight:bold;width:100%;">
+                                    ✕ Reject Order
+                                </MudButton>
+                            </div>
+                        }
+
+                        @if (selectedCustomOrder.OrderStatus != "Awaiting Approval" && selectedCustomOrder.OrderStatus != "Rejected")
+                        {
+                            @if (selectedCustomOrder.QuotedPrice.HasValue)
                             {
-                                <MudButton Variant="Variant.Filled"
-                                           Disabled="@isSaving"
-                                           OnClick="SaveCustomOrder"
-                                           Style="background: #3E1C00; color: white; border-radius: 8px;">
-                                    @if (isSaving)
-                                    {
-                                        <MudProgressCircular Size="Size.Small" Indeterminate="true"
-                                                             Style="margin-right: 8px;" />
-                                        <span>Saving...</span>
-                                    }
-                                    else { <span>Save</span> }
-                                </MudButton>
+                                <MudText Typo="Typo.body2" Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">Quoted Price</MudText>
+                                <div style="background:#FDF6EC;border-radius:12px;padding:16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
+                                    <MudText Typo="Typo.h6" Style="color:#3E1C00;font-weight:bold;">₱@selectedCustomOrder.QuotedPrice.Value.ToString("N2")</MudText>
+                                    <span style="background:#2E7D32;color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;">✅ Approved</span>
+                                </div>
                             }
-                        </div>
-                    </div>
 
-                </MudPaper>
+                            @if (selectedCustomOrder.DeliveryDate.HasValue)
+                            {
+                                <MudText Typo="Typo.body2" Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">Delivery / Pickup Info</MudText>
+                                <div style="background: #FDF6EC; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                                        <MudText Typo="Typo.body2" Style="color:#B86830;">Type</MudText>
+                                        <MudText Typo="Typo.body2" Style="color:#3E1C00;font-weight:bold;">@(selectedCustomOrder.FulfillmentType ?? "—")</MudText>
+                                    </div>
+                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                                        <MudText Typo="Typo.body2" Style="color:#B86830;">Date</MudText>
+                                        <MudText Typo="Typo.body2" Style="color:#3E1C00;font-weight:bold;">@selectedCustomOrder.DeliveryDate.Value.ToString("MMM dd, yyyy")</MudText>
+                                    </div>
+                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                                        <MudText Typo="Typo.body2" Style="color:#B86830;">Time</MudText>
+                                        <MudText Typo="Typo.body2" Style="color:#3E1C00;font-weight:bold;">@(selectedCustomOrder.DeliveryTime ?? "—")</MudText>
+                                    </div>
+                                    <div style="display:flex;justify-content:space-between;">
+                                        <MudText Typo="Typo.body2" Style="color:#B86830;">Address / Meetup</MudText>
+                                        <MudText Typo="Typo.body2" Style="color:#3E1C00;">@(selectedCustomOrder.DeliveryAddress ?? "—")</MudText>
+                                    </div>
+                                </div>
+                            }
+
+                            <MudText Typo="Typo.body2" Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">Payment</MudText>
+                            <div style="background:#FDF6EC;border-radius:12px;padding:16px;margin-bottom:16px;">
+                                <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                                    <MudText Typo="Typo.body2" Style="color:#B86830;">Method</MudText>
+                                    <MudText Typo="Typo.body2" Style="color:#3E1C00;font-weight:bold;">@(selectedCustomOrder.PaymentMethod == "GCash" ? "📱 GCash" : selectedCustomOrder.PaymentMethod == "COD" ? "💵 Cash on Delivery" : "—")</MudText>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;align-items:center;">
+                                    <MudText Typo="Typo.body2" Style="color:#B86830;">Status</MudText>
+                                    <span style="@GetPaymentStatusStyle(selectedCustomOrder.PaymentStatus ?? "") padding:3px 10px;border-radius:12px;font-size:12px;font-weight:bold;">
+                                        @(selectedCustomOrder.PaymentStatus ?? "—")
+                                    </span>
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(selectedCustomOrder.ReceiptImage))
+                            {
+                                <MudText Typo="Typo.body2" Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">GCash Receipt</MudText>
+                                <div style="margin-bottom: 16px; text-align: center;">
+                                    <img src="@CustomReceiptUrl" alt="Receipt"
+                                         style="max-height: 200px; border-radius: 12px; border: 2px solid #D4874E; object-fit: cover; cursor: zoom-in;"
+                                         @onclick:stopPropagation="true"
+                                         @onclick="() => OpenLightbox(CustomReceiptUrl)" />
+                                    <div style="margin-top: 4px;">
+                                        <MudText Typo="Typo.caption" Style="color: #B86830;">🔍 Click image to enlarge</MudText>
+                                    </div>
+                                </div>
+                                @if (selectedCustomOrder.PaymentStatus == "Receipt Submitted")
+                                {
+                                    <div style="margin-bottom: 16px;">
+                                        <MudButton Variant="Variant.Filled" Disabled="@isSaving" OnClick="ConfirmCustomPayment"
+                                                   Style="background: #4CAF50; color: white; border-radius: 8px; font-weight: bold; width: 100%;">
+                                            ✅ Confirm GCash Payment Received
+                                        </MudButton>
+                                    </div>
+                                }
+                            }
+
+                            @if (selectedCustomOrder.OrderStatus != "Approved")
+                            {
+                                <MudText Typo="Typo.body2" Style="color: #B86830; font-weight: bold; margin-bottom: 8px;">Update Order Status</MudText>
+                                <div style="display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;">
+                                    <MudButton Variant="Variant.Filled" OnClick='() => SetCustomStatus("Preparing")' Style="@(selectedCustomOrder.OrderStatus=="Preparing"?"background:#1565C0;color:white;border-radius:20px;font-weight:bold;":"background:#FFF8F0;color:#1565C0;border:2px solid #1565C0;border-radius:20px;")">Preparing</MudButton>
+                                    <MudButton Variant="Variant.Filled" OnClick='() => SetCustomStatus("Ready for Pickup")' Style="@(selectedCustomOrder.OrderStatus=="Ready for Pickup"?"background:#6A1B9A;color:white;border-radius:20px;font-weight:bold;":"background:#FFF8F0;color:#6A1B9A;border:2px solid #6A1B9A;border-radius:20px;")">Ready for Pickup</MudButton>
+                                    <MudButton Variant="Variant.Filled" OnClick='() => SetCustomStatus("Delivered")' Style="@(selectedCustomOrder.OrderStatus=="Delivered"?"background:#4CAF50;color:white;border-radius:20px;font-weight:bold;":"background:#FFF8F0;color:#4CAF50;border:2px solid #4CAF50;border-radius:20px;")">Delivered</MudButton>
+                                </div>
+                            }
+                        }
+
+                        @if (!string.IsNullOrEmpty(dialogError))
+                        {
+                            <MudAlert Severity="Severity.Error" Style="margin-bottom: 16px; border-radius: 8px;">@dialogError</MudAlert>
+                        }
+
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            @if (selectedCustomOrder.OrderStatus != "Awaiting Approval")
+                            {
+                                <MudButton Variant="Variant.Filled" Disabled="@(selectedCustomOrder.OrderStatus=="Rejected"||isSaving)" OnClick="RejectCustomOrder" Style="background:#D32F2F;color:white;border-radius:8px;font-weight:bold;">Reject Order</MudButton>
+                            }
+                            else
+                            {
+                                <div></div>
+                            }
+                            <div style="display: flex; gap: 12px;">
+                                <MudButton OnClick="CloseDialog" Variant="Variant.Outlined" Style="color:#B86830;border-color:#B86830;border-radius:8px;">Close</MudButton>
+                                @if (selectedCustomOrder.OrderStatus != "Awaiting Approval" && selectedCustomOrder.OrderStatus != "Rejected" && selectedCustomOrder.OrderStatus != "Approved")
+                                {
+                                    <MudButton Variant="Variant.Filled" Disabled="@isSaving" OnClick="SaveCustomOrder" Style="background:#3E1C00;color:white;border-radius:8px;">
+                                        @if (isSaving)
+                                        {
+                                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Style="margin-right:8px;" />
+                                            <span>Saving...</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Save</span>
+                                        }
+                                    </MudButton>
+                                }
+                            </div>
+                        </div>
+
+                    </MudPaper>
+                </div>
+            } 
+
+        </div>
+
+        <!-- LIGHTBOX - outside scrollable div so it is never clipped -->
+        @if (lightboxVisible)
+        {
+            <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+                    background: rgba(0,0,0,0.88); display: flex; align-items: center;
+                    justify-content: center; z-index: 9999; cursor: zoom-out;"
+                 @onclick="CloseLightbox">
+                <div style="position: relative; max-width: 92vw; max-height: 92vh;"
+                     @onclick:stopPropagation="true">
+                    <img src="@lightboxImageUrl" alt="Full size"
+                         style="max-width: 90vw; max-height: 88vh; border-radius: 16px;
+                            border: 3px solid #E8C547; object-fit: contain;
+                            box-shadow: 0 8px 40px rgba(0,0,0,0.7);" />
+                    <button @onclick="CloseLightbox"
+                            style="position: absolute; top: -16px; right: -16px;
+                               background: #E8C547; border: none; border-radius: 50%;
+                               width: 36px; height: 36px; font-size: 18px; font-weight: bold;
+                               cursor: pointer; color: #3E1C00; line-height: 36px;
+                               text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.4);">
+                        ✕
+                    </button>
+                </div>
+                <div style="position: absolute; bottom: 20px; color: rgba(255,255,255,0.6); font-size: 13px;">
+                    Click anywhere outside the image to close
+                </div>
             </div>
         }
 
@@ -821,300 +551,172 @@
 
 @code {
 
-    bool isLoading         = true;
-    bool isSaving          = false;
+    bool isLoading = true;
+    bool isSaving = false;
     bool showRegularDialog = false;
-    bool showCustomDialog  = false;
+    bool showCustomDialog = false;
+    bool lightboxVisible = false;
+    string lightboxImageUrl = string.Empty;
 
-    string adminName      = string.Empty;
-    string dialogError    = string.Empty;
+    string activeFilter = "all";
+    string adminName = string.Empty;
+    string dialogError = string.Empty;
     decimal quotedPriceInput = 0;
 
+    List<OrderModel> orders = new();
+    OrderModel selectedOrder = new();
 
-    List<OrderModel> orders = new List<OrderModel>();
-    OrderModel selectedOrder = new OrderModel();
+    List<CustomOrderModel> customOrders = new();
+    CustomOrderModel? selectedCustomOrder = null;
 
+    List<CombinedOrderRow> combinedOrders = new();
+    List<CombinedOrderRow> filteredOrders = new();
 
-    List<CustomOrderModel> customOrders = new List<CustomOrderModel>();
-    CustomOrderModel selectedCustomOrder = new CustomOrderModel();
-
-    List<CombinedOrderRow> combinedOrders = new List<CombinedOrderRow>();
-
-    
     class CombinedOrderRow
     {
         public bool IsCustom { get; set; }
-        public string DisplayId { get; set; }
-        public string CustomerName { get; set; }
-        public string ContactNo { get; set; }
-        public string Details { get; set; }
+        public string DisplayId { get; set; } = string.Empty;
+        public string CustomerName { get; set; } = string.Empty;
+        public string ContactNo { get; set; } = string.Empty;
+        public string Details { get; set; } = string.Empty;
         public decimal TotalPrice { get; set; }
         public DateTime OrderDate { get; set; }
-        public string OrderStatus { get; set; }
-        public OrderModel RegularOrder { get; set; }
-        public CustomOrderModel CustomOrder { get; set; }
+        public string? DeliveryTime { get; set; }
+        public string? OrderStatus { get; set; }
+        public string? PaymentMethod { get; set; }
+        public string? PaymentStatus { get; set; }
+        public OrderModel? RegularOrder { get; set; }
+        public CustomOrderModel? CustomOrder { get; set; }
     }
+
+    string RegularReceiptUrl => "http://localhost:5112" + (selectedOrder?.ReceiptImage ?? string.Empty);
+    string CustomReceiptUrl => "http://localhost:5112" + (selectedCustomOrder?.ReceiptImage ?? string.Empty);
+    string CustomRefImageUrl => "http://localhost:5112" + (selectedCustomOrder?.ReferenceImage ?? string.Empty);
+
+    void OpenLightbox(string imageUrl) { lightboxImageUrl = imageUrl; lightboxVisible = true; StateHasChanged(); }
+    void CloseLightbox() { lightboxVisible = false; lightboxImageUrl = string.Empty; StateHasChanged(); }
 
     protected override async Task OnInitializedAsync()
     {
         var token = await LocalStorage.GetItemAsync<string>("token");
-        if (string.IsNullOrEmpty(token))
-        {
-            Navigation.NavigateTo("/login");
-            return;
-        }
+        if (string.IsNullOrEmpty(token)) { Navigation.NavigateTo("/login"); return; }
         adminName = await LocalStorage.GetItemAsync<string>("adminName");
         await LoadAllOrders();
         isLoading = false;
     }
 
-    
     async Task LoadAllOrders()
     {
-        combinedOrders = new List<CombinedOrderRow>();
+        combinedOrders = new();
+        try { var r = await Http.GetFromJsonAsync<ServiceResponse<List<OrderModel>>>("Orders/GetAllOrders"); orders = r?.Status == 200 && r.Data != null ? r.Data : new(); }
+        catch { orders = new(); }
+        try { var r = await Http.GetFromJsonAsync<ServiceResponse<List<CustomOrderModel>>>("CustomOrder/GetAllCustomOrders"); customOrders = r?.Status == 200 && r.Data != null ? r.Data : new(); }
+        catch { customOrders = new(); }
 
-        try
-        {
-            var regularResponse = await Http.GetFromJsonAsync<ServiceResponse<List<OrderModel>>>(
-                "Orders/GetAllOrders"
-            );
-            orders = (regularResponse?.Status == 200 && regularResponse.Data != null)
-                ? regularResponse.Data : new List<OrderModel>();
-        }
-        catch { orders = new List<OrderModel>(); }
+        foreach (var o in orders)
+            combinedOrders.Add(new CombinedOrderRow { IsCustom = false, DisplayId = "ORD-" + o.OrderId, CustomerName = o.FullName ?? "User #" + o.UserId, ContactNo = o.ContactNo ?? string.Empty, Details = (o.ProductName ?? "Product #" + o.ProductId) + " | Qty: " + o.Quantity, TotalPrice = o.TotalPrice, OrderDate = o.OrderDate, DeliveryTime = o.DeliveryTime, OrderStatus = o.OrderStatus, PaymentMethod = o.PaymentMethod, PaymentStatus = o.PaymentStatus, RegularOrder = o });
 
-        try
-        {
-            var customResponse = await Http.GetFromJsonAsync<ServiceResponse<List<CustomOrderModel>>>(
-                "CustomOrder/GetAllCustomOrders"
-            );
-            customOrders = (customResponse?.Status == 200 && customResponse.Data != null)
-                ? customResponse.Data : new List<CustomOrderModel>();
-        }
-        catch { customOrders = new List<CustomOrderModel>(); }
-
-        foreach (OrderModel o in orders)
-        {
-            combinedOrders.Add(new CombinedOrderRow
-            {
-                IsCustom     = false,
-                DisplayId    = "ORD-" + o.OrderId,
-                CustomerName = "User #" + o.UserId,
-                ContactNo    = string.Empty,
-                Details      = "Product #" + o.ProductId + " | Qty: " + o.Quantity,
-                TotalPrice   = o.TotalPrice,
-                OrderDate    = o.OrderDate,
-                OrderStatus  = o.OrderStatus,
-                RegularOrder = o
-            });
-        }
-
-        foreach (CustomOrderModel c in customOrders)
-        {
-            combinedOrders.Add(new CombinedOrderRow
-            {
-                IsCustom     = true,
-                DisplayId    = "CST-" + c.CustomOrderId,
-                CustomerName = c.FullName ?? "User #" + c.UserId,
-                ContactNo    = c.ContactNo ?? string.Empty,
-                Details      = c.OrderType + " | " + (c.Flavor ?? "Custom"),
-                TotalPrice   = c.QuotedPrice ?? 0,
-                OrderDate    = c.DateOrdered,
-                OrderStatus  = c.OrderStatus,
-                CustomOrder  = c
-            });
-        }
+        foreach (var c in customOrders)
+            combinedOrders.Add(new CombinedOrderRow { IsCustom = true, DisplayId = "CST-" + c.CustomOrderId, CustomerName = c.FullName ?? "User #" + c.UserId, ContactNo = c.ContactNo ?? string.Empty, Details = c.OrderType + " | " + (c.Flavor ?? "Custom"), TotalPrice = c.QuotedPrice ?? 0, OrderDate = c.DateOrdered, DeliveryTime = c.DeliveryTime, OrderStatus = c.OrderStatus, PaymentMethod = c.PaymentMethod, PaymentStatus = c.PaymentStatus, CustomOrder = c });
 
         combinedOrders.Sort((a, b) => b.OrderDate.CompareTo(a.OrderDate));
+        ApplyFilter();
     }
 
-   
-    // Para Open dialog
-   
+    void SetFilter(string filter) { activeFilter = filter; ApplyFilter(); }
+    void ApplyFilter() { filteredOrders = activeFilter == "custom" ? combinedOrders.Where(r => r.IsCustom).ToList() : new List<CombinedOrderRow>(combinedOrders); }
+
     void OpenRow(CombinedOrderRow row)
     {
-        dialogError      = string.Empty;
-        quotedPriceInput = 0;
-
+        dialogError = string.Empty; quotedPriceInput = 0;
         if (row.IsCustom)
         {
-            CustomOrderModel c = row.CustomOrder;
-            selectedCustomOrder = new CustomOrderModel
-            {
-                CustomOrderId   = c.CustomOrderId,
-                UserId          = c.UserId,
-                FullName        = c.FullName,
-                Email           = c.Email,
-                ContactNo       = c.ContactNo,
-                OrderType       = c.OrderType,
-                Flavor          = c.Flavor,
-                Size            = c.Size,
-                ColorTheme      = c.ColorTheme,
-                MessageOnCake   = c.MessageOnCake,
-                NumberOfLayers  = c.NumberOfLayers,
-                ReferenceImage  = c.ReferenceImage,
-                SpecialNotes    = c.SpecialNotes,
-                DeliveryDate    = c.DeliveryDate,
-                DeliveryTime    = c.DeliveryTime,
-                DeliveryAddress = c.DeliveryAddress,
-                PaymentStatus   = c.PaymentStatus,
-                OrderStatus     = c.OrderStatus,
-                DateOrdered     = c.DateOrdered,
-                QuotedPrice     = c.QuotedPrice
-            };
+            var c = row.CustomOrder!;
+            selectedCustomOrder = new CustomOrderModel { CustomOrderId = c.CustomOrderId, UserId = c.UserId, FullName = c.FullName, Email = c.Email, ContactNo = c.ContactNo, OrderType = c.OrderType, Flavor = c.Flavor, Size = c.Size, ColorTheme = c.ColorTheme, MessageOnCake = c.MessageOnCake, NumberOfLayers = c.NumberOfLayers, ReferenceImage = c.ReferenceImage, SpecialNotes = c.SpecialNotes, DeliveryDate = c.DeliveryDate, DeliveryTime = c.DeliveryTime, DeliveryAddress = c.DeliveryAddress, FulfillmentType = c.FulfillmentType, MeetupPlace = c.MeetupPlace, PaymentStatus = c.PaymentStatus, PaymentMethod = c.PaymentMethod, ReceiptImage = c.ReceiptImage, OrderStatus = c.OrderStatus, DateOrdered = c.DateOrdered, QuotedPrice = c.QuotedPrice };
             showCustomDialog = true;
         }
         else
         {
-            OrderModel o = row.RegularOrder;
-            selectedOrder = new OrderModel
-            {
-                OrderId     = o.OrderId,
-                UserId      = o.UserId,
-                ProductId   = o.ProductId,
-                Quantity    = o.Quantity,
-                TotalPrice  = o.TotalPrice,
-                OrderStatus = o.OrderStatus,
-                OrderDate   = o.OrderDate
-            };
+            var o = row.RegularOrder!;
+            selectedOrder = new OrderModel { OrderId = o.OrderId, UserId = o.UserId, ProductId = o.ProductId, ProductName = o.ProductName, FullName = o.FullName, ContactNo = o.ContactNo, Quantity = o.Quantity, TotalPrice = o.TotalPrice, OrderStatus = o.OrderStatus, OrderDate = o.OrderDate, DeliveryDate = o.DeliveryDate, DeliveryTime = o.DeliveryTime, DeliveryAddress = o.DeliveryAddress, FulfillmentType = o.FulfillmentType, MeetupPlace = o.MeetupPlace, PaymentMethod = o.PaymentMethod, PaymentStatus = o.PaymentStatus, ReceiptImage = o.ReceiptImage };
             showRegularDialog = true;
-        }
+        } 
     }
 
-    void CloseDialog()
-    {
-        showRegularDialog = false;
-        showCustomDialog  = false;
-        dialogError       = string.Empty;
-        quotedPriceInput  = 0;
-    }
-
-  
-    // Para Regular ra nga order
+    void CloseDialog() { showRegularDialog = false; showCustomDialog = false; dialogError = string.Empty; quotedPriceInput = 0; }
     void SetRegularStatus(string status) => selectedOrder.OrderStatus = status;
+    void SetCustomStatus(string status) => selectedCustomOrder!.OrderStatus = status;
 
     async Task SaveRegularOrder()
     {
-        dialogError = string.Empty;
-        isSaving    = true;
-        try
-        {
-            var response = await Http.PutAsJsonAsync("Orders/UpdateOrder", selectedOrder);
-            if (response.IsSuccessStatusCode) { showRegularDialog = false; await LoadAllOrders(); }
-            else dialogError = "Failed to update order. Please try again.";
-        }
+        dialogError = string.Empty; isSaving = true;
+        try { var r = await Http.PutAsJsonAsync("Orders/UpdateOrder", selectedOrder); if (r.IsSuccessStatusCode) { showRegularDialog = false; await LoadAllOrders(); } else dialogError = "Failed to update order. Please try again."; }
         catch { dialogError = "Cannot connect to server. Please try again."; }
         finally { isSaving = false; }
     }
 
     async Task RejectRegularOrder()
     {
-        dialogError = string.Empty;
-        isSaving    = true;
-        try
-        {
-            var response = await Http.PutAsync(
-                $"Orders/RejectOrder?orderId={selectedOrder.OrderId}", null);
-            if (response.IsSuccessStatusCode) { showRegularDialog = false; await LoadAllOrders(); }
-            else dialogError = "Failed to reject order. Please try again.";
-        }
+        dialogError = string.Empty; isSaving = true;
+        try { var r = await Http.PutAsync($"Orders/RejectOrder?orderId={selectedOrder.OrderId}", null); if (r.IsSuccessStatusCode) { showRegularDialog = false; await LoadAllOrders(); } else dialogError = "Failed to reject order. Please try again."; }
         catch { dialogError = "Cannot connect to server. Please try again."; }
         finally { isSaving = false; }
     }
 
-
-    // Para sa mga Custom nga order
-    void SetCustomStatus(string status) => selectedCustomOrder.OrderStatus = status;
-
-    async Task SetQuotedPrice()
+    async Task ConfirmRegularPayment()
     {
-        if (quotedPriceInput <= 0)
-        {
-            dialogError = "Please enter a valid price greater than 0.";
-            return;
-        }
-        dialogError = string.Empty;
-        isSaving    = true;
-        try
-        {
-            var response = await Http.PutAsync(
-                $"CustomOrder/SetPrice?customOrderId={selectedCustomOrder.CustomOrderId}&quotedPrice={quotedPriceInput}",
-                null
-            );
-            if (response.IsSuccessStatusCode)
-            {
-                selectedCustomOrder.QuotedPrice  = quotedPriceInput;
-                selectedCustomOrder.OrderStatus  = "Quoted";
-                quotedPriceInput                 = 0;
-                await LoadAllOrders();
-            }
-            else dialogError = "Failed to set price. Please try again.";
-        }
+        dialogError = string.Empty; isSaving = true;
+        try { var r = await Http.PutAsync($"Orders/ConfirmPayment?orderId={selectedOrder.OrderId}", null); if (r.IsSuccessStatusCode) { selectedOrder.PaymentStatus = "Paid"; await LoadAllOrders(); } else dialogError = "Failed to confirm payment. Please try again."; }
+        catch { dialogError = "Cannot connect to server. Please try again."; }
+        finally { isSaving = false; }
+    }
+
+    async Task ApproveCustomOrder()
+    {
+        if (quotedPriceInput <= 0) { dialogError = "Please enter a valid price greater than 0."; return; }
+        dialogError = string.Empty; isSaving = true;
+        try { var r = await Http.PutAsync($"CustomOrder/ApproveCustomOrder?customOrderId={selectedCustomOrder!.CustomOrderId}&quotedPrice={quotedPriceInput}", null); if (r.IsSuccessStatusCode) { selectedCustomOrder.OrderStatus = "Approved"; selectedCustomOrder.QuotedPrice = quotedPriceInput; quotedPriceInput = 0; await LoadAllOrders(); } else dialogError = "Failed to approve order. Please try again."; }
         catch { dialogError = "Cannot connect to server. Please try again."; }
         finally { isSaving = false; }
     }
 
     async Task SaveCustomOrder()
     {
-        dialogError = string.Empty;
-        isSaving    = true;
-        try
-        {
-            var response = await Http.PutAsync(
-                $"CustomOrder/UpdateStatus?customOrderId={selectedCustomOrder.CustomOrderId}&orderStatus={selectedCustomOrder.OrderStatus}",
-                null
-            );
-            if (response.IsSuccessStatusCode) { showCustomDialog = false; await LoadAllOrders(); }
-            else dialogError = "Failed to update status. Please try again.";
-        }
+        dialogError = string.Empty; isSaving = true;
+        try { var r = await Http.PutAsync($"CustomOrder/UpdateStatus?customOrderId={selectedCustomOrder!.CustomOrderId}&orderStatus={selectedCustomOrder.OrderStatus}", null); if (r.IsSuccessStatusCode) { showCustomDialog = false; await LoadAllOrders(); } else dialogError = "Failed to update status. Please try again."; }
         catch { dialogError = "Cannot connect to server. Please try again."; }
         finally { isSaving = false; }
     }
 
-    async Task MarkCustomAsPaid()
+    async Task ConfirmCustomPayment()
     {
-        dialogError = string.Empty;
-        isSaving    = true;
-        try
-        {
-            var response = await Http.PutAsync(
-                $"CustomOrder/MarkAsPaid?customOrderId={selectedCustomOrder.CustomOrderId}",
-                null
-            );
-            if (response.IsSuccessStatusCode)
-            {
-                selectedCustomOrder.PaymentStatus = "Paid";
-                await LoadAllOrders();
-            }
-            else dialogError = "Failed to confirm payment. Please try again.";
-        }
+        dialogError = string.Empty; isSaving = true;
+        try { var r = await Http.PutAsync($"CustomOrder/ConfirmPayment?customOrderId={selectedCustomOrder!.CustomOrderId}", null); if (r.IsSuccessStatusCode) { selectedCustomOrder.PaymentStatus = "Paid"; await LoadAllOrders(); } else dialogError = "Failed to confirm payment. Please try again."; }
         catch { dialogError = "Cannot connect to server. Please try again."; }
         finally { isSaving = false; }
     }
 
     async Task RejectCustomOrder()
     {
-        dialogError = string.Empty;
-        isSaving    = true;
-        try
-        {
-            var response = await Http.PutAsync(
-                $"CustomOrder/RejectCustomOrder?customOrderId={selectedCustomOrder.CustomOrderId}",
-                null
-            );
-            if (response.IsSuccessStatusCode) { showCustomDialog = false; await LoadAllOrders(); }
-            else dialogError = "Failed to reject order. Please try again.";
-        }
+        dialogError = string.Empty; isSaving = true;
+        try { var r = await Http.PutAsync($"CustomOrder/RejectCustomOrder?customOrderId={selectedCustomOrder!.CustomOrderId}", null); if (r.IsSuccessStatusCode) { showCustomDialog = false; await LoadAllOrders(); } else dialogError = "Failed to reject order. Please try again."; }
         catch { dialogError = "Cannot connect to server. Please try again."; }
         finally { isSaving = false; }
     }
 
+    string GetPaymentStatusStyle(string status) => status switch
+    {
+        "Paid" => "background:#4CAF50;color:white;",
+        "Receipt Submitted" => "background:#1565C0;color:white;",
+        "Awaiting Payment" => "background:#FFA000;color:white;",
+        "Pending" => "background:#9E9E9E;color:white;",
+        _ => "background:#9E9E9E;color:white;"
+    };
+
     async Task HandleLogout()
     {
-        await LocalStorage.RemoveItemAsync("token");
-        await LocalStorage.RemoveItemAsync("adminId");
-        await LocalStorage.RemoveItemAsync("adminName");
-        await LocalStorage.RemoveItemAsync("adminEmail");
+        await LocalStorage.RemoveItemAsync("token"); await LocalStorage.RemoveItemAsync("adminId");
+        await LocalStorage.RemoveItemAsync("adminName"); await LocalStorage.RemoveItemAsync("adminEmail");
         Navigation.NavigateTo("/login");
     }
 }

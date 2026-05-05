@@ -1,5 +1,4 @@
-﻿
-namespace OnlineBakeshopSystem.Model
+﻿namespace OnlineBakeshopSystem.Model
 {
     public class UserModel
     {
@@ -9,5 +8,6 @@ namespace OnlineBakeshopSystem.Model
         public string Address { get; set; }
         public string ContactNo { get; set; }
         public DateTime DateCreated { get; set; }
+        public bool? IsArchived { get; set; }
     }
 }

@@ -36,179 +36,185 @@
         </MudNavMenu>
     </MudDrawer>
 
-    <!-- MAIN CONTENT -->
-    <MudMainContent Style="background: #FDF6EC; padding: 24px;">
+    <!-- MAIN CONTENT — scrollable right panel -->
+    <MudMainContent Style="background: #FDF6EC; padding: 0; overflow: hidden;">
+        <div style="height: calc(100vh - 64px); overflow-y: auto; overflow-x: hidden; padding: 24px;">
 
-        @if (isLoading)
-        {
-            <div style="display: flex; justify-content: center; align-items: center; height: 60vh;">
-                <MudProgressCircular Indeterminate="true" Size="Size.Large" Style="color: #3E1C00;" />
-            </div>
-        }
-        else
-        {
-            <!-- PAGE TITLE -->
-            <MudText Typo="Typo.h5" Style="color: #3E1C00; font-weight: bold; margin-bottom: 4px;">
-                Admin Dashboard
-            </MudText>
-            <MudText Typo="Typo.body2" Style="color: #B86830; margin-bottom: 24px;">
-                Logged in as: <strong>@adminName</strong> — @adminEmail
-            </MudText>
+            @if (isLoading)
+            {
+                <div style="display: flex; justify-content: center; align-items: center; height: 60vh;">
+                    <MudProgressCircular Indeterminate="true" Size="Size.Large" Style="color: #3E1C00;" />
+                </div>
+            }
+            else
+            {
+                <!-- PAGE TITLE -->
+                <MudText Typo="Typo.h5" Style="color: #3E1C00; font-weight: bold; margin-bottom: 4px;">
+                    Admin Dashboard
+                </MudText>
+                <MudText Typo="Typo.body2" Style="color: #B86830; margin-bottom: 24px;">
+                    Logged in as: <strong>@adminName</strong> — @adminEmail
+                </MudText>
 
-            <!-- 4 SUMMARY CARDS -->
-            <MudGrid>
+                <!-- 4 SUMMARY CARDS -->
+                <MudGrid>
 
-                <!-- Total Regular Orders -->
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px; background: #3E1C00; cursor: pointer;"
-                              @onclick='() => Navigation.NavigateTo("/orders")'>
-                        <MudText Typo="Typo.caption" Style="color: #E8B4A0;">Regular Orders</MudText>
-                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalRegularOrders</MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Style="color: #E8C547;" />
-                    </MudPaper>
-                </MudItem>
+                    <!-- Total Regular Orders -->
+                    <MudItem xs="12" sm="6" md="3">
+                        <MudPaper Elevation="3"
+                                  Style="padding: 20px; border-radius: 16px; background: #3E1C00; cursor: pointer;"
+                                  @onclick='() => Navigation.NavigateTo("/orders")'>
+                            <MudText Typo="Typo.caption" Style="color: #E8B4A0;">Regular Orders</MudText>
+                            <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalRegularOrders</MudText>
+                            <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Style="color: #E8C547;" />
+                        </MudPaper>
+                    </MudItem>
 
-                <!-- Total Custom Orders -->
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px; background: #6A1B9A; cursor: pointer;"
-                              @onclick='() => Navigation.NavigateTo("/orders")'>
-                        <MudText Typo="Typo.caption" Style="color: #E1BEE7;">Custom Orders</MudText>
-                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalCustomOrders</MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.Cake" Style="color: #E8C547;" />
-                    </MudPaper>
-                </MudItem>
+                    <!-- Total Custom Orders -->
+                    <MudItem xs="12" sm="6" md="3">
+                        <MudPaper Elevation="3"
+                                  Style="padding: 20px; border-radius: 16px; background: #6A1B9A; cursor: pointer;"
+                                  @onclick='() => Navigation.NavigateTo("/orders")'>
+                            <MudText Typo="Typo.caption" Style="color: #E1BEE7;">Custom Orders</MudText>
+                            <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalCustomOrders</MudText>
+                            <MudIcon Icon="@Icons.Material.Filled.Cake" Style="color: #E8C547;" />
+                        </MudPaper>
+                    </MudItem>
 
-                <!-- Total All Orders Combined -->
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px; background: #B86830; cursor: pointer;"
-                              @onclick='() => Navigation.NavigateTo("/orders")'>
-                        <MudText Typo="Typo.caption" Style="color: #FFF8F0;">Total Orders</MudText>
-                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@(totalRegularOrders + totalCustomOrders)</MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.BarChart" Style="color: white;" />
-                    </MudPaper>
-                </MudItem>
+                    <!-- Total All Orders Combined -->
+                    <MudItem xs="12" sm="6" md="3">
+                        <MudPaper Elevation="3"
+                                  Style="padding: 20px; border-radius: 16px; background: #B86830; cursor: pointer;"
+                                  @onclick='() => Navigation.NavigateTo("/orders")'>
+                            <MudText Typo="Typo.caption" Style="color: #FFF8F0;">Total Orders</MudText>
+                            <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@(totalRegularOrders + totalCustomOrders)</MudText>
+                            <MudIcon Icon="@Icons.Material.Filled.BarChart" Style="color: white;" />
+                        </MudPaper>
+                    </MudItem>
 
-                <!-- Awaiting Quote -->
-                <MudItem xs="12" sm="6" md="3">
-                    <MudPaper Elevation="3"
-                              Style="padding: 20px; border-radius: 16px; background: #FFA000; cursor: pointer;"
-                              @onclick='() => Navigation.NavigateTo("/orders")'>
-                        <MudText Typo="Typo.caption" Style="color: #FFF8E1;">Awaiting Quote</MudText>
-                        <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalAwaitingQuote</MudText>
-                        <MudIcon Icon="@Icons.Material.Filled.HourglassEmpty" Style="color: white;" />
-                    </MudPaper>
-                </MudItem>
+                    <!-- Awaiting Quote -->
+                    <MudItem xs="12" sm="6" md="3">
+                        <MudPaper Elevation="3"
+                                  Style="padding: 20px; border-radius: 16px; background: #FFA000; cursor: pointer;"
+                                  @onclick='() => Navigation.NavigateTo("/orders")'>
+                            <MudText Typo="Typo.caption" Style="color: #FFF8E1;">Awaiting Quote</MudText>
+                            <MudText Typo="Typo.h4" Style="color: white; font-weight: bold;">@totalAwaitingQuote</MudText>
+                            <MudIcon Icon="@Icons.Material.Filled.HourglassEmpty" Style="color: white;" />
+                        </MudPaper>
+                    </MudItem>
 
-            </MudGrid>
+                </MudGrid>
 
-            <!-- LINE CHART — Monthly Orders -->
-            <MudText Typo="Typo.h6"
-                     Style="color: #3E1C00; font-weight: bold; margin-top: 32px; margin-bottom: 12px;">
-                📈 Monthly Overview
-            </MudText>
+                <!-- LINE CHART — Monthly Orders -->
+                <MudText Typo="Typo.h6"
+                         Style="color: #3E1C00; font-weight: bold; margin-top: 32px; margin-bottom: 12px;">
+                    📈 Monthly Overview
+                </MudText>
 
-            <MudPaper Elevation="3"
-                      Style="padding: 24px; border-radius: 16px; background: #FFF8F0;">
+                <MudPaper Elevation="3"
+                          Style="padding: 24px; border-radius: 16px; background: #1C0A00;">
 
-                @if (chartLabels == null || chartLabels.Length == 0)
-                {
-                    <MudText Typo="Typo.body2" Style="color: #B86830; text-align: center; padding: 24px;">
-                        No data available to display yet.
-                    </MudText>
-                }
-                else
-                {
-                    <!-- Chart Toggle Buttons -->
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <MudButton Variant="@(showRegular ? Variant.Filled : Variant.Outlined)"
-                                   Style="@(showRegular ? "background:#3E1C00;color:white;" : "color:#3E1C00;border-color:#3E1C00;")"
-                                   Size="Size.Small"
-                                   OnClick="ToggleRegular">
-                            Regular Orders
-                        </MudButton>
-                        <MudButton Variant="@(showCustom ? Variant.Filled : Variant.Outlined)"
-                                   Style="@(showCustom ? "background:#6A1B9A;color:white;" : "color:#6A1B9A;border-color:#6A1B9A;")"
-                                   Size="Size.Small"
-                                   OnClick="ToggleCustom">
-                            Custom Orders
-                        </MudButton>
-                    </div>
+                    @if (chartLabels == null || chartLabels.Length == 0)
+                    {
+                        <MudText Typo="Typo.body2" Style="color: #E8B4A0; text-align: center; padding: 24px;">
+                            No data available to display yet.
+                        </MudText>
+                    }
+                    else
+                    {
+                        <!-- Chart Toggle Buttons -->
+                        <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+                            <button @onclick="ToggleRegular"
+                                    style="padding: 8px 20px; border-radius: 20px; border: 2px solid #E8C547;
+                                           font-weight: bold; font-size: 13px; cursor: pointer;
+                                           background: @(showRegular ? "#E8C547" : "transparent");
+                                           color: @(showRegular ? "#3E1C00" : "#E8C547");
+                                           transition: all 0.2s ease;">
+                                🛒 Regular Orders
+                            </button>
+                            <button @onclick="ToggleCustom"
+                                    style="padding: 8px 20px; border-radius: 20px; border: 2px solid #CE93D8;
+                                           font-weight: bold; font-size: 13px; cursor: pointer;
+                                           background: @(showCustom ? "#CE93D8" : "transparent");
+                                           color: @(showCustom ? "#1C0A00" : "#CE93D8");
+                                           transition: all 0.2s ease;">
+                                ✨ Custom Orders
+                            </button>
+                        </div>
 
-                    <MudChart ChartType="ChartType.Line"
-                              ChartSeries="@activeChartSeries"
-                              XAxisLabels="@chartLabels"
-                              Width="100%"
-                              Height="320px"
-                              ChartOptions="@chartOptions" />
-                }
-            </MudPaper>
+                        <MudChart ChartType="ChartType.Line"
+                                  ChartSeries="@activeChartSeries"
+                                  XAxisLabels="@chartLabels"
+                                  Width="100%"
+                                  Height="320px"
+                                  ChartOptions="@chartOptions" />
+                    }
+                </MudPaper>
 
-            <!-- RECENT ORDERS TABLE -->
-            <MudText Typo="Typo.h6"
-                     Style="color: #3E1C00; font-weight: bold; margin-top: 32px; margin-bottom: 12px;">
-                🧾 Recent Orders
-            </MudText>
+                <!-- RECENT ORDERS TABLE -->
+                <MudText Typo="Typo.h6"
+                         Style="color: #3E1C00; font-weight: bold; margin-top: 32px; margin-bottom: 12px;">
+                    🧾 Recent Orders
+                </MudText>
 
-            <MudPaper Elevation="3" Style="border-radius: 16px; background: #FFF8F0; overflow: hidden;">
-                @if (recentOrders == null || !recentOrders.Any())
-                {
-                    <MudText Typo="Typo.body2" Style="color: #B86830; text-align: center; padding: 24px;">
-                        No recent orders found.
-                    </MudText>
-                }
-                else
-                {
-                    <MudTable Items="@recentOrders" Hover="true" Striped="true"
-                              Style="background: transparent;"
-                              Elevation="0">
-                        <HeaderContent>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Order ID</MudTh>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Type</MudTh>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Customer</MudTh>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Amount</MudTh>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Status</MudTh>
-                            <MudTh Style="color: #3E1C00; font-weight: bold;">Date</MudTh>
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd Style="color: #3E1C00; font-weight: bold;">@context.DisplayId</MudTd>
-                            <MudTd>
-                                @if (context.IsCustom)
-                                {
-                                    <span style="background: #6A1B9A; color: white;
-                                                 padding: 3px 10px; border-radius: 20px;
-                                                 font-size: 12px; font-weight: bold;">
-                                        ✨ Custom
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span style="background: #3E1C00; color: white;
-                                                 padding: 3px 10px; border-radius: 20px;
-                                                 font-size: 12px; font-weight: bold;">
-                                        🛒 Regular
-                                    </span>
-                                }
-                            </MudTd>
-                            <MudTd Style="color: #3E1C00;">@context.CustomerName</MudTd>
-                            <MudTd Style="color: #3E1C00;">
-                                @(context.TotalAmount > 0 ? "₱" + context.TotalAmount.ToString("N2") : "—")
-                            </MudTd>
-                            <MudTd>
-                                <MudChip T="string" Size="Size.Small"
-                                         Style="@GetStatusStyle(context.OrderStatus)">
-                                    @context.OrderStatus
-                                </MudChip>
-                            </MudTd>
-                            <MudTd Style="color: #B86830;">@context.OrderDate</MudTd>
-                        </RowTemplate>
-                    </MudTable>
-                }
-            </MudPaper>
-        }
+                <MudPaper Elevation="3" Style="border-radius: 16px; background: #FFF8F0; overflow: hidden; margin-bottom: 32px;">
+                    @if (recentOrders == null || !recentOrders.Any())
+                    {
+                        <MudText Typo="Typo.body2" Style="color: #B86830; text-align: center; padding: 24px;">
+                            No recent orders found.
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudTable Items="@recentOrders" Hover="true" Striped="true"
+                                  Style="background: transparent;"
+                                  Elevation="0">
+                            <HeaderContent>
+                                <MudTh Style="color: #3E1C00; font-weight: bold;">Order ID</MudTh>
+                                <MudTh Style="color: #3E1C00; font-weight: bold;">Type</MudTh>
+                                <MudTh Style="color: #3E1C00; font-weight: bold;">Customer</MudTh>
+                                <MudTh Style="color: #3E1C00; font-weight: bold;">Amount</MudTh>
+                                <MudTh Style="color: #3E1C00; font-weight: bold;">Status</MudTh>
+                                <MudTh Style="color: #3E1C00; font-weight: bold;">Date</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd Style="color: #3E1C00; font-weight: bold;">@context.DisplayId</MudTd>
+                                <MudTd>
+                                    @if (context.IsCustom)
+                                    {
+                                        <span style="background: #6A1B9A; color: white;
+                                                     padding: 3px 10px; border-radius: 20px;
+                                                     font-size: 12px; font-weight: bold;">
+                                            ✨ Custom
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span style="background: #3E1C00; color: white;
+                                                     padding: 3px 10px; border-radius: 20px;
+                                                     font-size: 12px; font-weight: bold;">
+                                            🛒 Regular
+                                        </span>
+                                    }
+                                </MudTd>
+                                <MudTd Style="color: #3E1C00;">@context.CustomerName</MudTd>
+                                <MudTd Style="color: #3E1C00;">
+                                    @(context.TotalAmount > 0 ? "₱" + context.TotalAmount.ToString("N2") : "—")
+                                </MudTd>
+                                <MudTd>
+                                    <MudChip T="string" Size="Size.Small"
+                                             Style="@GetStatusStyle(context.OrderStatus)">
+                                        @context.OrderStatus
+                                    </MudChip>
+                                </MudTd>
+                                <MudTd Style="color: #B86830;">@context.OrderDate</MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    }
+                </MudPaper>
+            }
 
+        </div>
     </MudMainContent>
 </MudLayout>
 
@@ -238,7 +244,12 @@
             LineStrokeWidth = 3,
             YAxisLines = true,
             YAxisTicks = 1,
-            MaxNumYAxisTicks = 10
+            MaxNumYAxisTicks = 10,
+            ChartPalette = new string[]
+                {
+                "#E8C547",   // yellow-gold  → Regular Orders line
+                "#CE93D8"    // soft purple  → Custom Orders line
+                }
         };
 
     // ── Recent Orders Table ──
@@ -275,6 +286,7 @@
     async Task LoadDashboardData()
     {
         var allItems = new List<RecentOrderItem>();
+        allChartSeries = new List<ChartSeries>();
 
         // ── 1. Regular Orders ──
         try
@@ -295,7 +307,8 @@
                         {
                             DisplayId = "ORD-" + TryGetInt(o, "orderId", "OrderId"),
                             IsCustom = false,
-                            CustomerName = "User #" + TryGetInt(o, "userId", "UserId"),
+                            CustomerName = TryGetString(o, "fullName", "FullName") is var n && !string.IsNullOrEmpty(n)
+                                                   ? n : "User #" + TryGetInt(o, "userId", "UserId"),
                             TotalAmount = TryGetDouble(o, "totalPrice", "TotalPrice", "totalAmount", "TotalAmount"),
                             OrderStatus = TryGetString(o, "orderStatus", "OrderStatus", "status", "Status"),
                             OrderDate = dt != default ? dt.ToString("MMM dd, yyyy") : raw,
@@ -303,7 +316,7 @@
                         });
                 }
 
-                BuildChart(orders, "Regular Orders", ref allChartSeries, isRegular: true);
+                BuildRegularChart(orders);
             }
         }
         catch { totalRegularOrders = 0; }
@@ -333,7 +346,7 @@
                             DisplayId = "CST-" + TryGetInt(c, "customOrderId", "CustomOrderId"),
                             IsCustom = true,
                             CustomerName = TryGetString(c, "fullName", "FullName") is var n && !string.IsNullOrEmpty(n)
-                                               ? n : "User #" + TryGetInt(c, "userId", "UserId"),
+                                                   ? n : "User #" + TryGetInt(c, "userId", "UserId"),
                             TotalAmount = TryGetDouble(c, "quotedPrice", "QuotedPrice"),
                             OrderStatus = TryGetString(c, "orderStatus", "OrderStatus"),
                             OrderDate = dt != default ? dt.ToString("MMM dd, yyyy") : raw,
@@ -356,11 +369,9 @@
         StateHasChanged();
     }
 
-    // ── Chart: build Regular series ──
-    void BuildChart(List<System.Text.Json.JsonElement> orders, string seriesName,
-                    ref List<ChartSeries> target, bool isRegular)
+    // ── Chart: build Regular series and set shared labels ──
+    void BuildRegularChart(List<System.Text.Json.JsonElement> orders)
     {
-        target = new List<ChartSeries>();
         var parsed = ParseDates(orders);
         if (!parsed.Any()) return;
 
@@ -371,18 +382,28 @@
 
         chartLabels = grouped.Select(g => g.Key.ToString("MMM yyyy")).ToArray();
 
-        target.Add(new ChartSeries
+        allChartSeries.Add(new ChartSeries
             {
-                Name = seriesName,
+                Name = "Regular Orders",
                 Data = grouped.Select(g => (double)g.Count()).ToArray()
             });
     }
 
-    // ── Chart: append Custom series using same month labels ──
+    // ── Chart: append Custom series aligned to same month labels ──
     void AppendCustomChart(List<System.Text.Json.JsonElement> customs)
     {
         var parsed = ParseDates(customs);
-        if (!parsed.Any() || chartLabels.Length == 0) return;
+
+        // If no regular orders established labels yet, build labels from custom dates
+        if (chartLabels == null || chartLabels.Length == 0)
+        {
+            if (!parsed.Any()) return;
+            var grouped2 = parsed
+                .GroupBy(x => new DateTime(x.Year, x.Month, 1))
+                .OrderBy(g => g.Key)
+                .ToList();
+            chartLabels = grouped2.Select(g => g.Key.ToString("MMM yyyy")).ToArray();
+        }
 
         var monthKeys = chartLabels
             .Select(l => DateTime.ParseExact(l, "MMM yyyy",
@@ -457,7 +478,7 @@
                 "yyyy-MM-ddTHH:mm:ss.fffZ","yyyy-MM-ddTHH:mm:ss.fff",
                 "yyyy-MM-ddTHH:mm:ss",     "yyyy-MM-dd",
                 "MM/dd/yyyy",              "MM/dd/yyyy HH:mm:ss"
-                },
+                    },
             System.Globalization.CultureInfo.InvariantCulture,
             System.Globalization.DateTimeStyles.None,
             out result);

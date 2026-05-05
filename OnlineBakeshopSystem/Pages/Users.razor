@@ -7,27 +7,16 @@
 
 <MudLayout>
 
-    <!-- TOP APP BAR -->
     <MudAppBar Style="background: #3E1C00;" Fixed="true" Elevation="3">
-        <MudText Typo="Typo.h6" Style="color: #E8C547; font-weight: bold;">
-            🎂 Sweet Cengsations
-        </MudText>
+        <MudText Typo="Typo.h6" Style="color: #E8C547; font-weight: bold;">🎂 Sweet Cengsations</MudText>
         <MudSpacer />
-        <MudText Typo="Typo.body2" Style="color: #F5D6C8; margin-right: 16px;">
-            Welcome, @adminName!
-        </MudText>
-        <MudIconButton Icon="@Icons.Material.Filled.Logout"
-                       Style="color: #E8C547;"
-                       OnClick="HandleLogout" />
+        <MudText Typo="Typo.body2" Style="color: #F5D6C8; margin-right: 16px;">Welcome, @adminName!</MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.Logout" Style="color: #E8C547;" OnClick="HandleLogout" />
     </MudAppBar>
 
-    <!-- LEFT SIDE — Navigation Drawer -->
     <MudDrawer Open="true" ClipMode="DrawerClipMode.Always" Style="background: #2A1200;">
         <MudNavMenu Style="padding-top: 16px;">
-            <MudText Typo="Typo.caption"
-                     Style="color: #E8B4A0; padding-left: 16px; letter-spacing: 2px;">
-                MAIN MENU
-            </MudText>
+            <MudText Typo="Typo.caption" Style="color: #E8B4A0; padding-left: 16px; letter-spacing: 2px;">MAIN MENU</MudText>
             <MudDivider Style="border-color: #6B3A1F; margin: 8px 0;" />
             <MudNavLink Href="/home" Icon="@Icons.Material.Filled.Dashboard" Style="color: #F5D6C8;">Dashboard</MudNavLink>
             <MudNavLink Href="/products" Icon="@Icons.Material.Filled.Cake" Style="color: #F5D6C8;">Products</MudNavLink>
@@ -38,505 +27,397 @@
         </MudNavMenu>
     </MudDrawer>
 
-    <!-- MAIN CONTENT -->
-    <MudMainContent Style="background: #FDF6EC; padding: 24px;">
+    <MudMainContent Style="background: #FDF6EC; padding: 0; overflow: hidden;">
+        <div style="height: calc(100vh - 64px); overflow-y: auto; overflow-x: hidden; padding: 24px;">
 
-        <!-- PAGE HEADER -->
-        <div style="display: flex; justify-content: space-between;
-                    align-items: center; margin-bottom: 24px;">
-            <div>
-                <MudText Typo="Typo.h5" Style="color: #3E1C00; font-weight: bold;">
-                    👥 Users
-                </MudText>
-                <MudText Typo="Typo.body2" Style="color: #B86830;">
-                    Manage all registered users
-                </MudText>
-            </div>
-        </div>
-
-        <!-- LOADING -->
-        @if (isLoading)
-        {
-            <div style="display: flex; justify-content: center;
-                        align-items: center; height: 60vh;">
-                <MudProgressCircular Indeterminate="true"
-                                     Size="Size.Large"
-                                     Style="color: #3E1C00;" />
-            </div>
-        }
-        else if (users == null || users.Count == 0)
-        {
-            <MudAlert Severity="Severity.Info" Style="border-radius: 12px;">
-                No users found.
-            </MudAlert>
-        }
-        else
-        {
-            <!-- USERS TABLE WITH SEARCH BAR INSIDE -->
-            <MudPaper Elevation="3" Style="border-radius: 16px; overflow: hidden;">
-
-                <!-- SEARCH BAR ROW — inside the dark header -->
-                <div style="background: #3E1C00; padding: 12px 16px;
-                            display: flex; align-items: center; gap: 12px;">
-                    <MudIcon Icon="@Icons.Material.Filled.Search" Style="color: #E8C547;" />
-                    <input value="@searchQuery"
-                           @oninput="e => OnSearchChanged(e.Value?.ToString() ?? string.Empty)"
-                           placeholder="Search by User ID or Name..."
-                           style="flex: 1;
-                                  background: rgba(255,255,255,0.12);
-                                  border: 1px solid #6B3A1F;
-                                  border-radius: 8px;
-                                  padding: 8px 12px;
-                                  color: white;
-                                  font-size: 14px;
-                                  outline: none;" />
-                    @if (!string.IsNullOrEmpty(searchQuery))
-                    {
-                        <span style="color: #E8B4A0; font-size: 12px; white-space: nowrap;">
-                            @filteredUsers.Count of @users.Count result(s)
-                        </span>
-                        <button @onclick="ClearSearch"
-                                style="background: none; border: none;
-                                       color: #E8C547; cursor: pointer;
-                                       font-size: 18px; line-height: 1;">
-                            ✕
-                        </button>
-                    }
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <div>
+                    <MudText Typo="Typo.h5" Style="color: #3E1C00; font-weight: bold;">👥 Users</MudText>
+                    <MudText Typo="Typo.body2" Style="color: #B86830;">Manage all registered users</MudText>
                 </div>
+            </div>
 
-                @if (filteredUsers.Count == 0)
-                {
-                    <div style="padding: 32px; text-align: center; background: #FFF8F0;">
-                        <MudText Typo="Typo.body1" Style="color: #B86830;">
-                            No users match "<strong>@searchQuery</strong>".
-                        </MudText>
+            @if (isLoading)
+            {
+                <div style="display: flex; justify-content: center; align-items: center; height: 60vh;">
+                    <MudProgressCircular Indeterminate="true" Size="Size.Large" Style="color: #3E1C00;" />
+                </div>
+            }
+            else if (users == null || users.Count == 0)
+            {
+                <MudAlert Severity="Severity.Info" Style="border-radius: 12px;">No users found.</MudAlert>
+            }
+            else
+            {
+                <MudPaper Elevation="3" Style="border-radius: 16px; overflow: hidden; margin-bottom: 32px;">
+                    <div style="background: #3E1C00; padding: 12px 16px; display: flex; align-items: center; gap: 12px;">
+                        <MudIcon Icon="@Icons.Material.Filled.Search" Style="color: #E8C547;" />
+                        <input value="@searchQuery" @oninput="e => OnSearchChanged(e.Value?.ToString() ?? string.Empty)"
+                               placeholder="Search by User ID or Name..."
+                               style="flex:1;background:rgba(255,255,255,0.12);border:1px solid #6B3A1F;border-radius:8px;padding:8px 12px;color:white;font-size:14px;outline:none;" />
+                        @if (!string.IsNullOrEmpty(searchQuery))
+                        {
+                            <span style="color:#E8B4A0;font-size:12px;white-space:nowrap;">@filteredUsers.Count of @users.Count result(s)</span>
+                            <button @onclick="ClearSearch" style="background:none;border:none;color:#E8C547;cursor:pointer;font-size:18px;line-height:1;">✕</button>
+                        }
                     </div>
-                }
-                else
-                {
-                    <table style="width: 100%; border-collapse: collapse; background: #FFF8F0;">
-                        <thead>
-                            <tr style="background: #5C2A00;">
-                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">ID</th>
-                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Full Name</th>
-                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Email</th>
-                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Address</th>
-                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Contact No</th>
-                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Date Joined</th>
-                                <th style="padding: 14px 16px; color: #E8C547; text-align: left; font-weight: bold;">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (UserModel user in filteredUsers)
-                            {
-                                <tr style="border-bottom: 1px solid #F5E6D8;">
-                                    <td style="padding: 12px 16px; color: #3E1C00;">@user.UserId</td>
-                                    <td style="padding: 12px 16px; color: #3E1C00; font-weight: bold;">@user.FullName</td>
-                                    <td style="padding: 12px 16px; color: #3E1C00;">@user.Email</td>
-                                    <td style="padding: 12px 16px; color: #3E1C00;">@user.Address</td>
-                                    <td style="padding: 12px 16px; color: #3E1C00;">@user.ContactNo</td>
-                                    <td style="padding: 12px 16px; color: #3E1C00;">
-                                        @user.DateCreated.ToString("MMM dd, yyyy")
-                                    </td>
-                                    <td style="padding: 12px 16px;">
-                                        <button style="background: none; border: none; cursor: pointer;
-                                                       padding: 4px 8px; color: #B86830;
-                                                       font-size: 18px; margin-right: 4px;"
-                                                @onclick="() => OpenEditDialog(user)">
-                                            ✏️
-                                        </button>
-                                        <button style="background: none; border: none; cursor: pointer;
-                                                    padding: 4px 8px; color: #1976D2;
-                                                    font-size: 18px; margin-right: 4px;"
-                                                title="Send push notification"
-                                                @onclick="() => OpenNotifyDialog(user)">
-                                            🔔
-                                        </button>
-                                        <button style="background: none; border: none; cursor: pointer;
-                                                       padding: 4px 8px; color: #D32F2F; font-size: 18px;"
-                                                @onclick="() => DeleteUser(user.UserId)">
-                                            🗑️
-                                        </button>
-                                    </td>
+
+                    @if (filteredUsers.Count == 0)
+                    {
+                        <div style="padding: 32px; text-align: center; background: #FFF8F0;">
+                            <MudText Typo="Typo.body1" Style="color: #B86830;">No users match "<strong>@searchQuery</strong>".</MudText>
+                        </div>
+                    }
+                    else
+                    {
+                        <table style="width: 100%; border-collapse: collapse; background: #FFF8F0;">
+                            <thead>
+                                <tr style="background: #5C2A00;">
+                                    <th style="padding:14px 16px;color:#E8C547;text-align:left;font-weight:bold;">ID</th>
+                                    <th style="padding:14px 16px;color:#E8C547;text-align:left;font-weight:bold;">Full Name</th>
+                                    <th style="padding:14px 16px;color:#E8C547;text-align:left;font-weight:bold;">Email</th>
+                                    <th style="padding:14px 16px;color:#E8C547;text-align:left;font-weight:bold;">Address</th>
+                                    <th style="padding:14px 16px;color:#E8C547;text-align:left;font-weight:bold;">Contact No</th>
+                                    <th style="padding:14px 16px;color:#E8C547;text-align:left;font-weight:bold;">Date Joined</th>
+                                    <th style="padding:14px 16px;color:#E8C547;text-align:left;font-weight:bold;">Status</th>
+                                    <th style="padding:14px 16px;color:#E8C547;text-align:left;font-weight:bold;">Actions</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
-
-            </MudPaper>
-        }
-
-        <!-- EDIT DIALOG -->
-        @if (showDialog)
-        {
-            <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
-            <div style="position: fixed; top: 0; left: 0;
-                        width: 100vw; height: 100vh;
-                        display: flex; align-items: center;
-                        justify-content: center; z-index: 10;">
-                <MudPaper Elevation="5"
-                          Style="width: 100%; max-width: 500px;
-                                 padding: 32px; border-radius: 20px;
-                                 background: #FFF8F0;">
-                    <MudText Typo="Typo.h6"
-                             Style="color: #3E1C00; font-weight: bold; margin-bottom: 24px;">
-                        Edit User
-                    </MudText>
-                    <MudTextField @bind-Value="selectedUser.FullName" Label="Full Name"
-                                  Variant="Variant.Outlined" FullWidth="true"
-                                  Style="margin-bottom: 16px;" />
-                    <MudTextField @bind-Value="selectedUser.Email" Label="Email"
-                                  Variant="Variant.Outlined" FullWidth="true"
-                                  Style="margin-bottom: 16px;" />
-                    <MudTextField @bind-Value="selectedUser.Address" Label="Address"
-                                  Variant="Variant.Outlined" FullWidth="true"
-                                  Style="margin-bottom: 16px;" />
-                    <MudTextField @bind-Value="selectedUser.ContactNo" Label="Contact No"
-                                  Variant="Variant.Outlined" FullWidth="true"
-                                  Style="margin-bottom: 16px;" />
-                    @if (!string.IsNullOrEmpty(dialogError))
-                    {
-                        <MudAlert Severity="Severity.Error"
-                                  Style="margin-bottom: 16px; border-radius: 8px;">
-                            @dialogError
-                        </MudAlert>
+                            </thead>
+                            <tbody>
+                                @foreach (UserModel user in filteredUsers)
+                                {
+                                    bool isArchived = user.IsArchived == true;
+                                    <tr style="border-bottom: 1px solid #F5E6D8; background: @(isArchived ? "#FFF0F0" : "transparent"); opacity: @(isArchived ? "0.75" : "1");">
+                                        <td style="padding:12px 16px;color:#3E1C00;">@user.UserId</td>
+                                        <td style="padding:12px 16px;color:#3E1C00;font-weight:bold;">
+                                            @user.FullName
+                                            @if (isArchived)
+                                            {
+                                                <span style="margin-left:8px;background:#9E9E9E;color:white;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:bold;">Archived</span>
+                                            }
+                                        </td>
+                                        <td style="padding:12px 16px;color:#3E1C00;">@user.Email</td>
+                                        <td style="padding:12px 16px;color:#3E1C00;">@user.Address</td>
+                                        <td style="padding:12px 16px;color:#3E1C00;">@user.ContactNo</td>
+                                        <td style="padding:12px 16px;color:#3E1C00;">@user.DateCreated.ToString("MMM dd, yyyy")</td>
+                                        <td style="padding:12px 16px;">
+                                            @if (isArchived)
+                                            {
+                                                <span style="background:#9E9E9E;color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;"> Archived</span>
+                                            }
+                                            else
+                                            {
+                                                <span style="background:#4CAF50;color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;"> Active</span>
+                                            }
+                                        </td>
+                                        <td style="padding:12px 16px;">
+                                            <button style="background:none;border:none;cursor:pointer;padding:4px 8px;color:#B86830;font-size:18px;margin-right:4px;" title="Edit user" @onclick="() => OpenEditDialog(user)">✏️</button>
+                                            @if (!isArchived)
+                                            {
+                                                <button style="background:none;border:none;cursor:pointer;padding:4px 8px;color:#1976D2;font-size:18px;margin-right:4px;" title="Send push notification" @onclick="() => OpenNotifyDialog(user)">🔔</button>
+                                                <button style="background:none;border:none;cursor:pointer;padding:4px 8px;color:#D32F2F;font-size:18px;" title="Archive user" @onclick="() => OpenArchiveConfirm(user)">🗑️</button>
+                                            }
+                                            else
+                                            {
+                                                <button style="background:none;border:none;cursor:pointer;padding:4px 8px;color:#4CAF50;font-size:18px;" title="Restore user" @onclick="() => RestoreUser(user.UserId)">♻️</button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     }
-                    <div style="display: flex; justify-content: flex-end; gap: 12px;">
-                        <button style="padding: 10px 20px; background: white;
-                                       border: 2px solid #B86830; border-radius: 8px;
-                                       color: #B86830; font-weight: bold; cursor: pointer;"
-                                @onclick="CloseDialog">
-                            Cancel
-                        </button>
-                        <button style="padding: 10px 20px; background: #3E1C00;
-                                       border: none; border-radius: 8px;
-                                       color: white; font-weight: bold; cursor: pointer;"
-                                @onclick="SaveUser" disabled="@isSaving">
-                            @if (isSaving)
-                            {
-                                <MudProgressCircular Size="Size.Small" Indeterminate="true"
-                                                     Style="margin-right: 8px;" />
-                                <span>Saving...</span>
-                            }
-                            else { <span>Save</span> }
-                        </button>
-                    </div>
                 </MudPaper>
-            </div>
-        }
+            }
 
-        @if (showNotifyDialog)
-        {
-            <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
-            <div style="position: fixed; top: 0; left: 0;
-                        width: 100vw; height: 100vh;
-                        display: flex; align-items: center;
-                        justify-content: center; z-index: 10;">
-                <MudPaper Elevation="5"
-                          Style="width: 100%; max-width: 520px;
-                                 padding: 32px; border-radius: 20px;
-                                 background: #FFF8F0;">
-                    <MudText Typo="Typo.h6"
-                             Style="color: #3E1C00; font-weight: bold; margin-bottom: 8px;">
-                        Send Push Notification
-                    </MudText>
+            <!-- EDIT USER DIALOG -->
+            @if (showDialog)
+            {
+                <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
+                <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;z-index:10;">
+                    <MudPaper Elevation="5" Style="width:100%;max-width:500px;padding:32px;border-radius:20px;background:#FFF8F0;">
+                        <MudText Typo="Typo.h6" Style="color:#3E1C00;font-weight:bold;margin-bottom:24px;">Edit User</MudText>
+                        <MudTextField @bind-Value="selectedUser.FullName" Label="Full Name" Variant="Variant.Outlined" FullWidth="true" Style="margin-bottom:16px;" />
+                        <MudTextField @bind-Value="selectedUser.Email" Label="Email" Variant="Variant.Outlined" FullWidth="true" Style="margin-bottom:16px;" />
+                        <MudTextField @bind-Value="selectedUser.Address" Label="Address" Variant="Variant.Outlined" FullWidth="true" Style="margin-bottom:16px;" />
+                        <MudTextField @bind-Value="selectedUser.ContactNo" Label="Contact No" Variant="Variant.Outlined" FullWidth="true" Style="margin-bottom:16px;" />
+                        @if (!string.IsNullOrEmpty(dialogError))
+                        {
+                            <MudAlert Severity="Severity.Error" Style="margin-bottom:16px;border-radius:8px;">@dialogError</MudAlert>
+                        }
+                        <div style="display:flex;justify-content:flex-end;gap:12px;">
+                            <button style="padding:10px 20px;background:white;border:2px solid #B86830;border-radius:8px;color:#B86830;font-weight:bold;cursor:pointer;" @onclick="CloseDialog">Cancel</button>
+                            <button style="padding:10px 20px;background:#3E1C00;border:none;border-radius:8px;color:white;font-weight:bold;cursor:pointer;" @onclick="SaveUser" disabled="@isSaving">
+                                @if (isSaving)
+                                {
+                                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Style="margin-right:8px;" />
+                                    <span>Saving...</span>
+                                }
+                                else
+                                {
+                                    <span>Save</span>
+                                }
+                            </button>
+                        </div>
+                    </MudPaper>
+                </div>
+            }
 
-                    <MudText Typo="Typo.body2"
-                             Style="color: #B86830; margin-bottom: 20px;">
-                        To: @notifyTargetName (@notifyTargetEmail)
-                    </MudText>
+            <!-- ARCHIVE CONFIRMATION DIALOG -->
+            @if (showArchiveConfirm)
+            {
+                <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
+                <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;z-index:10;">
+                    <MudPaper Elevation="5" Style="width:100%;max-width:440px;padding:32px;border-radius:20px;background:#FFF8F0;">
+                        <div style="text-align:center;margin-bottom:20px;">
+                            <div style="font-size:48px;margin-bottom:8px;">🗄️</div>
+                            <MudText Typo="Typo.h6" Style="color:#3E1C00;font-weight:bold;">Archive User?</MudText>
+                            <MudText Typo="Typo.body2" Style="color:#B86830;margin-top:8px;">You are about to archive <strong>@archiveTargetName</strong>.</MudText>
+                        </div>
+                        <div style="background:#FDF6EC;border-radius:12px;padding:16px;margin-bottom:20px;">
+                            <MudText Typo="Typo.body2" Style="color:#3E1C00;">
+                                • The user will remain visible in the table with an <strong>Archived</strong> badge.<br />
+                                • They will <strong>not</strong> be able to log in while archived.<br />
+                                • You can restore them at any time using the ♻️ button.
+                            </MudText>
+                        </div>
+                        @if (!string.IsNullOrEmpty(archiveError))
+                        {
+                            <MudAlert Severity="Severity.Error" Style="margin-bottom:16px;border-radius:8px;">@archiveError</MudAlert>
+                        }
+                        <div style="display:flex;justify-content:flex-end;gap:12px;">
+                            <button style="padding:10px 20px;background:white;border:2px solid #B86830;border-radius:8px;color:#B86830;font-weight:bold;cursor:pointer;" @onclick="CloseArchiveConfirm" disabled="@isArchiving">Cancel</button>
+                            <button style="padding:10px 20px;background:#D32F2F;border:none;border-radius:8px;color:white;font-weight:bold;cursor:pointer;" @onclick="ConfirmArchiveUser" disabled="@isArchiving">
+                                @if (isArchiving)
+                                {
+                                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Style="margin-right:8px;" />
+                                    <span>Archiving...</span>
+                                }
+                                else
+                                {
+                                    <span>Yes, Archive</span>
+                                }
+                            </button>
+                        </div>
+                    </MudPaper>
+                </div>
+            }
 
-                    <MudTextField @bind-Value="notificationTitle" Label="Title"
-                                  Variant="Variant.Outlined" FullWidth="true"
-                                  Style="margin-bottom: 16px;" />
-                    <MudTextField @bind-Value="notificationMessage" Label="Message"
-                                  Variant="Variant.Outlined" FullWidth="true"
-                                  Lines="4" />
+            <!-- SEND NOTIFICATION DIALOG -->
+            @if (showNotifyDialog)
+            {
+                <MudOverlay Visible="true" DarkBackground="true" ZIndex="9" />
+                <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;z-index:10;">
+                    <MudPaper Elevation="5" Style="width:100%;max-width:520px;padding:32px;border-radius:20px;background:#FFF8F0;">
+                        <MudText Typo="Typo.h6" Style="color:#3E1C00;font-weight:bold;margin-bottom:8px;">Send Push Notification</MudText>
+                        <MudText Typo="Typo.body2" Style="color:#B86830;margin-bottom:20px;">To: @notifyTargetName (@notifyTargetEmail)</MudText>
+                        <MudTextField @bind-Value="notificationTitle" Label="Title" Variant="Variant.Outlined" FullWidth="true" Style="margin-bottom:16px;" />
+                        <MudTextField @bind-Value="notificationMessage" Label="Message" Variant="Variant.Outlined" FullWidth="true" Lines="4" />
+                        @if (!string.IsNullOrEmpty(notifyError))
+                        {
+                            <MudAlert Severity="Severity.Error" Style="margin-top:16px;border-radius:8px;">@notifyError</MudAlert>
+                        }
+                        @if (!string.IsNullOrEmpty(notifySuccess))
+                        {
+                            <MudAlert Severity="Severity.Success" Style="margin-top:16px;border-radius:8px;">@notifySuccess</MudAlert>
+                        }
+                        <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px;">
+                            <button style="padding:10px 20px;background:white;border:2px solid #B86830;border-radius:8px;color:#B86830;font-weight:bold;cursor:pointer;" @onclick="CloseNotifyDialog" disabled="@isSendingNotification">Cancel</button>
+                            <button style="padding:10px 20px;background:#1976D2;border:none;border-radius:8px;color:white;font-weight:bold;cursor:pointer;" @onclick="SendPushNotification" disabled="@isSendingNotification">
+                                @if (isSendingNotification)
+                                {
+                                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Style="margin-right:8px;" />
+                                    <span>Sending...</span>
+                                }
+                                else
+                                {
+                                    <span>Send</span>
+                                }
+                            </button>
+                        </div>
+                    </MudPaper>
+                </div>
+            }
 
-                    @if (!string.IsNullOrEmpty(notifyError))
-                    {
-                        <MudAlert Severity="Severity.Error"
-                                  Style="margin-top: 16px; border-radius: 8px;">
-                            @notifyError
-                        </MudAlert>
-                    }
-
-                    @if (!string.IsNullOrEmpty(notifySuccess))
-                    {
-                        <MudAlert Severity="Severity.Success"
-                                  Style="margin-top: 16px; border-radius: 8px;">
-                            @notifySuccess
-                        </MudAlert>
-                    }
-
-                    <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
-                        <button style="padding: 10px 20px; background: white;
-                                       border: 2px solid #B86830; border-radius: 8px;
-                                       color: #B86830; font-weight: bold; cursor: pointer;"
-                                @onclick="CloseNotifyDialog" disabled="@isSendingNotification">
-                            Cancel
-                        </button>
-                        <button style="padding: 10px 20px; background: #1976D2;
-                                       border: none; border-radius: 8px;
-                                       color: white; font-weight: bold; cursor: pointer;"
-                                @onclick="SendPushNotification" disabled="@isSendingNotification">
-                            @if (isSendingNotification)
-                            {
-                                <MudProgressCircular Size="Size.Small" Indeterminate="true"
-                                                     Style="margin-right: 8px;" />
-                                <span>Sending...</span>
-                            }
-                            else
-                            {
-                                <span>Send</span>
-                            }
-                        </button>
-                    </div>
-                </MudPaper>
-            </div>
-        }
-
+        </div>
     </MudMainContent>
 </MudLayout>
 
 @code {
 
-    bool isLoading  = true;
-    bool isSaving   = false;
+    bool isLoading = true;
+    bool isSaving = false;
+    bool isArchiving = false;
     bool showDialog = false;
-    bool showNotifyDialog       = false;
-    bool isSendingNotification  = false;
+    bool showNotifyDialog = false;
+    bool showArchiveConfirm = false;
+    bool isSendingNotification = false;
 
-    string adminName   = string.Empty;
+    string adminName = string.Empty;
     string dialogError = string.Empty;
     string searchQuery = string.Empty;
-    string notifyTargetName    = string.Empty;
-    string notifyTargetEmail   = string.Empty;
-    string notificationTitle   = string.Empty;
+    string notifyTargetName = string.Empty;
+    string notifyTargetEmail = string.Empty;
+    string notificationTitle = string.Empty;
     string notificationMessage = string.Empty;
-    string notifyError         = string.Empty;
-    string notifySuccess       = string.Empty;
-    int notifyTargetUserId     = 0;
+    string notifyError = string.Empty;
+    string notifySuccess = string.Empty;
+    string archiveTargetName = string.Empty;
+    string archiveError = string.Empty;
+    int notifyTargetUserId = 0;
+    int archiveTargetUserId = 0;
 
-    List<UserModel> users         = new();
+    List<UserModel> users = new();
     List<UserModel> filteredUsers = new();
-    UserModel selectedUser        = new();
+    UserModel selectedUser = new();
 
     protected override async Task OnInitializedAsync()
     {
         var token = await LocalStorage.GetItemAsync<string>("token");
-        if (string.IsNullOrEmpty(token))
-        {
-            Navigation.NavigateTo("/login");
-            return;
-        }
+        if (string.IsNullOrEmpty(token)) { Navigation.NavigateTo("/login"); return; }
         adminName = await LocalStorage.GetItemAsync<string>("adminName");
         await LoadUsers();
         isLoading = false;
     }
 
-    // =============================================
-    // LOAD ALL USERS
-    // =============================================
     async Task LoadUsers()
     {
-        try
-        {
-            var response = await Http.GetFromJsonAsync<ServiceResponse<List<UserModel>>>("User/GetAllUsers");
-            users = response?.Status == 200 && response.Data != null
-                ? response.Data : new List<UserModel>();
-        }
+        try { var r = await Http.GetFromJsonAsync<ServiceResponse<List<UserModel>>>("User/GetAllUsers"); users = r?.Status == 200 && r.Data != null ? r.Data : new List<UserModel>(); }
         catch { users = new List<UserModel>(); }
-
         ApplySearch();
     }
 
-    // =============================================
-    // SEARCH LOGIC — by ID or Name
-    // =============================================
-    void OnSearchChanged(string value)
-    {
-        searchQuery = value;
-        ApplySearch();
-    }
-
-    void ClearSearch()
-    {
-        searchQuery = string.Empty;
-        ApplySearch();
-    }
+    void OnSearchChanged(string value) { searchQuery = value; ApplySearch(); }
+    void ClearSearch() { searchQuery = string.Empty; ApplySearch(); }
 
     void ApplySearch()
     {
-        if (string.IsNullOrWhiteSpace(searchQuery))
-        {
-            filteredUsers = new List<UserModel>(users);
-            return;
-        }
-
+        if (string.IsNullOrWhiteSpace(searchQuery)) { filteredUsers = new List<UserModel>(users); return; }
         var q = searchQuery.Trim().ToLower();
-
-        filteredUsers = users.Where(u =>
-            u.UserId.ToString().Contains(q) ||
-            (u.FullName ?? "").ToLower().Contains(q)
-        ).ToList();
+        filteredUsers = users.Where(u => u.UserId.ToString().Contains(q) || (u.FullName ?? "").ToLower().Contains(q)).ToList();
     }
 
-    // =============================================
-    // OPEN / CLOSE / SAVE DIALOG
-    // =============================================
     void OpenEditDialog(UserModel user)
     {
         dialogError = string.Empty;
-        selectedUser = new UserModel
-        {
-            UserId    = user.UserId,
-            FullName  = user.FullName,
-            Email     = user.Email,
-            Address   = user.Address,
-            ContactNo = user.ContactNo
-        };
+        selectedUser = new UserModel { UserId = user.UserId, FullName = user.FullName, Email = user.Email, Address = user.Address, ContactNo = user.ContactNo };
         showDialog = true;
     }
 
-    void CloseDialog()
-    {
-        showDialog  = false;
-        dialogError = string.Empty;
-    }
+    void CloseDialog() { showDialog = false; dialogError = string.Empty; }
 
     async Task SaveUser()
     {
         dialogError = string.Empty;
         if (string.IsNullOrEmpty(selectedUser.FullName)) { dialogError = "Full Name is required."; return; }
-        if (string.IsNullOrEmpty(selectedUser.Email))    { dialogError = "Email is required."; return; }
-
+        if (string.IsNullOrEmpty(selectedUser.Email)) { dialogError = "Email is required."; return; }
         isSaving = true;
-        try
-        {
-            var response = await Http.PutAsJsonAsync("User/UpdateUser", selectedUser);
-            if (response.IsSuccessStatusCode) { showDialog = false; await LoadUsers(); }
-            else dialogError = "Failed to update user. Please try again.";
-        }
+        try { var r = await Http.PutAsJsonAsync("User/UpdateUser", selectedUser); if (r.IsSuccessStatusCode) { showDialog = false; await LoadUsers(); } else dialogError = "Failed to update user. Please try again."; }
         catch { dialogError = "Cannot connect to server. Please try again."; }
         finally { isSaving = false; }
     }
 
-    void OpenNotifyDialog(UserModel user)
+    void OpenArchiveConfirm(UserModel user)
     {
-        notifyError = string.Empty;
-        notifySuccess = string.Empty;
-
-        notifyTargetUserId = user.UserId;
-        notifyTargetName = user.FullName ?? string.Empty;
-        notifyTargetEmail = user.Email ?? string.Empty;
-
-        notificationTitle = "Sweet Cengsations";
-        notificationMessage = string.Empty;
-        showNotifyDialog = true;
+        archiveError = string.Empty;
+        archiveTargetUserId = user.UserId;
+        archiveTargetName = user.FullName ?? $"User #{user.UserId}";
+        showArchiveConfirm = true;
     }
 
-    void CloseNotifyDialog()
-    {
-        if (isSendingNotification) return;
+    void CloseArchiveConfirm() { showArchiveConfirm = false; archiveError = string.Empty; archiveTargetUserId = 0; archiveTargetName = string.Empty; }
 
-        showNotifyDialog = false;
-        notifyError = string.Empty;
-        notifySuccess = string.Empty;
+    async Task ConfirmArchiveUser()
+    {
+        archiveError = string.Empty;
+        isArchiving = true;
+        try
+        {
+            var response = await Http.PutAsync($"User/ArchiveUser?userId={archiveTargetUserId}", null);
+            if (response.IsSuccessStatusCode)
+            {
+                showArchiveConfirm = false;
+                await LoadUsers();
+            }
+            else
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                archiveError = string.IsNullOrWhiteSpace(body)
+                    ? $"Server returned {(int)response.StatusCode} {response.StatusCode}."
+                    : $"Error {(int)response.StatusCode}: {body}";
+            }
+        }
+        catch (Exception ex)
+        {
+            archiveError = $"Cannot connect to server: {ex.Message}";
+        }
+        finally { isArchiving = false; }
     }
+
+    async Task RestoreUser(int userId)
+    {
+        try
+        {
+            var response = await Http.PutAsync($"User/RestoreUser?userId={userId}", null);
+            if (response.IsSuccessStatusCode)
+                await LoadUsers();
+        }
+        catch { }
+    }
+
+    void OpenNotifyDialog(UserModel user) { notifyError = string.Empty; notifySuccess = string.Empty; notifyTargetUserId = user.UserId; notifyTargetName = user.FullName ?? string.Empty; notifyTargetEmail = user.Email ?? string.Empty; notificationTitle = "Sweet Cengsations"; notificationMessage = string.Empty; showNotifyDialog = true; }
+    void CloseNotifyDialog() { if (isSendingNotification) return; showNotifyDialog = false; notifyError = string.Empty; notifySuccess = string.Empty; }
 
     async Task SendPushNotification()
     {
-        notifyError = string.Empty;
-        notifySuccess = string.Empty;
-
+        notifyError = string.Empty; notifySuccess = string.Empty;
         var token = await LocalStorage.GetItemAsync<string>("token");
-        if (string.IsNullOrWhiteSpace(token))
-        {
-            notifyError = "Session expired. Please log in again.";
-            Navigation.NavigateTo("/login");
-            return;
-        }
-
-        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-        if (notifyTargetUserId <= 0)
-        {
-            notifyError = "Invalid user selected.";
-            return;
-        }
-        if (string.IsNullOrWhiteSpace(notificationTitle))
-        {
-            notifyError = "Notification title is required.";
-            return;
-        }
-        if (string.IsNullOrWhiteSpace(notificationMessage))
-        {
-            notifyError = "Notification message is required.";
-            return;
-        }
+        if (string.IsNullOrWhiteSpace(token)) { notifyError = "Session expired."; Navigation.NavigateTo("/login"); return; }
+        if (notifyTargetUserId <= 0) { notifyError = "Invalid user selected."; return; }
+        if (string.IsNullOrWhiteSpace(notificationTitle)) { notifyError = "Notification title is required."; return; }
+        if (string.IsNullOrWhiteSpace(notificationMessage)) { notifyError = "Notification message is required."; return; }
 
         isSendingNotification = true;
         try
         {
-            var response = await Http.PostAsJsonAsync("api/admin/notifications/send", new
+            var payload = new
             {
                 TargetUserIds = new[] { notifyTargetUserId },
                 Title = notificationTitle.Trim(),
                 Body = notificationMessage.Trim(),
                 Type = "admin_manual",
                 Data = new Dictionary<string, string>
-                {
-                    ["source"] = "admin_users_page",
-                    ["targetUserId"] = notifyTargetUserId.ToString()
-                }
-            });
+                    {
+                        ["source"] = "admin_users_page",
+                        ["targetUserId"] = notifyTargetUserId.ToString()
+                    }
+            };
 
-            if (response.IsSuccessStatusCode)
-            {
+            // ✅ Scoped request with token attached
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/notifications/admin/send");
+            request.Headers.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            request.Content = JsonContent.Create(payload);
+
+            var r = await Http.SendAsync(request);
+            if (r.IsSuccessStatusCode)
                 notifySuccess = "Push notification sent successfully.";
-            }
             else
             {
-                var errorBody = await response.Content.ReadAsStringAsync();
-                notifyError = string.IsNullOrWhiteSpace(errorBody)
-                    ? "Failed to send push notification."
-                    : errorBody;
+                var e = await r.Content.ReadAsStringAsync();
+                notifyError = string.IsNullOrWhiteSpace(e)
+                    ? $"Failed ({(int)r.StatusCode})."
+                    : $"Error {(int)r.StatusCode}: {e}";
             }
         }
-        catch
-        {
-            notifyError = "Cannot connect to server. Please try again.";
-        }
-        finally
-        {
-            isSendingNotification = false;
-        }
+        catch (Exception ex) { notifyError = $"Cannot connect to server: {ex.Message}"; }
+        finally { isSendingNotification = false; }
     }
 
-    // =============================================
-    // DELETE USER
-    // =============================================
-    async Task DeleteUser(int userId)
-    {
-        try
-        {
-            var response = await Http.DeleteAsync($"User/DeleteUser?userId={userId}");
-            if (response.IsSuccessStatusCode) await LoadUsers();
-        }
-        catch { }
-    }
-
-    // =============================================
-    // HANDLE LOGOUT
-    // =============================================
     async Task HandleLogout()
     {
-        await LocalStorage.RemoveItemAsync("token");
-        await LocalStorage.RemoveItemAsync("adminId");
-        await LocalStorage.RemoveItemAsync("adminName");
-        await LocalStorage.RemoveItemAsync("adminEmail");
+        await LocalStorage.RemoveItemAsync("token"); await LocalStorage.RemoveItemAsync("adminId");
+        await LocalStorage.RemoveItemAsync("adminName"); await LocalStorage.RemoveItemAsync("adminEmail");
         Navigation.NavigateTo("/login");
     }
 }
